@@ -26,7 +26,6 @@
                         <x-application-logo class="img-fluid" />
                     </a>
                 </div>
-
                 <div class="card shadow-sm rounded-0">
                     <div class="card-body p-4">
                         {{ $slot }}

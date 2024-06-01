@@ -23,6 +23,9 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AssessmentController;
+use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\AnswerController;
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -36,6 +39,10 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     // Route::resource('products', ProductController::class);
     Route::resource('tags', TagController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('assessments', AssessmentController::class);
+    Route::resource('assessments.questions', QuestionController::class)->shallow();
+    Route::resource('questions.answers', AnswerController::class)->shallow();
+
 
     require __DIR__.'/admin_generator.php';
 });

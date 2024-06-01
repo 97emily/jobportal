@@ -6,9 +6,9 @@
     </span>
     </a>
     <div class="dropdown-menu dropdown-menu-right profile-dropdown dropdown-animate">
-      <div class="dropdown-header">
+      {{-- <div class="dropdown-header">
         <h6 class="text-center">Welcome !</h6>
-      </div>
+      </div> --}}
       <a href="{{ route('profile.edit') }}" class="dropdown-item">
       <i class="fa fa-user-alt me-1"></i>
       <span>My Account</span>
@@ -17,6 +17,6 @@
       <i class="fa fa-sign-out me-1"></i>
       <span>{{ __('Log Out') }}</span>
       </a>
-     
+
     </div>
   </li>

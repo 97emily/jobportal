@@ -11,18 +11,7 @@
             {{ html()->email('email')->placeholder('Email')->class('form-control')->attributes(['required' => true]) }}
         </div>
     </div>
-    {{-- <div class="col-12">
-        <div class="form-group mb-3">
-            {{ html()->label('Password <span class="text-danger">*</span>', 'password') }}
-            {{ html()->password('password')->placeholder('Password')->class('form-control')->attributes(['required' => true]) }}
-        </div>
-    </div>
-    <div class="col-12">
-        <div class="form-group mb-3">
-            {{ html()->label('Confirm Password <span class="text-danger">*</span>', 'confirm_password') }}
-            {{ html()->password('confirm_password')->placeholder('Confirm Password')->class('form-control')->attributes(['required' => true]) }}
-        </div>
-    </div> --}}
+
     <div class="col-12">
         <div class="form-group mb-3">
             <?php

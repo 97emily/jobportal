@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             // ProductSeeder::class,
             JobListingSeeder::class,
+            AssessmentSeeder::class,
+            QuestionSeeder::class,
         ]);
     }
 }

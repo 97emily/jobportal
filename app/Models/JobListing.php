@@ -42,7 +42,7 @@ class JobListing extends Model
         return $this->belongsTo(Category::class);
     }
 
-    // 
+    //
 
     public function tags(): MorphToMany
     {
@@ -65,7 +65,7 @@ class JobListing extends Model
         $url = route('jobs.show', $this->id);
 
         return new \Spatie\Searchable\SearchResult(
-            $this,
+            $this->id,
             $this->name,
             $url
         );

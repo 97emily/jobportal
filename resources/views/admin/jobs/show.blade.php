@@ -7,7 +7,7 @@
                 <div class="col-lg-12 col-md-12">
                     <!-- begin product-detail -->
                     <div class="product-detail">
-                        <h3 class="product-title">{{ $job->title }}</h3>
+                        <h1 class="product-title">{{ $job->title }}</h1>
                         <div class="product-price mb-2">
                             <!-- Display salary range if available -->
                             @if ($job->salary_min && $job->salary_max)
@@ -39,7 +39,7 @@
                     <div class="row">
                         <!-- Display additional job details such as available stock, number of orders, and revenue -->
                         <div class="col-md-4">
-                            <h5 class="fw-700">Location:</h5>
+                            <h5 class="fw-700">Work Location:</h5>
                             <p class="lh-150 text-sm">{{ $job->location ?: 'Not specified' }}</p>
                         </div>
                         <div class="col-md-4">

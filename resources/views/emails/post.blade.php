@@ -63,7 +63,7 @@
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 1.25rem;">
                     <div style="text-align: center; font-size: 14px; font-weight: normal;">
-                        THANKS FOR SIGNING UP!
+                        WE'VE CREATED AN ACCOUNT FOR YOU!
                     </div>
                     <div class=""
                         style="font-size: 24px; font-weight: bold; text-transform: capitalize; text-align  :center">
@@ -74,9 +74,9 @@
             <main style="margin-top: 2rem; padding-left: 1.25rem; padding-right: 1.25rem;">
                 <h4 style="color: #374151;">Welcome, {{ $details['name'] }}!</h4>
                 <p style="margin-top: 1rem; line-height: 1.75; color: #4b5563;">
-                    You have been registered to our platform. We're excited to have you on board.
+                    You have been registered to our admin portal. We're excited to have you on board.
                     <br>
-                    Please use the following credentialls to login to your accout. Thereafter visit your profile and
+                    Please use the following credentials to login to your accout. Thereafter visit your profile and
                     update.
                     <br>
                     Username: {{ $details['email'] }}

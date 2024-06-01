@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
+
 
 class UserController extends Controller
 {
@@ -51,7 +53,7 @@ class UserController extends Controller
     public function store(Request $request): JsonResponse
     {
 
-        $password = rand(12341234, 12341234);
+        $password = Str::random(8);
 
         $rules = [
             'name' => 'required',

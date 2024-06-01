@@ -1,4 +1,4 @@
-<div class="modal right fade" id="app-settings" tabindex="-1" aria-labelledby="modalSetting" aria-hidden="true">
+{{-- <div class="modal right fade" id="app-settings" tabindex="-1" aria-labelledby="modalSetting" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content custom-scroll" style="max-height: 100%">
         <div class="align-items-center bg-trans-gradient justify-content-center modal-header rounded-0 w-100">
@@ -26,4 +26,4 @@
       <!-- end modal-content -->
     </div>
     <!-- end modal-dialog -->
-</div>
+</div> --}}

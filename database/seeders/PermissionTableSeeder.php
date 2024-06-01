@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Question;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 
@@ -36,11 +37,26 @@ class PermissionTableSeeder extends Seeder
             'job-list',
             'job-create',
             'job-edit',
-            'job-delete'
-        ];
+            'job-delete',
+            'assessment-list',
+            'assessment-create',
+            'assessment-edit',
+            'assessment-delete',
+            'question-list',
+            'question-delete',
+            'question-edit',
+            'question-create',
+            'answer-list',
+            'answer-delete',
+            'answer-create',
+            'answer-edit',
 
+        ];
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            // Check if the permission already exists
+            if (!Permission::where('name', $permission)->where('guard_name', 'web')->exists()) {
+                Permission::create(['name' => $permission, 'guard_name' => 'web']);
+            }
         }
     }
 }

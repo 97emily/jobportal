@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="form-group mb-3">
-                    <x-input-label for="current_password" :value="__('Current Password')" />
+                    <x-input-label for="current_password" :value="__('Current Password')"/>
                     <x-text-input id="current_password" name="current_password" type="password" class="form-control" autocomplete="current-password" />
                     <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
                 </div>
@@ -44,8 +44,7 @@
         </div>
 
         <div class="text-end">
-            <x-primary-button class="btn-highlight">{{ __('Save') }}</x-primary-button>
-
+            <x-primary-button style="background-color: #00AAD0;" class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ __('Save') }}</x-primary-button>
             @if (session('status') === 'password-updated')
                 <p
                     x-data="{ show: true }"
