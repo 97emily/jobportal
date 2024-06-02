@@ -17,10 +17,10 @@
         "laravel/socialite": "^5.6",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.2",
-        "spatie/laravel-html": "^3.7",
         "league/flysystem-aws-s3-v3": "^3.23",
         "nesbot/carbon": "^2.66",
         "predis/predis": "^2.1",
+        "spatie/laravel-html": "^3.7",
         "spatie/laravel-medialibrary": "^11.4.0",
         "spatie/laravel-permission": "^6.4",
         "spatie/laravel-searchable": "^1.12"
