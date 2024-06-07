@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Log;
 
 class QuestionController extends Controller
 
-
 {
     public function __construct()
     {
@@ -21,6 +20,7 @@ class QuestionController extends Controller
         $this->middleware('permission:question-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:question-delete', ['only' => ['destroy']]);
     }
+
     public function create(Assessment $assessment)
     {
         return view('admin.questions.create', compact('assessment'));
@@ -28,18 +28,34 @@ class QuestionController extends Controller
 
     public function store(Request $request, Assessment $assessment)
     {
-        $request->validate([
-            'question' => 'required|string',
+        Log::info('Store method called.');
+        Log::info('Request data: ', $request->all());
+
+        $validatedData = $request->validate([
+            'question' => 'required|string|max:255',
+            'answers.*' => 'required|string|max:255',
+            'correct_answer' => 'required|integer|in:1,2,3,4',
         ]);
 
-        try {
-            $assessment->questions()->create($request->all());
-            return redirect()->route('assessments.show', $assessment->id)->with('success', 'Question added successfully.');
-        } catch (\Exception $e) {
-            Log::error('Error adding question: ' . $e->getMessage());
-            return back()->with('error', 'There was an error adding the question.');
+        Log::info('Validated data: ', $validatedData);
+
+        $question = new Question([
+            'question' => $validatedData['question'],
+            'assessment_id' => $assessment->id,
+        ]);
+        $question->save();
+
+        foreach ($request->input('answers') as $key => $answer) {
+            $isCorrect = ($key + 1) == $validatedData['correct_answer'];
+            $question->answers()->create([
+                'answer' => $answer,
+                'is_correct' => $isCorrect,
+            ]);
         }
+
+        return redirect()->route('assessments.index', $assessment->id);
     }
+
 
     public function edit(Assessment $assessment, Question $question)
     {

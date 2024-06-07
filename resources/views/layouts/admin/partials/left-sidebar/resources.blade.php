@@ -55,7 +55,7 @@
             @can('role-list')
             <li class="{{ Request::is('admin/roles*') ? 'active' : '' }}">
               <x-nav-link :href="route('roles.index')" :active="Request::is('admin/roles*')">
-                  {{ __('Manage Role') }}
+                  {{ __('Manage Practicals') }}
               </x-nav-link>
             </li>
             @endcan

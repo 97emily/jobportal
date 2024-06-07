@@ -52,4 +52,6 @@ Route::middleware([\App\Http\Middleware\Cors::class, 'auth:sanctum'])->group(fun
     });
         Route::apiResource('tags', TagController::class);
         Route::apiResource('categories', CategoryController::class);
+
+        
 });
