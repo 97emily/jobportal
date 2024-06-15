@@ -25,7 +25,7 @@ class AssessmentFactory extends Factory
         return [
             'title' => $this->faker->sentence(4),
             'description' => $this->faker->paragraph,
-            'job_listing_id' => \App\Models\JobListing::inRandomOrder()->first()->id,
+            'job_listings_id' => \App\Models\JobListing::inRandomOrder()->first()->id,
             'created_at' => now(),
             'updated_at' => now(),
         ];

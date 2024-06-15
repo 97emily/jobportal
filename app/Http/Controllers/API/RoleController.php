@@ -6,13 +6,13 @@ use App\Http\Controllers\Admin\Concerns\BaseControllerConcerns;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
     use BaseControllerConcerns;
+
     /**
      * Display a listing of the resource.
      *
@@ -34,43 +34,60 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request): View
+    public function index(Request $request): JsonResponse
     {
         $roles = Role::orderBy('id', 'DESC')->paginate(5);
 
-        return view('admin.roles.index', compact('roles'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        return response()->json([
+            'success' => true,
+            'data' => $roles,
+            'pagination' => [
+                'current_page' => $roles->currentPage(),
+                'last_page' => $roles->lastPage(),
+                'per_page' => $roles->perPage(),
+                'total' => $roles->total()
+            ]
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function create(): View
-    {
-        $permissions = Permission::get();
 
-        return view('admin.roles.create', compact('permissions'));
+    public function create(): JsonResponse
+    {
+        $permissions = Permission::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $permissions
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
+
     public function store(Request $request): JsonResponse
     {
         $validate = self::checkValidation($request);
         if ($validate !== true) {
             return $validate;
         }
+
         $role = Role::create(['name' => $request->input('name')]);
         $role->syncPermissions(Permission::find($request->input('permission')));
 
-        return response()->json(['success' => true, 'message' => self::resourceClassName().' created successfully.']);
+        return response()->json([
+            'success' => true,
+            'message' => self::resourceClassName() . ' created successfully.'
+        ]);
     }
 
     private static function createRules()
@@ -85,55 +102,70 @@ class RoleController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-
-    public function show($id): View
+    
+    public function show($id): JsonResponse
     {
         $role = Role::find($id);
         $rolePermissions = Permission::join('role_has_permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
             ->where('role_has_permissions.role_id', $id)
             ->get();
 
-        return view('admin.roles.show', compact('role', 'rolePermissions'));
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'role' => $role,
+                'permissions' => $rolePermissions
+            ]
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
 
-    public function edit($id): View
+    public function edit($id): JsonResponse
     {
         $role = Role::find($id);
-        $permissions = Permission::get();
+        $permissions = Permission::all();
         $rolePermissions = $role->permissions;
 
-        return view('admin.roles.edit', compact('role', 'permissions', 'rolePermissions'));
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'role' => $role,
+                'permissions' => $permissions,
+                'rolePermissions' => $rolePermissions
+            ]
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id): JsonResponse
     {
         $validate = self::checkValidation($request, 'update');
-
         if ($validate !== true) {
             return $validate;
         }
 
         $role = Role::find($id);
         $role->update($request->all());
-
         $role->syncPermissions(Permission::find($request->input('permission')));
 
-        return response()->json(['success' => true, 'message' => 'Role is updated successfully.']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Role updated successfully.'
+        ]);
     }
 
     private static function updateRules()

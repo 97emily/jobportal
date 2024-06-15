@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-    
+
     public function run(): void
     {
         $this->call([
@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
             CreateAdminUserSeeder::class,
             CategorySeeder::class,
             TagSeeder::class,
-            // ProductSeeder::class,
             JobListingSeeder::class,
             AssessmentSeeder::class,
             QuestionSeeder::class,
+            AnswerSeeder::class,
         ]);
     }
 }

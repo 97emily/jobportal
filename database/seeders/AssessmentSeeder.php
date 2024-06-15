@@ -35,7 +35,7 @@ class AssessmentSeeder extends Seeder
             ->count(10)
             ->make()
             ->each(function ($assessment) use ($jobListingIds) {
-                $assessment->job_listing_id = $jobListingIds->random();
+                $assessment->job_listings_id = $jobListingIds->random();
                 $assessment->save();
             });
     }

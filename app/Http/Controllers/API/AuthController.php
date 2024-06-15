@@ -13,11 +13,26 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Spatie\Permission\Models\Permission;
 
 class AuthController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index', 'store']]);
+        $this->middleware('permission:role-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:role-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+    }
+
+    public static function resourceClassName()
+    {
+        return 'Role';
+    }
+
     public function register(Request $request): JsonResponse
     {
         try {
@@ -26,7 +41,7 @@ class AuthController extends Controller
                 'email' => 'required|string|email|unique:users',
                 'role' => 'required|string',
             ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->errors(),
@@ -189,5 +204,160 @@ class AuthController extends Controller
                 'email' => [__($status)],
             ]);
         }
+    }
+
+    // Role Management Methods
+
+    public function index(Request $request): JsonResponse
+    {
+        $roles = Role::orderBy('id', 'DESC')->paginate(5);
+
+        return response()->json([
+            'success' => true,
+            'data' => $roles,
+            'pagination' => [
+                'current_page' => $roles->currentPage(),
+                'last_page' => $roles->lastPage(),
+                'per_page' => $roles->perPage(),
+                'total' => $roles->total()
+            ]
+        ]);
+    }
+
+    public function create(): JsonResponse
+    {
+        $permissions = Permission::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $permissions
+        ]);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        // Validate the incoming request
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|unique:roles,name',
+            'permission' => 'required|array',
+            'permission.*' => 'exists:permissions,id', // Check if each permission ID exists in the permissions table
+        ]);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        // Create the new role
+        $role = Role::create([
+            'name' => $request->input('name'),
+            'guard_name' => 'web'
+        ]);
+
+        // Sync permissions to the role
+        $role->syncPermissions($request->input('permission'));
+
+        // Return a JSON response indicating success
+        return response()->json([
+            'success' => true,
+            'message' => 'Role created successfully.',
+            'role' => $role,
+        ], 201);
+    }
+
+    public function show($id): JsonResponse
+    {
+        $role = Role::find($id);
+        $rolePermissions = Permission::join('role_has_permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
+            ->where('role_has_permissions.role_id', $id)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'role' => $role,
+                'permissions' => $rolePermissions
+            ]
+        ]);
+    }
+
+    public function edit($id): JsonResponse
+    {
+        $role = Role::find($id);
+        $permissions = Permission::all();
+        $rolePermissions = $role->permissions;
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'role' => $role,
+                'permissions' => $permissions,
+                'rolePermissions' => $rolePermissions
+            ]
+        ]);
+    }
+
+    public function update(Request $request, $id): JsonResponse
+    {
+        $validate = self::checkValidation($request, 'update');
+        if ($validate !== true) {
+            return $validate;
+        }
+
+        $role = Role::find($id);
+        $role->update($request->all());
+        $role->syncPermissions(Permission::find($request->input('permission')));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Role updated successfully.'
+        ]);
+    }
+
+    public function destroy($id): JsonResponse
+    {
+        $role = Role::find($id);
+        if (!$role) {
+            return response()->json(['success' => false, 'message' => 'Role not found.'], 404);
+        }
+
+        $role->delete();
+
+        return response()->json(['success' => true, 'message' => 'Role deleted successfully.']);
+    }
+
+    private static function checkValidation($request, $type = 'create')
+    {
+        $rules = $type === 'create' ? self::createRules() : self::updateRules();
+
+        try {
+            $request->validate($rules);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->errors(),
+            ], 422);
+        }
+
+        return true;
+    }
+
+    private static function createRules()
+    {
+        return [
+            'name' => 'required|unique:roles,name',
+            'permission' => 'required',
+        ];
+    }
+
+    private static function updateRules()
+    {
+        return [
+            'name' => 'required',
+            'permission' => 'required',
+        ];
     }
 }

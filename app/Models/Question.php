@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\hasMany;
 
 class Question extends Model
 {
@@ -13,7 +15,7 @@ class Question extends Model
 
     public function assessment()
     {
-        return $this->belongsTo(Assessment::class);
+        return $this->BelongsTo(Assessment::class);
     }
 
     public function answers()

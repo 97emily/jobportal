@@ -12,10 +12,10 @@ class CreateAssessmentsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('job_listing_id');
+            $table->unsignedBigInteger('job_listings_id');
             $table->timestamps();
 
-            $table->foreign('job_listing_id')->references('id')->on('job_listings')->onDelete('cascade');
+            $table->foreign('job_listings_id')->references('id')->on('job_listings')->onDelete('cascade');
         });
     }
 

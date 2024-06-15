@@ -54,7 +54,7 @@ class PostMail extends Mailable
      *
      * @return array
      */
-    
+
     public function attachments(): array
     {
         return [];

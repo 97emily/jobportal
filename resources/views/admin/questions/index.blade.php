@@ -2,7 +2,7 @@
     <x-admin.page-header/>
     <x-admin.index-toolbar>
         <x-slot:mainactions>
-            @can('product-create')
+            @can('questions_create')
             <a class="btn btn-highlight waves-effect" href="{{ route('assessments.questions.create') }}">
                 <i class="fa fa-plus-circle"></i>
                 <span class="d-none d-md-inline">{{ _('Create New Product') }}</span>
@@ -26,3 +26,5 @@
     </div>
     {!! $questions->links('pagination::bootstrap-5') !!}
 </x-admin.app-layout>
+
+
