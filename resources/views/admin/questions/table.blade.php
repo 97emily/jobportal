@@ -30,7 +30,7 @@
                 </td> --}}
                 <td><a href="{{ route('questions.show', $question->id) }}"><i class="fa fa-eye"
                             data-bs-original-title="View" data-bs-toggle="tooltip"></i></a></td>
-                <td>{{ $question->question }}</td>
+                <td> {!! $question->question !!}</td>
                 <td>{{ $question->allocated_marks }}</td>
                 <td>{{ $question->allocated_time }}</td>
                 <td>
