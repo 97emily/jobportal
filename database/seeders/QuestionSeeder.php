@@ -26,7 +26,7 @@ class QuestionSeeder extends Seeder
 
         // Create questions linked to existing assessments
         Question::factory()
-            ->count(50)
+            ->count(10)
             ->make()
             ->each(function ($question) use ($assessmentIds) {
                 $question->assessment_id = $assessmentIds->random();

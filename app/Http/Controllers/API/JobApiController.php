@@ -12,7 +12,8 @@ class JobApiController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:job-list|job-create|job-edit|job-delete', ['only' => ['index', 'show']]);
+        // $this->middleware('permission:job-list|job-create|job-edit|job-delete', ['only' => ['index', 'show']]);
+        $this->middleware('auth:api', ['only' => ['index', 'show']]);
         $this->middleware('permission:job-create', ['only' => ['store']]);
         $this->middleware('permission:job-edit', ['only' => ['update']]);
         $this->middleware('permission:job-delete', ['only' => ['destroy']]);

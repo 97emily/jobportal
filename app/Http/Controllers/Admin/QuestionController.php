@@ -1,7 +1,5 @@
 <?php
 
-// app/Http/Controllers/QuestionController.php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -11,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class QuestionController extends Controller
-
 {
     public function __construct()
     {
@@ -53,9 +50,8 @@ class QuestionController extends Controller
             ]);
         }
 
-        return redirect()->route('assessments.index', $assessment->id);
+        return response()->json(['success' => 'Question saved successfully!']);
     }
-
 
     public function edit(Assessment $assessment, Question $question)
     {
@@ -64,17 +60,29 @@ class QuestionController extends Controller
 
     public function update(Request $request, Assessment $assessment, Question $question)
     {
-        $request->validate([
-            'question' => 'required|string',
+        $validatedData = $request->validate([
+            'question' => 'required|string|max:255',
+            'answers.*' => 'required|string|max:255',
+            'correct_answer' => 'required|integer|in:1,2,3,4',
         ]);
 
-        try {
-            $question->update($request->all());
-            return redirect()->route('assessments.show', $assessment->id)->with('success', 'Question updated successfully.');
-        } catch (\Exception $e) {
-            Log::error('Error updating question: ' . $e->getMessage());
-            return back()->with('error', 'There was an error updating the question.');
+        $question->update([
+            'question' => $validatedData['question'],
+        ]);
+
+        // Delete existing answers
+        $question->answers()->delete();
+
+        // Create new answers
+        foreach ($request->input('answers') as $key => $answer) {
+            $isCorrect = ($key + 1) == $validatedData['correct_answer'];
+            $question->answers()->create([
+                'answer' => $answer,
+                'is_correct' => $isCorrect,
+            ]);
         }
+
+        return redirect()->route('assessments.show', $assessment->id)->with('success', 'Question updated successfully.');
     }
 
     public function destroy(Assessment $assessment, Question $question)

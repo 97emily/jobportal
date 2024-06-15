@@ -57,6 +57,7 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function create(): JsonResponse
     {
         $permissions = Permission::all();
@@ -72,6 +73,7 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function store(Request $request): JsonResponse
     {
         $validate = self::checkValidation($request);
@@ -102,6 +104,7 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
+    
     public function show($id): JsonResponse
     {
         $role = Role::find($id);
@@ -124,6 +127,7 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
+
     public function edit($id): JsonResponse
     {
         $role = Role::find($id);

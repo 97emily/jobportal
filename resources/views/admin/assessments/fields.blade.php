@@ -1,4 +1,4 @@
-<form method="POST" action="{{ route('assessments.store') }}">
+ <form method="POST" action="{{ route('assessments.store') }}">
     @csrf
 <div class="row">
     <div class="container">
@@ -55,26 +55,3 @@
 </script>
 
 
-
-{{-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Create Assessment</title>
-</head>
-<body>
-    <h1>Create Assessment</h1>
-    <form action="{{ route('assessments.store') }}" method="POST">
-        @csrf
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" required>
-        <br>
-        <label for="description">Description:</label>
-        <textarea id="description" name="description"></textarea>
-        <br>
-        <label for="job_listings_id">Job Listing ID:</label>
-        <input type="number" id="job_listings_id" name="job_listings_id" required>
-        <br>
-        <button type="submit">Save Assessment</button>
-    </form>
-</body>
-</html> --}}

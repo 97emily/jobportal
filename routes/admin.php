@@ -10,7 +10,6 @@
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 use App\Http\Controllers\Admin\AttachmentController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -41,13 +40,13 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('assessments', AssessmentController::class);
     Route::resource('assessments.questions', QuestionController::class)->shallow();
-    // Route::resource('questions.answers', AnswerController::class)->shallow();
+    Route::resource('questions.answers', AnswerController::class)->shallow();
     Route::get('/assessments/create', [AssessmentController::class, 'create'])->name('assessments.create');
     Route::post('/assessments', [AssessmentController::class, 'store'])->name('assessments.store');
     Route::get('/assessments/{assessment}/questions/index', [QuestionController::class, 'index'])->name('assessments.questions.index');
-    Route::get('/assessments/{assessment}/questions/create', [QuestionController::class, 'create'])->name('assessments.questions.create');
+    Route::post('/assessments/{assessment}/questions/create', [QuestionController::class, 'create'])->name('assessments.questions.create');
     Route::post('/assessments/{assessment}/questions/store', [QuestionController::class, 'store'])->name('assessments.questions.store');
-    Route::resource('assessments.questions', QuestionController::class)->except(['show']);
+    Route::resource('assessments/questions', QuestionController::class)->except(['show']);
 
     require __DIR__.'/admin_generator.php';
 });

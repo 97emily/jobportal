@@ -32,6 +32,9 @@ Route::middleware([\App\Http\Middleware\Cors::class])->group(function () {
     Route::post('password/reset', [AuthController::class, 'resetPassword']);
 });
 
+// Route::get('jobs', [JobApiController::class, 'index']);
+// Route::get('jobs/{job}', [JobApiController::class, 'show']);
+
 Route::middleware([\App\Http\Middleware\Cors::class, 'auth:sanctum'])->group(function () {
     // job api
     Route::name('job.api.')->group(function () {
@@ -52,6 +55,7 @@ Route::middleware([\App\Http\Middleware\Cors::class, 'auth:sanctum'])->group(fun
     });
         Route::apiResource('tags', TagController::class);
         Route::apiResource('categories', CategoryController::class);
-
-        
+        Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+            return $request->user();
+        });
 });

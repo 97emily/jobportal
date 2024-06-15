@@ -27,21 +27,4 @@
     {!! $questions->links('pagination::bootstrap-5') !!}
 </x-admin.app-layout>
 
-{{-- <div class="container">
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-body">
-                    <h1>Questions for {{ $assessment->title }}</h1>
-                    <ul>
-                        @foreach ($questions as $question)
-                            <li>{{ $question->question_text }}</li>
-                        @endforeach
-                    </ul>
-                    <a href="{{ route('questions.create', $assessment->id) }}" class="btn btn-primary">Add Question</a>
-                    <a href="{{ route('assessments.index') }}" class="btn btn-secondary">Back to Assessments</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
+

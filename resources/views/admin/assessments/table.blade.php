@@ -1,5 +1,5 @@
 
-    {{-- <table id="assessment-datatable" class="resources-datatable table-middle table-hover table-responsive table">
+    <table id="assessment-datatable" class="resources-datatable table-middle table-hover table-responsive table">
         <thead>
             <tr>
                 <th>No</th>
@@ -7,7 +7,7 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Questions</th>
-                <th>Status</th>
+                {{-- <th>Status</th> --}}
                 <th class="no-sort text-center">Action</th>
             </tr>
         </thead>
@@ -23,7 +23,7 @@
                     <td><a href="{{ route('assessments.edit', $assessment->id) }}">{{ $assessment->title }}</a></td>
                     <td>{{ $assessment->description }}</td>
                     <td>{{ $assessment->questions_count }}</td>
-                    <td>{!! $assessment->status ? 'Active' : 'Inactive' !!}</td>
+                    {{-- <td>{!! $assessment->status ? 'Active' : 'Inactive' !!}</td> --}}
                     <td>
                         <ul class="list-unstyled table-actions">
                             @can('assessment-edit')
@@ -41,9 +41,9 @@
                 </tr>
             @endforeach
         </tbody>
-    </table> --}}
+    </table>
 
-        <table id="assessment-datatable" class="resources-datatable table-middle table-hover table-responsive table">
+        {{-- <table id="assessment-datatable" class="resources-datatable table-middle table-hover table-responsive table">
             <thead>
                 <tr>
 
@@ -66,5 +66,5 @@
                 @endforeach
             </tbody>
         </table>
-
+ --}}
 
