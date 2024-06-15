@@ -13,11 +13,23 @@ class Assessment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'job_listings_id'];
+    // protected $fillable = ['title', 'description', 'job_listings_id'];
 
-    public function jobListing()
+    // public function jobListing()
+    // {
+    //     return $this->belongsTo(JobListing::class, 'job_listings_id');
+    // }
+
+    // public function questions()
+    // {
+    //     return $this->hasMany(Question::class);
+    // }
+
+    protected $fillable = ['title', 'description', 'pass_mark', 'category_id'];
+
+    public function category()
     {
-        return $this->belongsTo(JobListing::class, 'job_listings_id');
+        return $this->belongsTo(Category::class);
     }
 
     public function questions()

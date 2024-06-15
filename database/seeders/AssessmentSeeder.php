@@ -16,27 +16,29 @@ class AssessmentSeeder extends Seeder
     public function run()
     {
         // Ensure there are job listings in the database
-        $jobListingIds = JobListing::pluck('id');
+        // $jobListingIds = JobListing::pluck('id');
 
-        if ($jobListingIds->isEmpty()) {
-            // Create a job listing if none exist
-            $jobListing = JobListing::create([
-                'title' => 'Sample Job Listing Title',
-                'description' => 'Sample Job Listing Description',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        // if ($jobListingIds->isEmpty()) {
+        //     // Create a job listing if none exist
+        //     $jobListing = JobListing::create([
+        //         'title' => 'Sample Job Listing Title',
+        //         'description' => 'Sample Job Listing Description',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ]);
 
-            $jobListingIds = collect([$jobListing->id]);
-        }
+        //     $jobListingIds = collect([$jobListing->id]);
+        // }
 
-        // Create assessments linked to existing job listings
-        Assessment::factory()
-            ->count(10)
-            ->make()
-            ->each(function ($assessment) use ($jobListingIds) {
-                $assessment->job_listings_id = $jobListingIds->random();
-                $assessment->save();
-            });
+        // // Create assessments linked to existing job listings
+        // Assessment::factory()
+        //     ->count(10)
+        //     ->make()
+        //     ->each(function ($assessment) use ($jobListingIds) {
+        //         $assessment->job_listings_id = $jobListingIds->random();
+        //         $assessment->save();
+        //     });
+
+        Assessment::factory()->count(20)->create();
     }
 }

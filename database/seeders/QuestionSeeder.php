@@ -15,22 +15,24 @@ class QuestionSeeder extends Seeder
      */
     public function run()
     {
-        // Ensure there are assessments in the database
-        $assessmentIds = Assessment::pluck('id');
+        // // Ensure there are assessments in the database
+        // $assessmentIds = Assessment::pluck('id');
 
-        if ($assessmentIds->isEmpty()) {
-            // Create assessments if none exist
-            $assessment = Assessment::factory()->create();
-            $assessmentIds = collect([$assessment->id]);
-        }
+        // if ($assessmentIds->isEmpty()) {
+        //     // Create assessments if none exist
+        //     $assessment = Assessment::factory()->create();
+        //     $assessmentIds = collect([$assessment->id]);
+        // }
 
-        // Create questions linked to existing assessments
-        Question::factory()
-            ->count(10)
-            ->make()
-            ->each(function ($question) use ($assessmentIds) {
-                $question->assessment_id = $assessmentIds->random();
-                $question->save();
-            });
+        // // Create questions linked to existing assessments
+        // Question::factory()
+        //     ->count(10)
+        //     ->make()
+        //     ->each(function ($question) use ($assessmentIds) {
+        //         $question->assessment_id = $assessmentIds->random();
+        //         $question->save();
+        //     });
+
+        Question::factory()->count(50)->create();
     }
 }

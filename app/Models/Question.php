@@ -11,15 +11,22 @@ class Question extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['assessment_id', 'question'];
+    // protected $fillable = ['assessment_id', 'question'];
+
+    // public function assessment()
+    // {
+    //     return $this->BelongsTo(Assessment::class);
+    // }
+
+    // public function answers()
+    // {
+    //     return $this->hasMany(Answer::class);
+    // }
+
+    protected $fillable = ['question', 'allocated_marks', 'allocated_time', 'multiple_choices', 'marking_scheme', 'assessment_id'];
 
     public function assessment()
     {
-        return $this->BelongsTo(Assessment::class);
-    }
-
-    public function answers()
-    {
-        return $this->hasMany(Answer::class);
+        return $this->belongsTo(Assessment::class);
     }
 }

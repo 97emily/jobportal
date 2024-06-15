@@ -10,7 +10,7 @@
         <span>Job Listings</span>
         </a>
         <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/jobs*') || Request::is('admin/categories*') || Request::is('admin/tags*') ? 'show' : '' }}" id="manage-menu" data-parent="#left-sidebar">
-          @can('product-list')
+          @can('job-list')
             <li class="{{ Request::is('admin/jobs*') ? 'active' : '' }}">
               <x-nav-link :href="route('jobs.index')" :active="Request::is('admin/jobs*')">
                   {{ __('Manage Jobs') }}
