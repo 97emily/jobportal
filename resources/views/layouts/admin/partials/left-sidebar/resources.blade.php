@@ -69,7 +69,6 @@
                         </x-nav-link>
                     </li>
                 @endcan
-                @include('layouts.admin.partials.left-sidebar.generator')
             </ul>
         </li>
 
