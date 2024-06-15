@@ -36,22 +36,48 @@ class QuestionController extends Controller
         return view('admin.questions.create', compact('assessments'));
     }
 
-    public function store(Request $request): RedirectResponse
+    // public function store(Request $request): RedirectResponse
+    // {
+    //     $request->validate([
+    //         'question' => 'required|string',
+    //         'allocated_marks' => 'required|integer',
+    //         'allocated_time' => 'required|integer',
+    //         'multiple_choices' => 'required|array',
+    //         'marking_scheme' => 'required|array',
+    //         'assessment_id' => 'required|exists:assessments,id',
+    //     ]);
+
+    //     $data = $request->all();
+    //     $data['multiple_choices'] = json_encode($request->multiple_choices);
+    //     $data['marking_scheme'] = json_encode($request->marking_scheme);
+
+    //     Question::create($data);
+
+    //     return redirect()->route('questions.index')->with('success', 'Question created successfully.');
+    // }
+
+    public function store(Request $request)
     {
         $request->validate([
             'question' => 'required|string',
             'allocated_marks' => 'required|integer',
             'allocated_time' => 'required|integer',
-            'multiple_choices' => 'required|array',
-            'marking_scheme' => 'required|array',
             'assessment_id' => 'required|exists:assessments,id',
+            'multiple_choices' => 'required|array',
+            'correct_answers' => 'required|array'
         ]);
 
-        $data = $request->all();
-        $data['multiple_choices'] = json_encode($request->multiple_choices);
-        $data['marking_scheme'] = json_encode($request->marking_scheme);
+        $multipleChoices = json_encode($request->input('multiple_choices'));
+        $markingScheme = json_encode($request->input('correct_answers'));
 
-        Question::create($data);
+        Question::create([
+            'question' => $request->input('question'),
+            'allocated_marks' => $request->input('allocated_marks'),
+            'allocated_time' => $request->input('allocated_time'),
+            'multiple_choices' => $multipleChoices,
+            'marking_scheme' => $markingScheme,
+            'assessment_id' => $request->input('assessment_id')
+        ]);
 
         return redirect()->route('questions.index')->with('success', 'Question created successfully.');
     }
@@ -67,25 +93,52 @@ class QuestionController extends Controller
         return view('admin.questions.edit', compact('question', 'assessments'));
     }
 
+    // public function update(Request $request, Question $question): RedirectResponse
+    // {
+    //     $request->validate([
+    //         'question' => 'required|string',
+    //         'allocated_marks' => 'required|integer',
+    //         'allocated_time' => 'required|integer',
+    //         'multiple_choices' => 'required|array',
+    //         'marking_scheme' => 'required|array',
+    //         'assessment_id' => 'required|exists:assessments,id',
+    //     ]);
+
+    //     $data = $request->all();
+    //     $data['multiple_choices'] = json_encode($request->multiple_choices);
+    //     $data['marking_scheme'] = json_encode($request->marking_scheme);
+
+    //     $question->update($data);
+
+    //     return redirect()->route('questions.index')->with('success', 'Question updated successfully.');
+    // }
+
     public function update(Request $request, Question $question): RedirectResponse
     {
         $request->validate([
             'question' => 'required|string',
             'allocated_marks' => 'required|integer',
             'allocated_time' => 'required|integer',
-            'multiple_choices' => 'required|array',
-            'marking_scheme' => 'required|array',
             'assessment_id' => 'required|exists:assessments,id',
+            'multiple_choices' => 'required|array',
+            'correct_answers' => 'required|array'
         ]);
 
-        $data = $request->all();
-        $data['multiple_choices'] = json_encode($request->multiple_choices);
-        $data['marking_scheme'] = json_encode($request->marking_scheme);
+        $multipleChoices = json_encode($request->input('multiple_choices'));
+        $markingScheme = json_encode($request->input('correct_answers'));
 
-        $question->update($data);
+        $question->update([
+            'question' => $request->input('question'),
+            'allocated_marks' => $request->input('allocated_marks'),
+            'allocated_time' => $request->input('allocated_time'),
+            'multiple_choices' => $multipleChoices,
+            'marking_scheme' => $markingScheme,
+            'assessment_id' => $request->input('assessment_id')
+        ]);
 
         return redirect()->route('questions.index')->with('success', 'Question updated successfully.');
     }
+
 
     public function destroy(Question $question): JsonResponse
     {
