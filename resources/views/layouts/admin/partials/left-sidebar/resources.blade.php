@@ -69,6 +69,13 @@
                         </x-nav-link>
                     </li>
                 @endcan
+                @can('question-list')
+                    <li class="{{ Request::is('admin/questions*') ? 'active' : '' }}">
+                        <x-nav-link :href="route('questions.index')" :active="Request::is('admin/questions*')">
+                            {{ __('Manage Questions') }}
+                        </x-nav-link>
+                    </li>
+                @endcan
             </ul>
         </li>
 

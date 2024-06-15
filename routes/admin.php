@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     Route::resource('assessments', AssessmentController::class);
+    Route::resource('questions', QuestionController::class);
     Route::resource('jobs', JobController::class);
     // Route::resource('products', ProductController::class);
     Route::resource('tags', TagController::class);
