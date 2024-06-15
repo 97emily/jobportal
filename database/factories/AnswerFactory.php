@@ -12,7 +12,7 @@ class AnswerFactory extends Factory
     public function definition()
     {
         return [
-            'question_id' => \App\Models\Question::factory(), // Assumes you have a Question factory
+            'question_id' => \App\Models\Question::factory(), 
             'answer' => $this->faker->sentence,
             'is_correct' => $this->faker->boolean,
         ];

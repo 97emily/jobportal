@@ -9,7 +9,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <h3>Add a Question for {{ $assessment->title }}</h3>
+                                    <h3>Add a Question to {{ $assessment->title }}</h3>
                                     <div class="form-group mb-3">
                                         <label for="question">Question <span class="text-danger">*</span></label>
                                         <input type="text" placeholder="Enter your question here" class="form-control" required name="question" id="question">

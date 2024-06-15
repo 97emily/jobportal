@@ -32,15 +32,15 @@ Route::middleware([\App\Http\Middleware\Cors::class])->group(function () {
     Route::post('password/reset', [AuthController::class, 'resetPassword']);
 });
 
-// Route::get('jobs', [JobApiController::class, 'index']);
-// Route::get('jobs/{job}', [JobApiController::class, 'show']);
+Route::get('jobs', [JobApiController::class, 'index']);
+Route::get('jobs/{job}', [JobApiController::class, 'show']);
 
 Route::middleware([\App\Http\Middleware\Cors::class, 'auth:sanctum'])->group(function () {
     // job api
     Route::name('job.api.')->group(function () {
-        Route::get('jobs', [JobApiController::class, 'index']);
+        // Route::get('jobs', [JobApiController::class, 'index']);
         Route::post('jobs', [JobApiController::class, 'store']);
-        Route::get('jobs/{job}', [JobApiController::class, 'show']);
+        // Route::get('jobs/{job}', [JobApiController::class, 'show']);
         Route::put('jobs/{job}', [JobApiController::class, 'update']);
         Route::delete('jobs/{job}', [JobApiController::class, 'destroy']);
     });

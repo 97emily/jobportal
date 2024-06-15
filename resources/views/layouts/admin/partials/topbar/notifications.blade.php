@@ -1,4 +1,4 @@
-<li class="nav-item topbar-dropdown me-4">
+{{-- <li class="nav-item topbar-dropdown me-4">
     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false" id="emailsDropdown">
     <i class="fa-regular fa-envelope fs-3"></i>
     <span class="badge bg-success rounded-circle">6</span>
@@ -219,4 +219,4 @@
         <a href="#" class="main-text">View all</a>
       </div>
     </div>
-  </li>
+  </li> --}}
