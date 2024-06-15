@@ -146,14 +146,4 @@ class QuestionController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Question deleted successfully.']);
     }
-
-    private function getTags()
-    {
-        return Tag::pluck('name', 'id');
-    }
-
-    private function getAssessments()
-    {
-        return Category::pluck('name', 'id');
-    }
 }

@@ -230,6 +230,27 @@
                                     </div>
                                 </div>
                                 <!-- end card-body -->
+                                @if ($question ?? null)
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <strong>Multiple Choices:</strong>
+                                                    <pre>{{ json_encode($question->multiple_choices, JSON_PRETTY_PRINT) }}</pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <strong>Marking Scheme:</strong>
+                                                    <pre>{{ json_encode($question->marking_scheme, JSON_PRETTY_PRINT) }}</pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end card-body -->
+                                @endif
 
                                 <div class="card-body d-flex justify-content-between">
                                     <button class="btn btn-highlight waves-effect" type="submit"
