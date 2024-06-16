@@ -50,7 +50,7 @@
                 @can('location-list')
                     <li class="{{ Request::is('admin/locations*') ? 'active' : '' }}">
                         <x-nav-link :href="route('locations.index')" :active="Request::is('admin/locations*')">
-                            {{ __('Manage locations') }}
+                            {{ __('Manage Locations') }}
                         </x-nav-link>
                     </li>
                 @endcan

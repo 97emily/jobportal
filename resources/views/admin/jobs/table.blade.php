@@ -15,8 +15,8 @@
             <th>Title</th>
             <th>Category</th>
             <th>Tag</th>
-            <th>Salary</th>
             <th>Location</th>
+            <th>Salary</th>
             <th>Status</th>
             <th class="no-sort text-center">Action</th>
         </tr>
@@ -31,7 +31,7 @@
                         <span></span>
                     </label>
                 </td> --}}
-                <td><a href="{{ route('jobs.show', $job->id) }}"><i class="fa fa-eye" data-bs-original-title="View"
+                <td><a href="{{ route('jobs.show', $job->id) }}"><i style="color: #00AAD0" class="fa fa-eye" data-bs-original-title="View"
                             data-bs-toggle="tooltip"></i></a></td>
                 <td>
                     {{ \Carbon\Carbon::parse($job->closing_date)->format('d-m-Y') }}
@@ -43,8 +43,14 @@
                 <td>
                     <span class="badge bg-success">{{ $job->tag->name }}</span>
                 </td>
-                <td>KES. {{ number_format($job->salary_min, 0) }} - KES. {{ number_format($job->salary_max, 0) }}</td>
-                <td>{{ $job->location }}</td>
+                <td>
+                    <span class="badge bg-info">{{ $job->location->name }}</span>
+                </td>
+                <td>
+                    <span class="badge bg-black">{{ $job->salaryRange->minimum . '-'. $job->salaryRange->maximum  }}</span>
+                </td>
+                {{-- <td>KES. {{ number_format($job->salary_min, 0) }} - KES. {{ number_format($job->salary_max, 0) }}</td>
+                <td>{{ $job->location }}</td> --}}
                 <td>
                     {!! job_status($job) !!}
                 </td>

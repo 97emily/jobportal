@@ -21,14 +21,18 @@ class JobListing extends Model
         'closing_date',
         'tag_id',
         'category_id',
-        'location',
-        'salary_min',
-        'salary_max',
-        'employment_type',
-        'experience_level',
-        'education_requirements',
-        'assessment_test',
-        'threshold_score',
+        'salary_range_id',
+        'assessment_id',
+        'location_id',
+        // 'category_id',
+        // 'location',
+        // 'salary_min',
+        // 'salary_max',
+        // 'employment_type',
+        // 'experience_level',
+        // 'education_requirements',
+        // 'assessment_test',
+        // 'threshold_score',
     ];
 
     // Relationships
@@ -42,6 +46,19 @@ class JobListing extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function assessment(): BelongsTo
+    {
+        return $this->belongsTo(Assessment::class);
+    }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class);
+    }
+    public function salaryRange(): BelongsTo
+    {
+        return $this->belongsTo(SalaryRange::class);
+    }
     //
 
     public function tags(): MorphToMany

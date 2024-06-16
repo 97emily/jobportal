@@ -19,14 +19,17 @@ return new class extends Migration
             $table->date('closing_date');
             $table->foreignId('tag_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->string('location')->nullable();
-            $table->decimal('salary_min', 8, 2)->nullable();
-            $table->decimal('salary_max', 8, 2)->nullable();
-            $table->enum('employment_type', ['full-time', 'part-time', 'contract', 'temporary', 'internship'])->nullable();
-            $table->enum('experience_level', ['entry', 'mid', 'senior', 'executive'])->nullable();
-            $table->string('education_requirements')->nullable();
-            $table->string('assessment_test')->nullable(); // Details about the assessment test
-            $table->integer('threshold_score')->nullable(); // Minimum score required to pass the assessment
+            $table->foreignId('salary_range_id')->constrained()->onDelete('cascade');
+            $table->foreignId('location_id')->constrained()->onDelete('cascade');
+            $table->foreignId('assessment_id')->constrained()->onDelete('cascade');
+            // $table->string('location')->nullable();
+            // $table->decimal('salary_min', 8, 2)->nullable();
+            // $table->decimal('salary_max', 8, 2)->nullable();
+            // $table->enum('employment_type', ['full-time', 'part-time', 'contract', 'temporary', 'internship'])->nullable();
+            // $table->enum('experience_level', ['entry', 'mid', 'senior', 'executive'])->nullable();
+            // $table->string('education_requirements')->nullable();
+            // $table->string('assessment_test')->nullable(); // Details about the assessment test
+            // $table->integer('threshold_score')->nullable(); // Minimum score required to pass the assessment
             $table->softDeletes();
             $table->timestamps();
         });
