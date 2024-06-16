@@ -10,11 +10,13 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('assessment_id');
             $table->text('question');
+            $table->integer('allocated_marks');
+            $table->integer('allocated_time');
+            $table->json('multiple_choices');
+            $table->json('marking_scheme');
+            $table->foreignId('assessment_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
-
-            $table->foreign('assessment_id')->references('id')->on('assessments')->onDelete('cascade');
         });
     }
 

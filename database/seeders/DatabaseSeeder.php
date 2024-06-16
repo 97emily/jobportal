@@ -17,11 +17,11 @@ class DatabaseSeeder extends Seeder
             PermissionTableSeeder::class,
             CreateAdminUserSeeder::class,
             CategorySeeder::class,
-            TagSeeder::class,
-            JobListingSeeder::class,
             AssessmentSeeder::class,
             QuestionSeeder::class,
-            AnswerSeeder::class,
+            TagSeeder::class,
+            JobListingSeeder::class,
+            // AnswerSeeder::class,
         ]);
     }
 }

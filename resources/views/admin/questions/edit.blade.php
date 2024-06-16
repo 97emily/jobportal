@@ -2,9 +2,9 @@
     <x-admin.page-header/>
     <x-form-alert :errors="$errors"/>
     <x-flash-message/>
-    {{ html()->modelForm($product, 'POST', route('assessments.update', $product->id))->open() }}
+    {{ html()->modelForm($question, 'POST', route('questions.update', $question->id))->open() }}
         @csrf
         @method('PUT')
-        @include('admin/assessments/fields')
+        @include('admin/questions/fields')
     {{ html()->closeModelForm() }}
 </x-admin.app-layout>

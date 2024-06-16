@@ -1,55 +1,46 @@
 <x-admin.app-layout>
     <x-admin.page-header />
-    {{-- <div class="container">
-        <h1>{{ $assessment->title }}</h1>
-        <p>{{ $assessment->description }}</p>
-        <a href="{{ route('assessments.questions.create', $assessment->id) }}" class="btn btn-primary" style="background-color: #00AAD0">Add Question</a>
-        <ul>
-            @foreach ($assessment->questions as $question)
-                <li>
-                    {{ $question->question }}
-                    <a href="{{ route('assessments.show', [$assessment->id, $question->id]) }}" class="btn btn-secondary">Edit</a>
-                    <form action="{{ route('assessments.destroy', [$assessment->id, $question->id]) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                    <ul>
-                        @foreach ($question->answers as $answer)
-                            <li>
-                                {{ $answer->answer }} ({{ $answer->is_correct ? 'Correct' : 'Incorrect' }})
-                                <a href="{{ route('questions.answers.edit', [$question->id, $answer->id]) }}" class="btn btn-secondary">Edit</a>
-                                <form action="{{ route('questions.answers.destroy', [$question->id, $answer->id]) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </li>
-                        @endforeach
+    <div class="card p-5">
+        <div class="card-body">
+            <div class="row">
+                <!-- begin col product-detail -->
+                <div class="col-lg-12 col-md-12">
+                    <!-- begin product-detail -->
+                    <div class="product-detail">
+                        <h1 class="product-title">{{ $assessment->title }}</h1>
+                        <div class="product-price mb-2">
+                            <!-- Display salary range if available -->
+                            @if ($assessment->pass_mark)
+                                <span
+                                    class="price text-highlight fs-lg fw-700">{{ number_format($assessment->pass_mark, 0) }}</span>
+                            @else
+                                <span class="price text-highlight fs-lg fw-700">Passmark: Not specified</span>
+                            @endif
+                        </div>
+                        <!-- Display assessment description -->
+                        <div class="product-desc mt-2">
+                            <p>{!! $assessment->description !!}</p>
+                        </div>
+                    </div>
+                    <!-- end product-detail -->
+                    <hr>
+                    <ul class="product-meta list-unstyled">
+                        <li>Category:
+                            <span class="badge bg-success">{{ $assessment->category->name }}</span>
+                        </li>
                     </ul>
-                    <a href="{{ route('questions.answers.create', $question->id) }}" class="btn btn-primary">Add Answer</a>
-                </li>
-            @endforeach
-        </ul>
-    </div> --}}
-    <div class="container">
-        <h1>{{ $assessment->title }}</h1>
-        <p>{{ $assessment->description }}</p>
-
-        <h3>Questions</h3>
-        @foreach($assessment->questions as $question)
-            <div class="card mt-3">
-                <div class="card-header">
-                    {{ $question->question }}
+                    <hr>
+                    <!-- end row -->
+                    <div class="row">
+                        <!-- Button to edit the assessment posting -->
+                        <div class="col-12">
+                            <a class="btn btn-highlight" href="{{ route('assessments.edit', $assessment->id) }}"
+                                style="background-color: #00AAD0">Edit</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <ul>
-                        @foreach($question->answers as $answer)
-                            <li>{{ $answer->answer }} @if($answer->is_correct) <strong>(Correct)</strong> @endif</li>
-                        @endforeach
-                    </ul>
-                </div>
+                <!-- end col product-detail -->
             </div>
-        @endforeach
+        </div>
     </div>
 </x-admin.app-layout>

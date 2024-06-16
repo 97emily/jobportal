@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Assessment;
 use App\Models\Question;
+use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class QuestionController extends Controller
 {
@@ -18,81 +22,128 @@ class QuestionController extends Controller
         $this->middleware('permission:question-delete', ['only' => ['destroy']]);
     }
 
-    public function create(Assessment $assessment)
+    public function index(): View
     {
-        return view('admin.questions.create', compact('assessment'));
+        $questions = Question::latest()->paginate(config('constants.posts_per_page'));
+
+        return view('admin.questions.index', compact('questions'))
+            ->with('i', (request()->input('page', 1) - 1) * config('constants.posts_per_page'));
     }
 
-    public function store(Request $request, Assessment $assessment)
+    public function create(): View
     {
-        Log::info('Store method called.');
-        Log::info('Request data: ', $request->all());
-
-        $validatedData = $request->validate([
-            'question' => 'required|string|max:255',
-            'answers.*' => 'required|string|max:255',
-            'correct_answer' => 'required|integer|in:1,2,3,4',
-        ]);
-
-        Log::info('Validated data: ', $validatedData);
-
-        $question = new Question([
-            'question' => $validatedData['question'],
-            'assessment_id' => $assessment->id,
-        ]);
-        $question->save();
-
-        foreach ($request->input('answers') as $key => $answer) {
-            $isCorrect = ($key + 1) == $validatedData['correct_answer'];
-            $question->answers()->create([
-                'answer' => $answer,
-                'is_correct' => $isCorrect,
-            ]);
-        }
-
-        return response()->json(['success' => 'Question saved successfully!']);
+        $assessments = Assessment::all();
+        return view('admin.questions.create', compact('assessments'));
     }
 
-    public function edit(Assessment $assessment, Question $question)
+    // public function store(Request $request): RedirectResponse
+    // {
+    //     $request->validate([
+    //         'question' => 'required|string',
+    //         'allocated_marks' => 'required|integer',
+    //         'allocated_time' => 'required|integer',
+    //         'multiple_choices' => 'required|array',
+    //         'marking_scheme' => 'required|array',
+    //         'assessment_id' => 'required|exists:assessments,id',
+    //     ]);
+
+    //     $data = $request->all();
+    //     $data['multiple_choices'] = json_encode($request->multiple_choices);
+    //     $data['marking_scheme'] = json_encode($request->marking_scheme);
+
+    //     Question::create($data);
+
+    //     return redirect()->route('questions.index')->with('success', 'Question created successfully.');
+    // }
+
+    public function store(Request $request)
     {
-        return view('admin.questions.edit', compact('assessment', 'question'));
+        $request->validate([
+            'question' => 'required|string',
+            'allocated_marks' => 'required|integer',
+            'allocated_time' => 'required|integer',
+            'assessment_id' => 'required|exists:assessments,id',
+            'multiple_choices' => 'required|array',
+            'correct_answers' => 'required|array'
+        ]);
+
+        $multipleChoices = json_encode($request->input('multiple_choices'));
+        $markingScheme = json_encode($request->input('correct_answers'));
+
+        Question::create([
+            'question' => $request->input('question'),
+            'allocated_marks' => $request->input('allocated_marks'),
+            'allocated_time' => $request->input('allocated_time'),
+            'multiple_choices' => $multipleChoices,
+            'marking_scheme' => $markingScheme,
+            'assessment_id' => $request->input('assessment_id')
+        ]);
+
+        return redirect()->route('questions.index')->with('success', 'Question created successfully.');
     }
 
-    public function update(Request $request, Assessment $assessment, Question $question)
+    public function show(Question $question): View
     {
-        $validatedData = $request->validate([
-            'question' => 'required|string|max:255',
-            'answers.*' => 'required|string|max:255',
-            'correct_answer' => 'required|integer|in:1,2,3,4',
+        return view('admin.questions.show', compact('question'));
+    }
+
+    public function edit(Question $question): View
+    {
+        $assessments = Assessment::all();
+        return view('admin.questions.edit', compact('question', 'assessments'));
+    }
+
+    // public function update(Request $request, Question $question): RedirectResponse
+    // {
+    //     $request->validate([
+    //         'question' => 'required|string',
+    //         'allocated_marks' => 'required|integer',
+    //         'allocated_time' => 'required|integer',
+    //         'multiple_choices' => 'required|array',
+    //         'marking_scheme' => 'required|array',
+    //         'assessment_id' => 'required|exists:assessments,id',
+    //     ]);
+
+    //     $data = $request->all();
+    //     $data['multiple_choices'] = json_encode($request->multiple_choices);
+    //     $data['marking_scheme'] = json_encode($request->marking_scheme);
+
+    //     $question->update($data);
+
+    //     return redirect()->route('questions.index')->with('success', 'Question updated successfully.');
+    // }
+
+    public function update(Request $request, Question $question): RedirectResponse
+    {
+        $request->validate([
+            'question' => 'required|string',
+            'allocated_marks' => 'required|integer',
+            'allocated_time' => 'required|integer',
+            'assessment_id' => 'required|exists:assessments,id',
+            'multiple_choices' => 'required|array',
+            'correct_answers' => 'required|array'
         ]);
+
+        $multipleChoices = json_encode($request->input('multiple_choices'));
+        $markingScheme = json_encode($request->input('correct_answers'));
 
         $question->update([
-            'question' => $validatedData['question'],
+            'question' => $request->input('question'),
+            'allocated_marks' => $request->input('allocated_marks'),
+            'allocated_time' => $request->input('allocated_time'),
+            'multiple_choices' => $multipleChoices,
+            'marking_scheme' => $markingScheme,
+            'assessment_id' => $request->input('assessment_id')
         ]);
 
-        // Delete existing answers
-        $question->answers()->delete();
-
-        // Create new answers
-        foreach ($request->input('answers') as $key => $answer) {
-            $isCorrect = ($key + 1) == $validatedData['correct_answer'];
-            $question->answers()->create([
-                'answer' => $answer,
-                'is_correct' => $isCorrect,
-            ]);
-        }
-
-        return redirect()->route('assessments.show', $assessment->id)->with('success', 'Question updated successfully.');
+        return redirect()->route('questions.index')->with('success', 'Question updated successfully.');
     }
 
-    public function destroy(Assessment $assessment, Question $question)
+
+    public function destroy(Question $question): JsonResponse
     {
-        try {
-            $question->delete();
-            return redirect()->route('assessments.show', $assessment->id)->with('success', 'Question deleted successfully.');
-        } catch (\Exception $e) {
-            Log::error('Error deleting question: ' . $e->getMessage());
-            return back()->with('error', 'There was an error deleting the question.');
-        }
+        $question->delete();
+
+        return response()->json(['success' => true, 'message' => 'Question deleted successfully.']);
     }
 }

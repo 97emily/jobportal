@@ -34,19 +34,12 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
 
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
+    Route::resource('assessments', AssessmentController::class);
+    Route::resource('questions', QuestionController::class);
     Route::resource('jobs', JobController::class);
     // Route::resource('products', ProductController::class);
     Route::resource('tags', TagController::class);
     Route::resource('categories', CategoryController::class);
-    Route::resource('assessments', AssessmentController::class);
-    Route::resource('assessments.questions', QuestionController::class)->shallow();
-    Route::resource('questions.answers', AnswerController::class)->shallow();
-    Route::get('/assessments/create', [AssessmentController::class, 'create'])->name('assessments.create');
-    Route::post('/assessments', [AssessmentController::class, 'store'])->name('assessments.store');
-    Route::get('/assessments/{assessment}/questions/index', [QuestionController::class, 'index'])->name('assessments.questions.index');
-    Route::post('/assessments/{assessment}/questions/create', [QuestionController::class, 'create'])->name('assessments.questions.create');
-    Route::post('/assessments/{assessment}/questions/store', [QuestionController::class, 'store'])->name('assessments.questions.store');
-    Route::resource('assessments/questions', QuestionController::class)->except(['show']);
 
     require __DIR__.'/admin_generator.php';
 });

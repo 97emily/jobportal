@@ -4,6 +4,6 @@
           <i class="fa-regular fa-floppy-disk"></i>
             Save
         </button>
-        <x-admin.back-button href="{{ route('assessments.index') }}"/>
+        <x-admin.back-button href="{{ route('questions.index') }}"/>
     </div>
 </div>

@@ -3,18 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Answer;
+use App\Models\Category;
 use App\Models\Assessment;
-use App\Models\JobListing;
-use App\Models\Question;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-
 class AssessmentController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function __construct()
     {
         $this->middleware('permission:assessment-list|assessment-create|assessment-edit|assessment-delete', ['only' => ['index', 'show']]);
@@ -23,193 +25,96 @@ class AssessmentController extends Controller
         $this->middleware('permission:assessment-delete', ['only' => ['destroy']]);
     }
 
-    public function index()
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(): View
     {
-        $assessments = Assessment::all();
-        $assessments = Assessment::with('questions.answers')->paginate(10);
-        return view('admin.assessments.index', compact('assessments'));
+        $assessments = Assessment::latest()->paginate(config('constants.posts_per_page'));
+        return view('admin.assessments.index', compact('assessments'))
+            ->with('i', (request()->input('page', 1) - 1) * config('constants.posts_per_page'));
     }
 
+    // Ensure to use the necessary middleware for permissions if needed
     public function create()
     {
-          // Fetch all job listings
-          $jobs = JobListing::all();
-
-          // Pass the jobs to the view
-          return view('admin.assessments.create', compact('jobs'));
+        $categories = Category::all();
+        return view('admin.assessments.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'job_listings_id' => 'required|integer|exists:job_listings,id',
+            'assessment_description' => 'required|string',
+            'status' => 'required|in:open,preview,closed',
+            'closing_date' => 'required|date',
+            'category_id' => 'required|exists:categories,id',
+            'tag_id' => 'required|exists:tags,id',
+            'location' => 'nullable|string|max:255',
+            'salary_min' => 'nullable|numeric|min:0',
+            'salary_max' => 'nullable|numeric|min:0',
+            'assessment_test' => 'nullable|string|max:255',
+            'threshold_score' => 'nullable|integer|min:0',
         ]);
 
-        $assessment = Assessment::create($validatedData);
+        Assessment::create($request->all());
 
-        return redirect()->route('assessments.questions.create', $assessment->id);
+        return redirect()->route('assessments.index')->with('success', 'Assessment listing created successfully.');
     }
 
-    // public function show(Assessment $assessment)
-    // {
-    //     $assessment->load('questions.answers');
-    //     return view('admin.assessments.index', compact('assessment'));
-    // }
 
-     public function show(Assessment $assessment)
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Assessment  $assessment
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Assessment $assessment): View
     {
         return view('admin.assessments.show', compact('assessment'));
     }
 
-    public function edit(Assessment $assessment)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Assessment  $assessment
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Assessment $assessment): View
     {
-        $jobs = JobListing::all();
-        return view('admin.assessments.edit', compact('assessment', 'jobs'));
+        $categories = Category::all();
+        return view('admin.assessments.edit', compact(['assessment', 'categories']));
     }
 
-    public function update(Request $request, Assessment $assessment)
+    public function update(Request $request, Assessment $assessment): RedirectResponse
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'job_listings_id' => 'required|exists:job_listings,id',
+            'assessment_description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'pass_mark' => 'nullable|integer|min:0',
+            'categories' => 'array',
         ]);
 
         $assessment->update($request->all());
-        return redirect()->route('assessments.index')->with('success', 'Assessment updated successfully.');
+
+        return redirect()->route('assessments.edit', $assessment->id)->with('success', __('Assessment updated successfully'));
     }
 
-    public function destroy(Assessment $assessment)
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Assessment  $assessment
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Assessment $assessment): JsonResponse
     {
         $assessment->delete();
-        return redirect()->route('assessments.index')->with('success', 'Assessment deleted successfully.');
+
+        return response()->json(['success' => true, 'message' => __('Assessment deleted successfully.')]);
     }
 }
-
-
-// class AssessmentController extends Controller
-// {
-//     public function __construct()
-//     {
-//         $this->middleware('permission:assessment-list|assessment-create|assessment-edit|assessment-delete', ['only' => ['index', 'show']]);
-//         $this->middleware('permission:assessment-create', ['only' => ['create', 'store']]);
-//         $this->middleware('permission:assessment-edit', ['only' => ['edit', 'update']]);
-//         $this->middleware('permission:assessment-delete', ['only' => ['destroy']]);
-//     }
-
-//     public function index()
-//     {
-//         $assessments = Assessment::withCount('questions')->paginate(10);
-//         return view('admin.assessments.index', compact('assessments'));
-//     }
-
-//     public function create()
-//     {
-//         $jobs = JobListing::all();
-//         return view('admin.assessments.create', compact('jobs'));
-//     }
-//     public function store(Request $request)
-//     {
-//         $request->validate([
-//             'title' => 'required|string|max:255',
-//             'description' => 'nullable|string',
-//             'job_listings_id' => 'required|exists:job_listings,id',
-//         ]);
-
-//         return redirect()->route('assessments.index')->with('success', 'Assessment created successfully.');
-//     }
-
-//     public function show(Assessment $assessment)
-//     {
-//         return view('admin.assessments.show', compact('assessment'));
-//     }
-
-//     public function edit(Assessment $assessment)
-//     {
-//         $jobs = JobListing::all();
-//         return view('admin.assessments.edit', compact('assessment', 'jobs'));
-//     }
-
-//     public function update(Request $request, Assessment $assessment)
-//     {
-//         $request->validate([
-//             'title' => 'required|string|max:255',
-//             'description' => 'nullable|string',
-//             'job_listings_id' => 'required|exists:job_listings,id',
-//         ]);
-
-//         $assessment->update($request->all());
-//         return redirect()->route('assessments.index')->with('success', 'Assessment updated successfully.');
-//     }
-
-//     public function destroy(Assessment $assessment)
-//     {
-//         $assessment->delete();
-//         return redirect()->route('assessments.index')->with('success', 'Assessment deleted successfully.');
-//     }
-// }
-
-
-// class AssessmentController extends Controller
-// {
-//     public function __construct()
-//     {
-//         $this->middleware('permission:assessment-list|assessment-create|assessment-edit|assessment-delete', ['only' => ['index', 'show']]);
-//         $this->middleware('permission:assessment-create', ['only' => ['create', 'store']]);
-//         $this->middleware('permission:assessment-edit', ['only' => ['edit', 'update']]);
-//         $this->middleware('permission:assessment-delete', ['only' => ['destroy']]);
-//     }
-
-//     public function index()
-//     {
-//         $assessments = Assessment::withCount('questions')->paginate(10);
-//         return view('admin.assessments.index', compact('assessments'));
-//     }
-
-//     public function create()
-//     {
-//         $jobs = JobListing::all();
-//         return view('admin.assessments.create', compact('jobs'));
-//     }
-//     public function store(Request $request)
-//     {
-//         $request->validate([
-//             'title' => 'required|string|max:255',
-//             'description' => 'nullable|string',
-//             'job_listings_id' => 'required|exists:job_listings,id',
-//         ]);
-
-//         return redirect()->route('assessments.index')->with('success', 'Assessment created successfully.');
-//     }
-
-//     public function show(Assessment $assessment)
-//     {
-//         return view('admin.assessments.show', compact('assessment'));
-//     }
-
-//     public function edit(Assessment $assessment)
-//     {
-//         $jobs = JobListing::all();
-//         return view('admin.assessments.edit', compact('assessment', 'jobs'));
-//     }
-
-//     public function update(Request $request, Assessment $assessment)
-//     {
-//         $request->validate([
-//             'title' => 'required|string|max:255',
-//             'description' => 'nullable|string',
-//             'job_listings_id' => 'required|exists:job_listings,id',
-//         ]);
-
-//         $assessment->update($request->all());
-//         return redirect()->route('assessments.index')->with('success', 'Assessment updated successfully.');
-//     }
-
-//     public function destroy(Assessment $assessment)
-//     {
-//         $assessment->delete();
-//         return redirect()->route('assessments.index')->with('success', 'Assessment deleted successfully.');
-//     }
-// }
