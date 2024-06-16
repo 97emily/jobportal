@@ -168,6 +168,18 @@
                             </div>
                             <div class="card">
                                 <div class="card-body">
+                                    <div class="form-group mb-3">
+                                        <label for="number_of_choices">Number of Multiple Choices</label>
+                                        <div class="input-group">
+                                            <input placeholder="Number of Choices" class="form-control" type="number"
+                                                name="number_of_choices" step="1" id="number_of_choices">
+                                            <button type="button" id="generate-choices"
+                                                class="btn btn-primary">Generate Choices</button>
+                                        </div>
+                                    </div>
+
+                                    <div id="choices-container" class="form-group mb-3"></div>
+
                                     <h4>Marks and Time Allocations</h4>
                                     <div class="row border-bottom mb-3">
                                         <div class="col-lg-6">
@@ -198,18 +210,6 @@
                                         <!-- end col -->
                                     </div>
                                     <!-- end row -->
-
-                                    <div class="form-group mb-3">
-                                        <label for="number_of_choices">Number of Multiple Choices</label>
-                                        <div class="input-group">
-                                            <input placeholder="Number of Choices" class="form-control" type="number"
-                                                name="number_of_choices" step="1" id="number_of_choices">
-                                            <button type="button" id="generate-choices"
-                                                class="btn btn-primary">Generate Choices</button>
-                                        </div>
-                                    </div>
-
-                                    <div id="choices-container" class="form-group mb-3"></div>
                                 </div>
                                 <!-- end card-body -->
                             </div>
@@ -232,20 +232,29 @@
                                 <!-- end card-body -->
                                 @if ($question ?? null)
                                     <div class="card-body">
-                                        <div class="form-group">
-                                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                                <div class="form-group">
-                                                    <strong>Multiple Choices:</strong>
-                                                    <pre>{{ json_encode($question->multiple_choices, JSON_PRETTY_PRINT) }}</pre>
-                                                </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <strong>Multiple Choices:</strong>
+                                                <!-- Output the choices -->
+                                                <p>The choices options are:</p>
+                                                <ul>
+                                                    @foreach (assessments_choices($question->id) as $choice)
+                                                        <li>{{ $choice }}</li>
+                                                    @endforeach
+                                                </ul>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                                <div class="form-group">
-                                                    <strong>Marking Scheme:</strong>
-                                                    <pre>{{ json_encode($question->marking_scheme, JSON_PRETTY_PRINT) }}</pre>
-                                                </div>
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <div class="form-group">
+                                                <strong>Marking Scheme:</strong>
+                                                <!-- Output the correct multiple choice answers -->
+                                                <p>The correct answers are:</p>
+                                                <ul>
+                                                    @foreach (assessments_answers($question->id) as $answer)
+                                                        <li>{{ $answer }}</li>
+                                                    @endforeach
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>

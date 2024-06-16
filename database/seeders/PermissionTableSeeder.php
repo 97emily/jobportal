@@ -46,14 +46,14 @@ class PermissionTableSeeder extends Seeder
             'job-create',
             'job-edit',
             'job-delete',
-            // 'salary-list',
-            // 'salary-create',
-            // 'salary-edit',
-            // 'salary-delete',
-            // 'location-list',
-            // 'location-create',
-            // 'location-edit',
-            // 'location-delete',
+            'salary-list',
+            'salary-create',
+            'salary-edit',
+            'salary-delete',
+            'location-list',
+            'location-create',
+            'location-edit',
+            'location-delete',
         ];
         foreach ($permissions as $permission) {
             // Check if the permission already exists

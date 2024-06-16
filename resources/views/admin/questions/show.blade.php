@@ -26,16 +26,30 @@
                                     {{ $question->allocated_time }}
                                 </div>
                             </div>
+
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <strong>Multiple Choices:</strong>
-                                    <pre>{{ json_encode($question->multiple_choices, JSON_PRETTY_PRINT) }}</pre>
+                                    <!-- Output the choices -->
+                                    <p>The choices options are:</p>
+                                    <ul>
+                                        @foreach (assessments_choices($question->id) as $choice)
+                                            <li>{{ $choice }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
                             </div>
+
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <strong>Marking Scheme:</strong>
-                                    <pre>{{ json_encode($question->marking_scheme, JSON_PRETTY_PRINT) }}</pre>
+                                    <!-- Output the correct multiple choice answers -->
+                                    <p>The correct answers are:</p>
+                                    <ul>
+                                        @foreach (assessments_answers($question->id) as $answer)
+                                            <li>{{ $answer }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
                             </div>
 

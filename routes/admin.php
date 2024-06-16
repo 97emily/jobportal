@@ -24,7 +24,9 @@ use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AssessmentController;
 use App\Http\Controllers\Admin\QuestionController;
-use App\Http\Controllers\Admin\AnswerController;
+
+use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\SalaryRangeController;
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -40,6 +42,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     // Route::resource('products', ProductController::class);
     Route::resource('tags', TagController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('salary_ranges', SalaryRangeController::class);
+    Route::resource('locations', LocationController::class);
 
     require __DIR__.'/admin_generator.php';
 });

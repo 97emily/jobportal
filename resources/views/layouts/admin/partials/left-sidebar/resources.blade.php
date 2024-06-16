@@ -6,13 +6,15 @@
         <!-- Job Listings Menu -->
         <li class="sidebar-item">
             <a href="#manage-menu" data-bs-toggle="collapse"
-                aria-expanded="{{ Request::is('admin/jobs*') || Request::is('admin/categories*') || Request::is('admin/tags*') ? 'true' : 'false' }}"
-                class="dropdown-toggle {{ Request::is('admin/jobs*') || Request::is('admin/categories*') || Request::is('admin/tags*') ? '' : 'collapsed' }}">
+                aria-expanded="{{ Request::is('admin/jobs*') || Request::is('admin/categories*') || Request::is('admin/tags*') || Request::is('admin/salary_ranges*') || Request::is('admin/locations*') ? 'true' : 'false' }}"
+                class="dropdown-toggle {{ Request::is('admin/jobs*') || Request::is('admin/categories*') || Request::is('admin/tags*') || Request::is('admin/salary_ranges*') || Request::is('admin/locations*') ? '' : 'collapsed' }}">
                 <i class="fa-solid fa-layer-group"></i>
                 <span>Job Listings</span>
             </a>
-            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/jobs*') || Request::is('admin/categories*') || Request::is('admin/tags*') ? 'show' : '' }}"
+
+            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/jobs*') || Request::is('admin/categories*') || Request::is('admin/tags*') || Request::is('admin/salary_ranges*') || Request::is('admin/locations*') ? 'show' : '' }}"
                 id="manage-menu" data-parent="#left-sidebar">
+
                 @can('job-list')
                     <li class="{{ Request::is('admin/jobs*') ? 'active' : '' }}">
                         <x-nav-link :href="route('jobs.index')" :active="Request::is('admin/jobs*')">
@@ -20,6 +22,7 @@
                         </x-nav-link>
                     </li>
                 @endcan
+
                 @can('category-list')
                     <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
                         <x-nav-link :href="route('categories.index')" :active="Request::is('admin/categories*')">
@@ -27,6 +30,7 @@
                         </x-nav-link>
                     </li>
                 @endcan
+
                 @can('tag-list')
                     <li class="{{ Request::is('admin/tags*') ? 'active' : '' }}">
                         <x-nav-link :href="route('tags.index')" :active="Request::is('admin/tags*')">
@@ -34,33 +38,36 @@
                         </x-nav-link>
                     </li>
                 @endcan
-                @can('category-list')
-                    <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
-                        <x-nav-link :href="route('categories.index')" :active="Request::is('admin/categories*')">
-                            {{ __('Manage Salary') }}
+
+                @can('salary-list')
+                    <li class="{{ Request::is('admin/salary_ranges*') ? 'active' : '' }}">
+                        <x-nav-link :href="route('salary_ranges.index')" :active="Request::is('admin/salary_ranges*')">
+                            {{ __('Manage Salary Ranges') }}
                         </x-nav-link>
                     </li>
                 @endcan
-                @can('category-list')
-                    <li class="{{ Request::is('admin/categories*') ? 'active' : '' }}">
-                        <x-nav-link :href="route('categories.index')" :active="Request::is('admin/categories*')">
-                            {{ __('Manage Location') }}
+
+                @can('location-list')
+                    <li class="{{ Request::is('admin/locations*') ? 'active' : '' }}">
+                        <x-nav-link :href="route('locations.index')" :active="Request::is('admin/locations*')">
+                            {{ __('Manage locations') }}
                         </x-nav-link>
                     </li>
                 @endcan
+
                 @include('layouts.admin.partials.left-sidebar.generator')
             </ul>
         </li>
 
-        <!--  Assessment Tests Menu -->
+        <!-- Assessment Tests Menu -->
         <li class="sidebar-item">
             <a href="#assessment-menu" data-bs-toggle="collapse"
-                aria-expanded="{{ Request::is('admin/assessments*') || Request::is('admin/categories*') || Request::is('admin/tags*') ? 'true' : 'false' }}"
-                class="dropdown-toggle {{ Request::is('admin/assessments*') || Request::is('admin/categories*') || Request::is('admin/tags*') ? '' : 'collapsed' }}">
+                aria-expanded="{{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') ? 'true' : 'false' }}"
+                class="dropdown-toggle {{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') ? '' : 'collapsed' }}">
                 <i class="fa-solid fa-layer-group"></i>
-                <span>Assessment Listings</span>
+                <span>Assessment Tests</span>
             </a>
-            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/assessments*') || Request::is('admin/categories*') || Request::is('admin/tags*') ? 'show' : '' }}"
+            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') ? 'show' : '' }}"
                 id="assessment-menu" data-parent="#left-sidebar">
                 @can('assessment-list')
                     <li class="{{ Request::is('admin/assessments*') ? 'active' : '' }}">
@@ -78,33 +85,6 @@
                 @endcan
             </ul>
         </li>
-
-        {{-- <!-- Assessment Tests Menu -->
-        <li class="sidebar-item">
-            <a href="#assessment-menu" data-bs-toggle="collapse"
-                aria-expanded="{{ Request::is('admin/assessments*') || Request::is('admin/assessments*') ? 'true' : 'false' }}"
-                class="dropdown-toggle {{ Request::is('admin/assessments*') || Request::is('admin/roles*') ? '' : 'collapsed' }}">
-                <i class="fa-solid fa-book"></i>
-                <span>Assessment Tests</span>
-            </a>
-            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/assessments*') || Request::is('admin/assessments*') ? 'show' : '' }}"
-                id="assessment-menu" data-parent="#left-sidebar">
-                @can('assessment-list')
-                    <li class="{{ Request::is('admin/assessments*') ? 'active' : '' }}">
-                        <x-nav-link :href="route('assessments.index')" :active="Request::is('admin/assessments*')">
-                            {{ __('Manage MCQ Tests') }}
-                        </x-nav-link>
-                    </li>
-                @endcan
-                @can('assessment-list')
-                    <li class="{{ Request::is('admin/assessments*') ? 'active' : '' }}">
-                        <x-nav-link :href="route('assessments.index')" :active="Request::is('admin/assessments*')">
-                            {{ __('Manage Practicals') }}
-                        </x-nav-link>
-                    </li>
-                @endcan
-            </ul>
-        </li> --}}
 
         <!-- User and Permission Menu -->
         <li class="sidebar-item">

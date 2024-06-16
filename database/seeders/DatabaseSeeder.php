@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             PermissionTableSeeder::class,
             CreateAdminUserSeeder::class,
             CategorySeeder::class,
+            SalaryRangeSeeder::class,
+            LocationSeeder::class,
             AssessmentSeeder::class,
             QuestionSeeder::class,
             TagSeeder::class,
