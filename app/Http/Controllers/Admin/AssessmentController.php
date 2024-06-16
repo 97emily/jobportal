@@ -49,17 +49,11 @@ class AssessmentController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'assessment_description' => 'required|string',
-            'status' => 'required|in:open,preview,closed',
-            'closing_date' => 'required|date',
             'category_id' => 'required|exists:categories,id',
-            'tag_id' => 'required|exists:tags,id',
-            'location' => 'nullable|string|max:255',
-            'salary_min' => 'nullable|numeric|min:0',
-            'salary_max' => 'nullable|numeric|min:0',
-            'assessment_test' => 'nullable|string|max:255',
-            'threshold_score' => 'nullable|integer|min:0',
+            'pass_mark' => 'nullable|integer|min:0',
+            'categories' => 'array',
         ]);
-
+        
         Assessment::create($request->all());
 
         return redirect()->route('assessments.index')->with('success', 'Assessment listing created successfully.');
