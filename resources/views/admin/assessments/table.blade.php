@@ -34,7 +34,7 @@
                 <td>
                     <span class="badge bg-success">{{ $assessment->category->name }}</span>
                 </td>
-                <td>{{$assessment->description }} </td>
+                <td> {!! $assessment->description !!}</td>
                 <td>{{ number_format($assessment->pass_mark, 0) }} </td>
                 <td>
                     <ul class="list-unstyled table-actions">

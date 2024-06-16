@@ -12,10 +12,10 @@
                                         type="text" id="title" value="{{ $assessment->title ?? '' }}">
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="assessment_description">Assessment Description <span
+                                    <label for="description">Assessment Description <span
                                             class="text-danger">*</span></label>
                                     <div class="quill-editor-wrapper">
-                                        <div id="assessment_description-quill-editor" style="height: 300px;"
+                                        <div id="description-quill-editor" style="height: 300px;"
                                             class="ql-container ql-snow">
                                             <div class="ql-editor" data-gramm="false" contenteditable="true">
                                                 {!! $assessment->description ?? '' !!}
@@ -27,12 +27,12 @@
                                                     data-link="https://quilljs.com" data-video="Embed URL"><a
                                                     class="ql-action"></a><a class="ql-remove"></a></div>
                                         </div>
-                                        <input name="assessment_description" type="hidden" id="assessment_description">
+                                        <input name="description" type="hidden" id="description">
                                     </div>
 
                                     <script>
                                         document.addEventListener("DOMContentLoaded", function() {
-                                            var assessment_description_editor = new Quill('#assessment_description-quill-editor', {
+                                            var description_editor = new Quill('#description-quill-editor', {
                                                 modules: {
                                                     toolbar: [
                                                         [{
@@ -49,8 +49,8 @@
                                                 },
                                                 theme: 'snow'
                                             });
-                                            assessment_description_editor.on('text-change', function(delta, source) {
-                                                document.getElementById('assessment_description').value = assessment_description_editor.root.innerHTML;
+                                            description_editor.on('text-change', function(delta, source) {
+                                                document.getElementById('description').value = description_editor.root.innerHTML;
                                             });
                                         });
                                     </script>

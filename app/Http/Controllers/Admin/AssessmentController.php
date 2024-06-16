@@ -48,12 +48,12 @@ class AssessmentController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'assessment_description' => 'required|string',
+            'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'pass_mark' => 'nullable|integer|min:0',
             'categories' => 'array',
         ]);
-        
+
         Assessment::create($request->all());
 
         return redirect()->route('assessments.index')->with('success', 'Assessment listing created successfully.');
@@ -87,7 +87,7 @@ class AssessmentController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'assessment_description' => 'required|string',
+            'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'pass_mark' => 'nullable|integer|min:0',
             'categories' => 'array',
