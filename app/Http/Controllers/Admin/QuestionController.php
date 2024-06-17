@@ -36,26 +36,6 @@ class QuestionController extends Controller
         return view('admin.questions.create', compact('assessments'));
     }
 
-    // public function store(Request $request): RedirectResponse
-    // {
-    //     $request->validate([
-    //         'question' => 'required|string',
-    //         'allocated_marks' => 'required|integer',
-    //         'allocated_time' => 'required|integer',
-    //         'multiple_choices' => 'required|array',
-    //         'marking_scheme' => 'required|array',
-    //         'assessment_id' => 'required|exists:assessments,id',
-    //     ]);
-
-    //     $data = $request->all();
-    //     $data['multiple_choices'] = json_encode($request->multiple_choices);
-    //     $data['marking_scheme'] = json_encode($request->marking_scheme);
-
-    //     Question::create($data);
-
-    //     return redirect()->route('questions.index')->with('success', 'Question created successfully.');
-    // }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -92,26 +72,6 @@ class QuestionController extends Controller
         $assessments = Assessment::all();
         return view('admin.questions.edit', compact('question', 'assessments'));
     }
-
-    // public function update(Request $request, Question $question): RedirectResponse
-    // {
-    //     $request->validate([
-    //         'question' => 'required|string',
-    //         'allocated_marks' => 'required|integer',
-    //         'allocated_time' => 'required|integer',
-    //         'multiple_choices' => 'required|array',
-    //         'marking_scheme' => 'required|array',
-    //         'assessment_id' => 'required|exists:assessments,id',
-    //     ]);
-
-    //     $data = $request->all();
-    //     $data['multiple_choices'] = json_encode($request->multiple_choices);
-    //     $data['marking_scheme'] = json_encode($request->marking_scheme);
-
-    //     $question->update($data);
-
-    //     return redirect()->route('questions.index')->with('success', 'Question updated successfully.');
-    // }
 
     public function update(Request $request, Question $question): RedirectResponse
     {

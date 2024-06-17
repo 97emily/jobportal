@@ -28,7 +28,7 @@
                         <span></span>
                     </label>
                 </td> --}}
-                <td><a href="{{ route('assessments.show', $assessment->id) }}"><i class="fa fa-eye" data-bs-original-title="View"
+                <td><a href="{{ route('assessments.show', $assessment->id) }}"><i style="color: #00AAD0" class="fa fa-eye" data-bs-original-title="View"
                             data-bs-toggle="tooltip"></i></a></td>
                 <td><a href="{{ route('assessments.edit', $assessment->id) }}">{{ $assessment->title }}</a></td>
                 <td>

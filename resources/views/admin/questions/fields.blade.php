@@ -48,13 +48,13 @@
                                             <input placeholder="Number of Choices" class="form-control" type="number"
                                                 name="number_of_choices" step="1" id="number_of_choices">
                                             <button type="button" id="generate-choices"
-                                                class="btn btn-primary">Generate Choices</button>
+                                                class="btn btn-primary" style="background-color: #00AAD0" >Generate Choices</button>
                                         </div>
                                     </div>
 
                                     <div id="choices-container" class="form-group mb-3"></div>
 
-                                    <h4>Marks and Time Allocations</h4>
+                                    <h4>Question Marks and Time Allocations</h4>
                                     <div class="row border-bottom mb-3">
                                         <div class="col-lg-6">
                                             <div class="form-group mb-3">
@@ -110,7 +110,7 @@
                                             <div class="form-group">
                                                 <strong>Multiple Choices:</strong>
                                                 <!-- Output the choices -->
-                                                <p>The choices options are:</p>
+                                                <p>The choices are:</p>
                                                 <ul>
                                                     @foreach (assessments_choices($question->id) as $choice)
                                                         <li>{{ $choice }}</li>
@@ -142,8 +142,8 @@
                                         Save
                                     </button>
                                     <a href="{{ route('questions.index') }}"
-                                        class="btn btn-outline-highlight waves-effect">
-                                        <i class="far fa-chevron-double-left"></i>
+                                        class="btn btn-outline-highlight waves-effect" style="background-color: #eba409">
+                                        <i class="far fa-chevron-double-left"  ></i>
                                         Back
                                     </a>
                                 </div>

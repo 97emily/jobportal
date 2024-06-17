@@ -15,7 +15,7 @@
                 <td>
                     @if (!empty($role->getPermissionNames()))
                         @foreach ($role->getPermissionNames() as $v)
-                            <label class="badge bg-highlight">{{ permission_name_humanize($v) }}</label>
+                            <label class="badge bg-success">{{ permission_name_humanize($v) }}</label>
                         @endforeach
                     @endif
                 </td>

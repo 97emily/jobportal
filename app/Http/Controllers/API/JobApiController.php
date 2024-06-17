@@ -6,23 +6,31 @@ use App\Http\Controllers\Controller;
 use App\Models\JobListing;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class JobApiController extends Controller
 {
-    // public function __construct()
-    // {
-    //     // $this->middleware('permission:job-list|job-create|job-edit|job-delete', ['only' => ['index', 'show']]);
-    //     $this->middleware('auth:api', ['only' => ['index', 'show']]);
-    //     $this->middleware('permission:job-create', ['only' => ['store']]);
-    //     $this->middleware('permission:job-edit', ['only' => ['update']]);
-    //     $this->middleware('permission:job-delete', ['only' => ['destroy']]);
-    // }
-
     public function index(): JsonResponse
     {
-        $jobs = JobListing::latest()->paginate(config('constants.posts_per_page'));
-        return response()->json($jobs);
+        $jobs = JobListing::with(['category', 'tag', 'location', 'salaryRange', 'assessment'])
+            // ->where('status', 'open')
+            ->latest()
+            ->paginate(config('constants.posts_per_page'));
+
+        $response = $jobs->map(function($job) {
+            return [
+                'title' => $job->title,
+                'description' => $job->job_description,
+                'status' => $job->status,
+                'closing_date' => $job->closing_date,
+                'category' => $job->category ? $job->category->name : 'Not specified',
+                'tag' => $job->tag ? $job->tag->name : 'Not specified',
+                'location' => $job->location ? $job->location->name : 'Not specified',
+                'salary_range' => $job->salaryRange ? $job->salaryRange->minimum . '-' . $job->salaryRange->maximum : 'Not specified',
+                'assessment' => $job->assessment ? $job->assessment->title : 'Not specified',
+            ];
+        });
+
+        return response()->json($response);
     }
 
     public function store(Request $request): JsonResponse
@@ -34,11 +42,9 @@ class JobApiController extends Controller
             'closing_date' => 'required|date',
             'category_id' => 'required|exists:categories,id',
             'tag_id' => 'required|exists:tags,id',
-            'location' => 'nullable|string|max:255',
-            'salary_min' => 'nullable|numeric|min:0',
-            'salary_max' => 'nullable|numeric|min:0',
-            'assessment_test' => 'nullable|string|max:255',
-            'threshold_score' => 'nullable|integer|min:0',
+            'location_id' => 'nullable|exists:locations,id',
+            'salary_range_id' => 'nullable|exists:salary_ranges,id',
+            'assessment_id' => 'nullable|exists:assessments,id',
         ]);
 
         if ($validator->fails()) {
@@ -50,9 +56,27 @@ class JobApiController extends Controller
         return response()->json(['success' => true, 'message' => 'Job listing created successfully.', 'data' => $job], 201);
     }
 
-    public function show(JobListing $job): JsonResponse
+    public function show(Request $request, $id): JsonResponse
     {
-        return response()->json($job);
+        $job = JobListing::with(['category', 'tag', 'location', 'salaryRange', 'assessment'])->find($id);
+
+        if (!$job) {
+            return response()->json(['error' => 'Job not found.'], 404);
+        }
+
+        $response = [
+            'title' => $job->title,
+            'description' => $job->job_description,
+            'status' => $job->status,
+            'closing_date' => $job->closing_date,
+            'category' => $job->category ? $job->category->name : 'Not specified',
+            'tag' => $job->tag ? $job->tag->name : 'Not specified',
+            'location' => $job->location ? $job->location->name : 'Not specified',
+            'salary_range' => $job->salaryRange ? $job->salaryRange->minimum . '-' . $job->salaryRange->maximum : 'Not specified',
+            'assessment' => $job->assessment ? $job->assessment->title : 'Not specified',
+        ];
+
+        return response()->json($response);
     }
 
     public function update(Request $request, JobListing $job): JsonResponse
@@ -64,11 +88,9 @@ class JobApiController extends Controller
             'closing_date' => 'required|date',
             'category_id' => 'required|exists:categories,id',
             'tag_id' => 'required|exists:tags,id',
-            'location' => 'nullable|string|max:255',
-            'salary_min' => 'nullable|numeric|min:0',
-            'salary_max' => 'nullable|numeric|min:0',
-            'assessment_test' => 'nullable|string|max:255',
-            'threshold_score' => 'nullable|integer|min:0',
+            'location_id' => 'nullable|exists:locations,id',
+            'salary_range_id' => 'nullable|exists:salary_ranges,id',
+            'assessment_id' => 'nullable|exists:assessments,id',
             'tags' => 'array',
             'categories' => 'array',
         ]);

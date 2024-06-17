@@ -23,7 +23,7 @@
             <div class="col-5 px-4">
                 <div class="text-center mb-4">
                     <a href="/">
-                        <x-application-logo class="img-fluid" />
+                        <x-application-logo class="img-fluid"/>
                     </a>
                 </div>
                 <div class="card shadow-sm rounded-0">

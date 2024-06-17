@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AssessmentAPIController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\JobApiController;
@@ -34,6 +35,7 @@ Route::middleware([\App\Http\Middleware\Cors::class])->group(function () {
 
 Route::get('jobs', [JobApiController::class, 'index']);
 Route::get('jobs/{job}', [JobApiController::class, 'show']);
+Route::get('assessment', [AssessmentAPIController::class, 'show']);
 
 Route::middleware([\App\Http\Middleware\Cors::class, 'auth:sanctum'])->group(function () {
     // job api
