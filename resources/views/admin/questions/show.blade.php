@@ -11,7 +11,33 @@
 
                             <!-- Display question description -->
                             <div class="product-desc mt-2">
+                                <strong style="color: #00AAD0">Question:</strong>
                                 <p>{!! $question->question !!}</p>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <strong style="color: #00AAD0">Multiple Choices:</strong>
+                                    <!-- Output the choices -->
+                                    <p><strong> The multiple options are: </strong> </p>
+                                    <ul>
+                                        @foreach (assessments_choices($question->id) as $choice)
+                                            <li>{{ $choice }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <strong style="color: #00AAD0">Marking Scheme:</strong>
+                                    <!-- Output the correct multiple choice answers -->
+                                    <p><strong> The Correct Answers are: </strong></p>
+                                    <ul>
+                                        @foreach (assessments_answers($question->id) as $answer)
+                                            <li>{{ $answer }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
 
                             <div class="col-xs-12 col-sm-12 col-md-12">
@@ -27,39 +53,13 @@
                                 </div>
                             </div>
 
-                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <strong>Multiple Choices:</strong>
-                                    <!-- Output the choices -->
-                                    <p>The choices options are:</p>
-                                    <ul>
-                                        @foreach (assessments_choices($question->id) as $choice)
-                                            <li>{{ $choice }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-12 col-sm-12 col-md-12">
-                                <div class="form-group">
-                                    <strong>Marking Scheme:</strong>
-                                    <!-- Output the correct multiple choice answers -->
-                                    <p>The correct answers are:</p>
-                                    <ul>
-                                        @foreach (assessments_answers($question->id) as $answer)
-                                            <li>{{ $answer }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-
                         </div>
 
                     </div>
                     <!-- end product-detail -->
                     <hr>
                     <ul class="product-meta list-unstyled">
-                        <li>Assessment:
+                        <li><strong>Assessment:</strong>
                             <span class="badge bg-success">{{ $question->assessment->title }}</span>
                         </li>
                     </ul>

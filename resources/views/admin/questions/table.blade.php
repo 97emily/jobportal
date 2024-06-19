@@ -28,13 +28,13 @@
                         <span></span>
                     </label>
                 </td> --}}
-                <td><a href="{{ route('questions.show', $question->id) }}"><i class="fa fa-eye"
+                <td><a href="{{ route('questions.show', $question->id) }}"><i style="color: #00AAD0" class="fa fa-eye"
                             data-bs-original-title="View" data-bs-toggle="tooltip"></i></a></td>
                 <td> {!! $question->question !!}</td>
                 <td>{{ $question->allocated_marks }}</td>
                 <td>{{ $question->allocated_time }}</td>
                 <td>
-                    <span class="badge bg-info">{{ $question->assessment->title }}</span>
+                    <span class="badge bg-success">{{ $question->assessment->title }}</span>
                 </td>
                 <td>
                     <ul class="list-unstyled table-actions">

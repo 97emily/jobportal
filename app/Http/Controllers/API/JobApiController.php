@@ -18,6 +18,7 @@ class JobApiController extends Controller
 
         $response = $jobs->map(function($job) {
             return [
+                'id' => $job->id,
                 'title' => $job->title,
                 'description' => $job->job_description,
                 'status' => $job->status,

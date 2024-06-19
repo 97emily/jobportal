@@ -53,19 +53,6 @@
 
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Allocated Marks:</strong>
-                                        {{ $question->allocated_marks }}
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <strong>Allocated Time:</strong>
-                                        {{ $question->allocated_time }}
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
                                         <strong>Multiple Choices:</strong>
                                         <!-- Output the choices -->
                                         <p>The choices options are:</p>
@@ -90,7 +77,18 @@
                                     </div>
                                 </div>
 
-
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>Allocated Marks:</strong>
+                                        {{ $question->allocated_marks . ' Marks'}}
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>Allocated Time:</strong>
+                                        {{ $question->allocated_time  . ' Minutes'}}
+                                    </div>
+                                </div>
                                 <!-- Edit Button for Each Question -->
                                 <div class="col-12 mt-2">
                                     <a class="btn btn-secondary" href="{{ route('questions.edit', $question->id) }}"
