@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
@@ -18,10 +17,17 @@ class DistinctSalaryRange implements Rule
 
     public function passes($attribute, $value)
     {
-        // Check for overlapping salary ranges
-        $existingRanges = SalaryRange::where('minimum', '<', $this->maximum)
-            ->where('maximum', '>', $this->minimum)
-            ->exists();
+        // Check for overlapping salary ranges, including boundary overlaps
+        $existingRanges = SalaryRange::where(function($query) {
+            $query->where(function($query) {
+                $query->where('minimum', '<=', $this->maximum)
+                      ->where('maximum', '>=', $this->minimum);
+            })
+            ->orWhere(function($query) {
+                $query->where('maximum', '>=', $this->minimum)
+                      ->where('minimum', '<=', $this->maximum);
+            });
+        })->exists();
 
         return !$existingRanges;
     }

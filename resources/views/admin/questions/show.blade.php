@@ -59,7 +59,7 @@
                     <!-- end product-detail -->
                     <hr>
                     <ul class="product-meta list-unstyled">
-                        <li><strong>Assessment:</strong>
+                        <li><strong>Assessment Test:</strong>
                             <span class="badge bg-success">{{ $question->assessment->title }}</span>
                         </li>
                     </ul>

@@ -7,41 +7,41 @@
                 <div class="col-lg-12 col-md-12">
                     <!-- begin product-detail -->
                     <div class="product-detail">
-                        <h2 class="product-title">{{ $assessment->title }}</h2>
-                        <div class="product-price mb-2">
-                            <!-- Display pass mark if available -->
-                            @if ($assessment->pass_mark)
-                                <span class="price text-highlight fs-lg fw-700">Pass Mark:
-                                    {{ number_format($assessment->pass_mark, 0) }}</span>
-                                <br>
-                                <span class="price text-highlight fs-lg fw-700">Questions:
-                                    {{ number_format(count($questions->where('assessment_id', $assessment->id)), 0) }}</span>
-                                <br>
-                                <span class="price text-highlight fs-lg fw-700">Total Time:
-                                    {{ number_format($questions->where('assessment_id', $assessment->id)->sum('allocated_time'), 0) }}</span>
-                                <br>
-                                <span class="price text-highlight fs-lg fw-700">Total Marks:
-                                    {{ number_format($questions->where('assessment_id', $assessment->id)->sum('allocated_marks'), 0) }}</span>
-                                <br>
-                            @else
-                                <span class="price text-highlight fs-lg fw-700">Pass Mark: Not specified</span>
-                            @endif
-                        </div>
+                        <h2 class="product-title" style="color: #00AAD0">{{ $assessment->title }}</h2>
                         <!-- Display assessment description -->
                         <div class="product-desc mt-2">
                             <p>{!! $assessment->description !!}</p>
                         </div>
+                        <div class="product-price mb-2">
+                            <!-- Display pass mark if available -->
+                            @if ($assessment->pass_mark)
+                                <span class="price text-highlight fs-lg fw-500">Pass Mark:
+                                    <span>{{ number_format($assessment->pass_mark, 0) }}%</span>
+                                <br>
+                                <span class="price text-highlight fs-lg fw-500">Questions:
+                                    {{ number_format(count($questions->where('assessment_id', $assessment->id)), 0) . ' questions' }}</span>
+                                <br>
+                                <span class="price text-highlight fs-lg fw-500">Total Time:
+                                    {{ number_format($questions->where('assessment_id', $assessment->id)->sum('allocated_time'), 0) . ' minutes' }}</span>
+                                <br>
+                                <span class="price text-highlight fs-lg fw-500">Total Marks:
+                                    {{ number_format($questions->where('assessment_id', $assessment->id)->sum('allocated_marks'), 0) . ' marks'}}</span>
+                                <br>
+                            @else
+                                <span class="price text-highlight fs-lg fw-500">Pass Mark: Not specified</span>
+                            @endif
+                        </div>
                     </div>
                     <!-- end product-detail -->
                     <hr>
-                    <ul class="product-meta list-unstyled">
-                        <li>Category:
+                    <ul class="product-meta list-unstyled fw-500">
+                        <li> <strong> Assessment Category: </strong>
                             <span class="badge bg-success">{{ $assessment->category->name }}</span>
                         </li>
                     </ul>
                     <hr>
                     <!-- Display all questions under the assessment -->
-                    <h3 style="color: #00AAD0;">Questions</h3>
+                    <h3 style="color: #00AAD0;"> Assessment Questions</h3>
                     @foreach ($assessment->questions as $index => $question)
                         <div class="product-detail mt-4">
                             <div class="product-price mb-2">

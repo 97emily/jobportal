@@ -16,7 +16,7 @@
             <th>Category</th>
             <th>Tag</th>
             <th>Location</th>
-            <th>Salary</th>
+            <th>Salary Range</th>
             <th>Status</th>
             <th class="no-sort text-center">Action</th>
         </tr>
@@ -47,10 +47,8 @@
                     <span class="badge bg-info">{{ $job->location->name }}</span>
                 </td>
                 <td>
-                    <span class="badge bg-black">{{ $job->salaryRange->minimum . '-'. $job->salaryRange->maximum  }}</span>
+                    <span class="badge bg-black">  Ksh. {{ number_format($job->salaryRange->minimum, 0) }} - Ksh. {{ number_format($job->salaryRange->maximum, 0) }}</span>
                 </td>
-                {{-- <td>KES. {{ number_format($job->salary_min, 0) }} - KES. {{ number_format($job->salary_max, 0) }}</td>
-                <td>{{ $job->location }}</td> --}}
                 <td>
                     {!! job_status($job) !!}
                 </td>

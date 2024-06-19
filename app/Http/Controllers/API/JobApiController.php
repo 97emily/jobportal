@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JobListing;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class JobApiController extends Controller
 {
@@ -27,7 +28,7 @@ class JobApiController extends Controller
                 'tag' => $job->tag ? $job->tag->name : 'Not specified',
                 'location' => $job->location ? $job->location->name : 'Not specified',
                 'salary_range' => $job->salaryRange ? $job->salaryRange->minimum . '-' . $job->salaryRange->maximum : 'Not specified',
-                'assessment' => $job->assessment ? $job->assessment->title : 'Not specified',
+                'assessment_id' => $job->assessment ? $job->assessment->id : 'Not specified',
             ];
         });
 
@@ -66,6 +67,7 @@ class JobApiController extends Controller
         }
 
         $response = [
+            'id' => $job->id,
             'title' => $job->title,
             'description' => $job->job_description,
             'status' => $job->status,
@@ -74,7 +76,7 @@ class JobApiController extends Controller
             'tag' => $job->tag ? $job->tag->name : 'Not specified',
             'location' => $job->location ? $job->location->name : 'Not specified',
             'salary_range' => $job->salaryRange ? $job->salaryRange->minimum . '-' . $job->salaryRange->maximum : 'Not specified',
-            'assessment' => $job->assessment ? $job->assessment->title : 'Not specified',
+            'assessment_id' => $job->assessment ? $job->assessment->id : 'Not specified',
         ];
 
         return response()->json($response);

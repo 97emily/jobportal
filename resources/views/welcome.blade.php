@@ -40,13 +40,12 @@
                 @else
                     <div class="mt-4">
                         <a href="{{ route('login') }}"
-                            class="bg-yellow-500 text-white font-bold py-2 px-6 rounded-md hover:bg-gray-700 transition duration-300">Get Started</a>
+                            class="bg-yellow-500 text-white font-bold py-2 px-6 rounded-md hover:bg-gray-700 transition duration-300">Sign In</a>
                     </div>
                 @endauth
             @endif
         </div>
     </div>
-
 </body>
 
 </html>

@@ -4,7 +4,7 @@
             {{ __('Update Password') }}
         </h2>
 
-        <p class="mt-1 text-highlight">
+        <p class="mt-1 text-highlight" style="color: #00AAD0">
             {{ __('Ensure your account is using a long, random password to stay secure.') }}
         </p>
     </header>
@@ -51,8 +51,8 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm #00AAD0"
-                >{{ __('Saved.') }}</p>
+                    class="text-sm" style="color: #00AAD0;"
+                >{{ __('Password Saved.') }}</p>
             @endif
         </div>
     </form>

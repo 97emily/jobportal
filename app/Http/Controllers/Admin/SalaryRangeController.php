@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\Concerns\BaseControllerConcerns;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Validation\Rule;
 
 class SalaryRangeController extends Controller
 {
