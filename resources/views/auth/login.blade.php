@@ -17,7 +17,7 @@
                 <x-text-input id="email" class="form-control" type="email" name="email" :value="old('email')"
                     placeholder="Email address" aria-label="Email" required autofocus autocomplete="username" />
             </div>
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2"/>
         </div>
 
         <!-- Password -->

@@ -32,7 +32,7 @@
                             data-bs-toggle="tooltip"></i></a></td>
                 <td><a href="{{ route('assessments.edit', $assessment->id) }}">{{ $assessment->title }}</a></td>
                 <td>
-                    <span class="badge bg-success">{{ $assessment->category->name }}</span>
+                    <span class="badge bg-info">{{ $assessment->category->name }}</span>
                 </td>
                 <td> {!! $assessment->description !!}</td>
                 <td>{{ number_format($assessment->pass_mark, 0) }} </td>

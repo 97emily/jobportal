@@ -20,7 +20,7 @@ class AssessmentAPIController extends Controller
         $assessment = Assessment::with(['category', 'questions'])->where('id', $assessment_id)->latest()->first();
 
         if (!$assessment) {
-            return response()->json(['error' => 'Assessment not found'], 404);
+            return response()->json(['error' => 'Assessment Id not found'], 404);
         }
 
         $totalAllocatedMarks = $assessment->questions->sum('allocated_marks');
@@ -34,7 +34,7 @@ class AssessmentAPIController extends Controller
             'description' => $assessment->description,
             'pass_mark' => $assessment->pass_mark . '%', // The pass mark saved in the assessment
             'total_allocated_marks' => $totalAllocatedMarks,
-            'total_time_required' => $totalTimeRequired . ' minutes',
+            'total_time_required_in_minutes' => $totalTimeRequired,
             'computed_pass_mark_in_marks' => round($computedPassMarkInMarks, 2), // Pass mark in marks form
             'category' => $assessment->category ? $assessment->category->name : 'Not specified',
             'questions' => $assessment->questions->map(function($question) {
