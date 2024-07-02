@@ -12,12 +12,14 @@ class JobApiController extends Controller
 {
     public function index(): JsonResponse
     {
+        // return response()->json('hello world');
         $jobs = JobListing::with(['category', 'tag', 'location', 'salaryRange', 'assessment'])
             // ->where('status', 'open')
             ->latest()
             ->paginate(config('constants.posts_per_page'));
-
         $response = $jobs->map(function($job) {
+
+// return [$job->location ? $job->location->name : $job];
             return [
                 'id' => $job->id,
                 'title' => $job->title,

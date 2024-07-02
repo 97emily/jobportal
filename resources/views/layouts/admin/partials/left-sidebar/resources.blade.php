@@ -58,7 +58,6 @@
                 @include('layouts.admin.partials.left-sidebar.generator')
             </ul>
         </li>
-
         <!-- Assessment Tests Menu -->
         <li class="sidebar-item">
             <a href="#assessment-menu" data-bs-toggle="collapse"
@@ -81,11 +80,26 @@
                 @can('question-list')
                     <li class="{{ Request::is('admin/questions*') ? 'active' : '' }}">
                         <x-nav-link :href="route('questions.index')" :active="Request::is('admin/questions*')">
-                            {{ __('Manage Questions') }}
+                            {{ __('Manage MCQ Questions') }}
                         </x-nav-link>
                     </li>
                 @endcan
-                
+
+                @can('assessment-list')
+                <li class="{{ Request::is('admin/practical_tests*') ? 'active' : '' }}">
+                    <x-nav-link :href="route('practical_tests.index')" :active="Request::is('admin/practical_tests*')">
+                        {{ __('Manage Practical Tests') }}
+                    </x-nav-link>
+                </li>
+            @endcan
+            @can('question-list')
+                <li class="{{ Request::is('admin/practical_questions*') ? 'active' : '' }}">
+                    <x-nav-link :href="route('practical_questions.index')" :active="Request::is('admin/practical_questions*')">
+                        {{ __('Manage Practical Questions') }}
+                    </x-nav-link>
+                </li>
+            @endcan
+
             </ul>
         </li>
 

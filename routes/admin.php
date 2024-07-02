@@ -24,7 +24,8 @@ use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AssessmentController;
 use App\Http\Controllers\Admin\QuestionController;
-
+use App\Http\Controllers\Admin\PracticalTestController;
+use App\Http\Controllers\Admin\PracticalQuestionController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\SalaryRangeController;
 
@@ -44,6 +45,9 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('salary_ranges', SalaryRangeController::class);
     Route::resource('locations', LocationController::class);
+    Route::resource('practical_tests', PracticalTestController::class);
+    Route::resource('practical_questions', PracticalQuestionController::class);
+
 
     require __DIR__.'/admin_generator.php';
 });
