@@ -11,6 +11,7 @@
                 </label>
             </th> --}}
             <th>View</th>
+            <th>Shortlisted</th>
             <th class="no-sort">Closing</th>
             <th>Title</th>
             <th>Category</th>
@@ -31,8 +32,14 @@
                         <span></span>
                     </label>
                 </td> --}}
-                <td><a href="{{ route('jobs.show', $job->id) }}"><i style="color: #00AAD0" class="fa fa-eye" data-bs-original-title="View"
-                            data-bs-toggle="tooltip"></i></a></td>
+                <td>
+                    <a href="{{ route('jobs.show', $job->id) }}"><i style="color: #00AAD0" class="fa fa-eye" data-bs-original-title="View"
+                            data-bs-toggle="tooltip"></i></a>
+                </td>
+                <td>
+                    <a href="{{ route('jobs.shortlisted', ['id'=>$job->id]) }}"><i style="color: #00AAD0" class="fa fa-users" data-bs-original-title="Shortlisted Applicants"
+                            data-bs-toggle="tooltip"></i></a>
+                </td>
                 <td>
                     {{ \Carbon\Carbon::parse($job->closing_date)->format('d-m-Y') }}
                 </td>

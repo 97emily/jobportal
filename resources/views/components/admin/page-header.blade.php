@@ -1,3 +1,30 @@
+{{--
+<div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb fs-base ps-0">
+            <li class="breadcrumb-item"><a href="#">{{ config('app.name', 'FlexAdmin') }}</a></li>
+            <li class="breadcrumb-item"><span><a href="{{ route($pageTitle['resourceNames'][0].'.index') }}">{{ __(str_replace('_', ' ',str_plural($pageTitle['resourceName']))) }}</a></span></li>
+            @if ($pageTitle['actionName'] != null)
+                <li class="breadcrumb-item active" aria-current="page">{{ __($pageTitle['actionName']) }}</li>
+            @endif
+        </ol>
+    </nav>
+    <div name="header">
+        <div class="row header justify-content-between mb-4">
+            <div class="col-12">
+                <h1 class="header-title h3">
+                    <i class="fa fa-star text-highlight"></i>
+                    {{ $pageTitle['title'] }}
+                </h1>
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+
+
+
+
 <?php
 $routeName = Route::currentRouteName();
 $resourceNames = explode('.', $routeName);
@@ -13,7 +40,7 @@ if ($actionName == 'Create') {
 } elseif ($actionName == 'Show') {
     $title = __("Show {$resourceName}");
 }
-?>
+ ?>
 <div>
      <nav aria-label="breadcrumb">
         <ol class="breadcrumb fs-base ps-0">
@@ -36,3 +63,4 @@ if ($actionName == 'Create') {
         </div>
     </div>
 </div>
+

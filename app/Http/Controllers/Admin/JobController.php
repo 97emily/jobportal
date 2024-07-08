@@ -53,7 +53,7 @@ class JobController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        $locations = Location::all(); 
+        $locations = Location::all();
         $salaryRanges = SalaryRange::all();
         $assessments = Assessment::all();
 

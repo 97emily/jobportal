@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Interview;
 use App\Models\Question;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -54,6 +55,10 @@ class PermissionTableSeeder extends Seeder
             'location-create',
             'location-edit',
             'location-delete',
+            'interview-list',
+            'interview-create',
+            'interview-edit',
+            'interview-delete',
         ];
         foreach ($permissions as $permission) {
             // Check if the permission already exists

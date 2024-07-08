@@ -104,7 +104,7 @@
         </li>
 
         <!-- Shortlisted Applicants -->
-        {{-- <li class="sidebar-item">
+        <li class="sidebar-item">
             <a href="#applicants-menu" data-bs-toggle="collapse"
                 aria-expanded="{{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') ? 'true' : 'false' }}"
                 class="dropdown-toggle {{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') ? '' : 'collapsed' }}">
@@ -128,7 +128,34 @@
                     </li>
                 @endcan
             </ul>
-        </li> --}}
+        </li>
+
+        <!-- Interviews -->
+        <li class="sidebar-item">
+            <a href="#applicants-menu" data-bs-toggle="collapse"
+                aria-expanded="{{ Request::is('admin/interviews*') || Request::is('admin/interviews*') || Request::is('admin/questions*') ? 'true' : 'false' }}"
+                class="dropdown-toggle {{ Request::is('admin/interviews*') || Request::is('admin/interviews*') || Request::is('admin/questions*') ? '' : 'collapsed' }}">
+                <i class="fa-solid fa-briefcase"></i>
+                <span>Interviews</span>
+            </a>
+            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/interviews*') || Request::is('admin/interviews*') || Request::is('admin/questions*') ? 'show' : '' }}"
+                id="applicants-menu" data-parent="#left-sidebar">
+                @can('assessment-list')
+                    <li class="{{ Request::is('admin/interviews*') ? 'active' : '' }}">
+                        <x-nav-link :href="route('interviews.index')" :active="Request::is('admin/interviews*')">
+                            {{ __('Schedule Interviews') }}
+                        </x-nav-link>
+                    </li>
+                @endcan
+                @can('question-list')
+                    <li class="{{ Request::is('admin/questions*') ? 'active' : '' }}">
+                        <x-nav-link :href="route('questions.index')" :active="Request::is('admin/questions*')">
+                            {{ __('Manage Questions') }}
+                        </x-nav-link>
+                    </li>
+                @endcan
+            </ul>
+        </li>
 
         <!-- User and Permission Menu -->
         <li class="sidebar-item">

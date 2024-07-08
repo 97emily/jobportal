@@ -28,6 +28,8 @@ use App\Http\Controllers\Admin\PracticalTestController;
 use App\Http\Controllers\Admin\PracticalQuestionController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\SalaryRangeController;
+use App\Http\Controllers\Admin\InterviewController;
+use App\Http\Controllers\API\JobApiController;
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -40,6 +42,10 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::resource('assessments', AssessmentController::class);
     Route::resource('questions', QuestionController::class);
     Route::resource('jobs', JobController::class);
+    Route::get('jobs/{id}/shortlisted', [JobApiController::class, 'shortlisted'])->name('jobs.shortlisted');
+    Route::get('jobs/{user_id}/shortlistedapplicantdetails', [JobApiController::class, 'shortlistedapplicantdetails'])->name('jobs.shortlisted.applicant');
+    Route::put('/updateshortlistedapplicantdetails', [JobApiController::class, 'updateApplicant'])->name('updateshortlistedapplicantdetails');
+
     // Route::resource('products', ProductController::class);
     Route::resource('tags', TagController::class);
     Route::resource('categories', CategoryController::class);
@@ -47,6 +53,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::resource('locations', LocationController::class);
     Route::resource('practical_tests', PracticalTestController::class);
     Route::resource('practical_questions', PracticalQuestionController::class);
+    Route::resource('interviews', InterviewController::class);
 
 
     require __DIR__.'/admin_generator.php';

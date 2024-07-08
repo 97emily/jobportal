@@ -3,6 +3,7 @@
 use App\Enums\ProductStatus;
 use App\Models\Question;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Vite;
 
 if (!function_exists('class_name')) {
@@ -144,3 +145,32 @@ if (!function_exists('assessments_answers')) {
         return $correctAnswers;
     }
 }
+
+// app/helpers.php
+
+// if (! function_exists('getPageTitle')) {
+//     function getPageTitle() {
+//         $routeName = Route::currentRouteName();
+//         $resourceNames = explode('.', $routeName);
+//         $resourceName = ucfirst(str_singular($resourceNames[0]));
+//         $actionName = ucfirst($resourceNames[1]);
+
+//         $title = __(str_plural($resourceName));
+//         $title = str_replace('_', ' ', str_plural($resourceName));
+//         if ($actionName == 'Create') {
+//             $title = __("Add New {$resourceName}");
+//         } elseif ($actionName == 'Edit') {
+//             $title = __("Edit {$resourceName}");
+//         } elseif ($actionName == 'Show') {
+//             $title = __("Show {$resourceName}");
+//         }
+
+//         return [
+//             'resourceNames' => $resourceNames,
+//             'resourceName' => $resourceName,
+//             'actionName' => $actionName,
+//             'title' => $title,
+//         ];
+//     }
+// }
+

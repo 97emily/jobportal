@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\JobListing;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class JobApiController extends Controller
 {
@@ -116,4 +118,56 @@ class JobApiController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Job deleted successfully.']);
     }
+
+    public function shortlisted($job_id): View
+    {
+        $url = env('API_ENDPOINT_BASE_URL') . '/user/applicants-by-job';
+
+        $data = [
+            'job_id' => $job_id,
+        ];
+
+        $response = Http::get($url, $data);
+
+        $shorListedApplicants = json_decode($response->body(), true);
+
+        $shorListedApplicants = $shorListedApplicants['data'];
+
+        return view('admin.jobs.shortlisted', compact('shorListedApplicants'));
+    }
+
+    public function shortlistedapplicantdetails($user_id): View
+    {
+        $url = env('API_ENDPOINT_BASE_URL') . '/applicants/'. $user_id;
+
+        $response = Http::get($url);
+        $shortListedApplicantDetails = json_decode($response->body(), true);
+
+        if (isset($shortListedApplicantDetails['data'])) {
+            $shortListedApplicantDetails = $shortListedApplicantDetails['data'];
+        } else {
+            abort(404, 'Applicant details not found');
+        }
+
+        return view('admin.jobs.applicantdetails', compact('shortListedApplicantDetails'));
+    }
+
+     public function updateApplicant(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+            'score' => 'required|integer',
+            'status' => 'required|string',
+        ]);
+
+        $url = env('API_ENDPOINT_BASE_URL') . '/user/updateShortlistedApplicant'; // Replace with your API endpoint
+
+        $response = Http::put($url, [
+            'id' => $request->id,
+            'score' => $request->score,
+            'status' => ucfirst($request->status),
+        ]);
+        return response()->json($response->json());
+    }
+
 }

@@ -19,6 +19,12 @@ class AssessmentAPIController extends Controller
         $assessment_id = $request->input('assessment_id');
         $assessment = Assessment::with(['category', 'questions'])->where('id', $assessment_id)->latest()->first();
 
+        // $user_id=$request->input('user_id');
+        // $user=User::with('user')->where('id', $user_id)->latest()->first();
+        // if (!$user) {
+        //     return response()->json(['error' => 'user Id not found'], 404);
+        // }
+
         if (!$assessment) {
             return response()->json(['error' => 'Assessment Id not found'], 404);
         }

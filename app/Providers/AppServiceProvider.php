@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Rules\DistinctSalaryRange;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,5 +29,10 @@ class AppServiceProvider extends ServiceProvider
 
             return (new DistinctSalaryRange($minimum, $maximum))->passes($attribute, $value);
         });
+
+        // View::composer('*', function ($view) {
+        //     $view->with('pageTitle', getPageTitle());
+        // });
     }
+
 }
