@@ -7,25 +7,25 @@
                 <div class="col-lg-12 col-md-12">
                     <!-- begin product-detail -->
                     <div class="product-detail">
-                        <h2 class="product-title" style="color: #00AAD0">{{ $assessment->title }}</h2>
-                        <!-- Display assessment description -->
+                        <h2 class="product-title" style="color: #00AAD0">{{ $practicalTest->title }}</h2>
+                        <!-- Display practical test description -->
                         <div class="product-desc mt-2">
-                            <p>{!! $assessment->description !!}</p>
+                            <p>{!! $practicalTest->description !!}</p>
                         </div>
                         <div class="product-price mb-2">
                             <!-- Display pass mark if available -->
-                            @if ($assessment->pass_mark)
+                            @if ($practicalTest->pass_mark)
                                 <span class="price text-highlight fs-lg fw-500">Pass Mark:
-                                    <span>{{ number_format($assessment->pass_mark, 0) }}%</span>
+                                    <span>{{ number_format($practicalTest->pass_mark, 0) }}%</span>
                                 <br>
                                 <span class="price text-highlight fs-lg fw-500">Questions:
-                                    {{ number_format(count($questions->where('assessment_id', $assessment->id)), 0) . ' questions' }}</span>
+                                    {{ number_format(count($practicalTest->questions), 0) . ' questions' }}</span>
                                 <br>
                                 <span class="price text-highlight fs-lg fw-500">Total Time:
-                                    {{ number_format($questions->where('assessment_id', $assessment->id)->sum('allocated_time'), 0) . ' minutes' }}</span>
+                                    {{ number_format($practicalTest->questions->sum('allocated_time'), 0) . ' minutes' }}</span>
                                 <br>
                                 <span class="price text-highlight fs-lg fw-500">Total Marks:
-                                    {{ number_format($questions->where('assessment_id', $assessment->id)->sum('allocated_marks'), 0) . ' marks'}}</span>
+                                    {{ number_format($practicalTest->questions->sum('allocated_marks'), 0) . ' marks'}}</span>
                                 <br>
                             @else
                                 <span class="price text-highlight fs-lg fw-500">Pass Mark: Not specified</span>
@@ -36,13 +36,13 @@
                     <hr>
                     <ul class="product-meta list-unstyled fw-500">
                         <li> <strong> Assessment Category: </strong>
-                            <span class="badge bg-success">{{ $assessment->category->name }}</span>
+                            <span class="badge bg-success">{{ $practicalTest->category->name }}</span>
                         </li>
                     </ul>
                     <hr>
-                    <!-- Display all questions under the assessment -->
+                    <!-- Display all questions under the practical test -->
                     <h3 style="color: #00AAD0;"> Assessment Questions</h3>
-                    @foreach ($assessment->questions as $index => $question)
+                    @foreach ($practicalTest->questions as $index => $question)
                         <div class="product-detail mt-4">
                             <div class="product-price mb-2">
                                 <!-- Display question number and description -->
@@ -53,45 +53,13 @@
 
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Multiple Choices:</strong>
-                                        <!-- Output the choices -->
-                                        <p>The choices options are:</p>
-                                        <ul>
-                                            @foreach (assessments_choices($question->id) as $choice)
-                                                <li>{{ $choice }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <strong>Marking Scheme:</strong>
-                                        <!-- Output the correct multiple choice answers -->
-                                        <p>The correct answers are:</p>
-                                        <ul>
-                                            @foreach (assessments_answers($question->id) as $answer)
-                                                <li>{{ $answer }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
                                         <strong>Allocated Marks:</strong>
                                         {{ $question->allocated_marks . ' Marks'}}
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <strong>Allocated Time:</strong>
-                                        {{ $question->allocated_time  . ' Minutes'}}
-                                    </div>
-                                </div>
                                 <!-- Edit Button for Each Question -->
                                 <div class="col-12 mt-2">
-                                    <a class="btn btn-secondary" href="{{ route('questions.edit', $question->id) }}"
+                                    <a class="btn btn-secondary" href="{{ route('practical_questions.edit', $question->id) }}"
                                         style="background-color: #00AAD0">Edit Question</a>
                                 </div>
                             </div>
@@ -100,10 +68,10 @@
                     @endforeach
                     <!-- end questions -->
                     <div class="row">
-                        <!-- Button to edit the assessment posting -->
+                        <!-- Button to edit the practical test posting -->
                         <div class="col-12">
-                            <a class="btn btn-highlight" href="{{ route('assessments.edit', $assessment->id) }}"
-                                style="background-color: #00AAD0">Edit Assessment</a>
+                            <a class="btn btn-highlight" href="{{ route('practical_tests.edit', $practicalTest->id) }}"
+                                style="background-color: #00AAD0">Edit Practical Test</a>
                         </div>
                     </div>
                 </div>

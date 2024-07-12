@@ -37,12 +37,14 @@ class PracticalQuestionController extends Controller
 
     public function show(PracticalQuestion $practicalQuestion)
     {
-        return view('admin.practical_questions.show', compact('practicalQuestion'));
+        $tests = PracticalTest::all();
+        return view('admin.practical_questions.show', compact('practicalQuestion','tests'));
     }
 
     public function edit(PracticalQuestion $practicalQuestion)
     {
-        return view('admin.practical_questions.edit', compact('practicalQuestion'));
+        $tests = PracticalTest::all();
+        return view('admin.practical_questions.edit', compact('practicalQuestion', 'tests' ));
     }
 
     public function update(Request $request, PracticalQuestion $practicalQuestion)

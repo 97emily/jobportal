@@ -6,15 +6,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInterviewsTable extends Migration
+class CreateInterviewTable extends Migration
 {
     public function up()
     {
-        Schema::create('interviews', function (Blueprint $table) {
+        Schema::create('interview', function (Blueprint $table) {
             $table->id();
             $table->date('interview_date');
             $table->time('interview_time');
             $table->unsignedBigInteger('job_listings_id');
+            $table->unsignedBigInteger('applicant_id');
             $table->unsignedBigInteger('location_id');
             $table->string('title');
             $table->text('requirements');
@@ -28,6 +29,6 @@ class CreateInterviewsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('interviews');
+        Schema::dropIfExists('interview');
     }
 }

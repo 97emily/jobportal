@@ -9,7 +9,7 @@
                 <th>Title</th>
                 <th>Category</th>
                 <th>Description</th>
-                <th>Instructions</th>
+                {{-- <th>Instructions</th> --}}
                 <th>Deadline</th>
                 <th class="no-sort text-center">Action</th>
             </tr>
@@ -24,9 +24,9 @@
                     <span class="badge bg-info">{{ $test->category->name }}</span>
                 </td>
                 <td>{!! $test->description !!}</td>
-                <td>{!! $test->instructions !!}</td>
-                <td>{{ $test->deadline }}</td>
-                <td>
+                {{-- <td>{!! $test->instructions !!}</td> --}}
+                <td><span class="badge bg-success"> {{ $test->deadline }}</span></td>
+                {{-- <td>
                     <ul class="list-unstyled table-actions">
                         <li>
                             <a href="{{ route('practical_tests.edit', $test->id) }}" class="btn btn-warning">Edit</a>
@@ -38,6 +38,20 @@
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </li>
+                    </ul>
+                </td> --}}
+                <td>
+                    <ul class="list-unstyled table-actions">
+                        @can('job-edit')
+                            <li>
+                                <x-admin.edit-button href="{{ route('practical_tests.edit', $test->id) }}" />
+                            </li>
+                        @endcan
+                        @can('job-delete')
+                            <li>
+                                <x-admin.delete-button data-url="{{ route('practical_tests.destroy', $test->id) }}" />
+                            </li>
+                        @endcan
                     </ul>
                 </td>
             </tr>

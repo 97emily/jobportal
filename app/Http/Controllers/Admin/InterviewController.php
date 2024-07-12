@@ -1,82 +1,86 @@
 <?php
-// app/Http/Controllers/InterviewController.php
+
+// app/Http/Controllers/Admin/InterviewController.php
 
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Interview;
-use App\Models\Job;
 use App\Models\JobListing;
 use App\Models\Location;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Http;
+use Exception;
+use Illuminate\Validation\ValidationException;
 
 class InterviewController extends Controller
 {
-    public function index()
+    public function schedule(Request $request)
     {
-        $jobs=JobListing::all();
-        $locations=Location::all();
-        $interviews = Interview::latest()->paginate(config('constants.posts_per_page'));
-        return view('admin.interviews.index', compact('interviews', 'locations', 'jobs'))
-        ->with('i', (request()->input('page', 1) - 1) * config('constants.posts_per_page'));
+        try {
+            \Log::info('Incoming request data:', $request->all());
+
+            $validated = $request->validate([
+                'interview_date' => 'required|date',
+                'interview_time' => 'required|date_format:H:i',
+                'job_listings_id' => 'required|exists:job_listings,id',
+                'location_id' => 'required|exists:locations,id',
+                'applicant_id' => 'required|integer', // Validate as an integer
+                'title' => 'required|string|max:255',
+                'requirements' => 'required|string',
+            ]);
+
+            \Log::info('Validated interview data:', $validated);
+            // Fetch applicant details from API
+            $url = env('API_ENDPOINT_BASE_URL') . '/user/applicants-by-job';
+
+            $data = [
+                'applicant_id' => $validated['applicant_id'],
+            ];
+
+            $response = Http::get($url, $data);
+
+            if ($response->successful()) {
+                $applicant = json_decode($response->body(), true)['data']['applicant'];
+
+                // Create the interview record
+                $interview = Interview::create($validated);
+
+
+                // Send an email to the applicant
+                Mail::to($applicant['email'])->send(new \App\Mail\InterviewScheduled($interview, $applicant));
+
+                return response()->json(['success' => true]);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Failed to fetch applicant details from API'], 500);
+            }
+               // Proceed with your existing logic...
+    } catch (ValidationException $e) {
+        // Handle validation errors
+        return response()->json(['success' => false, 'errors' => $e->errors()], 422);
+    } catch (Exception $e) {
+        // Log the error message
+        \Log::error('Error scheduling interview: ' . $e->getMessage());
+
+        // Return a generic error response
+        return response()->json(['success' => false, 'message' => 'An error occurred while scheduling the interview. Please try again later.'], 500);
     }
 
-    public function create()
-    {
-        $jobs = JobListing::all();
-        $locations = Location::all();
-        return view('admin.interviews.create', compact('jobs', 'locations'));
     }
 
-    public function store(Request $request)
+    public function getFormDetails()
     {
-        $request->validate([
-            'interview_date' => 'required|date',
-            'interview_time' => 'required|date_format:H:i',
-            'job_listings_id' => 'required|exists:job_listings,id',
-            //'practical_tests_id' => 'required|exists:practical_tests,id',
-            'location_id' => 'required|exists:locations,id',
-            'title' => 'required|string|max:255',
-            'requirements' => 'required|string',
-        ]);
+        try {
+            $jobListings = JobListing::all();
+            $locations = Location::all();
 
-        Interview::create($request->all());
+            return response()->json(['jobListings' => $jobListings, 'locations' => $locations]);
+        } catch (Exception $e) {
+            // Log the error message
+            \Log::error('Error fetching form details: ' . $e->getMessage());
 
-        return redirect()->route('interviews.index')->with('success', 'Interview created successfully.');
-    }
-
-    public function show(Interview $interview)
-    {
-        return view('admin.interviews.show', compact('interview'));
-    }
-
-    public function edit(Interview $interview)
-    {
-        $jobs = JobListing::all();
-        $locations = Location::all();
-        return view('admin.interviews.edit', compact('interview', 'jobs', 'locations'));
-    }
-
-    public function update(Request $request, Interview $interview)
-    {
-        $request->validate([
-            'interview_date' => 'required|date',
-            'interview_time' => 'required|date_format:H:i',
-            'job_listings_id' => 'required|integer',
-            'location_id' => 'required|integer',
-            'title' => 'required|string|max:255',
-            'requirements' => 'required|string',
-        ]);
-
-        $interview->update($request->all());
-
-        return redirect()->route('interviews.index')->with('success', 'Interview updated successfully.');
-    }
-
-    public function destroy(Interview $interview)
-    {
-        $interview->delete();
-
-        return redirect()->route('interviews.index')->with('success', 'Interview deleted successfully.');
+            return response()->json(['success' => false, 'message' => 'An error occurred while fetching form details. Please try again later.'], 500);
+        }
     }
 }

@@ -42,9 +42,14 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::resource('assessments', AssessmentController::class);
     Route::resource('questions', QuestionController::class);
     Route::resource('jobs', JobController::class);
+    Route::get('jobs/applicants', [JobController::class,'applicants'])->name('jobs.applicants');
     Route::get('jobs/{id}/shortlisted', [JobApiController::class, 'shortlisted'])->name('jobs.shortlisted');
     Route::get('jobs/{user_id}/shortlistedapplicantdetails', [JobApiController::class, 'shortlistedapplicantdetails'])->name('jobs.shortlisted.applicant');
     Route::put('/updateshortlistedapplicantdetails', [JobApiController::class, 'updateApplicant'])->name('updateshortlistedapplicantdetails');
+    // Route::post('/send-tests/{job_id}', [PracticalTestController::class, 'sendTests'])->name('send.tests');
+    Route::post('jobs/{job}/sendPracticalTest', [PracticalTestController::class, 'sendPracticalTest'])->name('jobs.sendPracticalTest');
+    Route::post('/schedule-interview', [InterviewController::class, 'schedule'])->name('scheduleInterview');
+    Route::get('/get-form-details', [InterviewController::class, 'getFormDetails'])->name('getFormDetails');
 
     // Route::resource('products', ProductController::class);
     Route::resource('tags', TagController::class);

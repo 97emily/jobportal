@@ -106,24 +106,19 @@
         <!-- Shortlisted Applicants -->
         <li class="sidebar-item">
             <a href="#applicants-menu" data-bs-toggle="collapse"
-                aria-expanded="{{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') ? 'true' : 'false' }}"
-                class="dropdown-toggle {{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') ? '' : 'collapsed' }}">
+                aria-expanded="{{ Request::is('admin/jobs*')  ? 'true' : 'false' }}"
+                class="dropdown-toggle {{ Request::is('admin/jobs*')  ? '' : 'collapsed' }}">
                 <i class="fa-solid fa-users"></i>
                 <span>Shortlisted Applicants</span>
             </a>
-            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') ? 'show' : '' }}"
+
+            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/jobs*')  ? 'show' : '' }}"
                 id="applicants-menu" data-parent="#left-sidebar">
-                @can('assessment-list')
-                    <li class="{{ Request::is('admin/assessments*') ? 'active' : '' }}">
-                        <x-nav-link :href="route('assessments.index')" :active="Request::is('admin/assessments*')">
-                            {{ __('Manage Assessments') }}
-                        </x-nav-link>
-                    </li>
-                @endcan
-                @can('question-list')
-                    <li class="{{ Request::is('admin/questions*') ? 'active' : '' }}">
-                        <x-nav-link :href="route('questions.index')" :active="Request::is('admin/questions*')">
-                            {{ __('Manage Questions') }}
+
+                @can('job-list')
+                    <li class="{{ Request::is('admin/jobs*') ? 'active' : '' }}">
+                        <x-nav-link :href="route('jobs.index')" :active="Request::is('admin/jobs*')">
+                            {{ __('Manage applicants') }}
                         </x-nav-link>
                     </li>
                 @endcan
@@ -132,14 +127,14 @@
 
         <!-- Interviews -->
         <li class="sidebar-item">
-            <a href="#applicants-menu" data-bs-toggle="collapse"
+            <a href="#interviews-menu" data-bs-toggle="collapse"
                 aria-expanded="{{ Request::is('admin/interviews*') || Request::is('admin/interviews*') || Request::is('admin/questions*') ? 'true' : 'false' }}"
                 class="dropdown-toggle {{ Request::is('admin/interviews*') || Request::is('admin/interviews*') || Request::is('admin/questions*') ? '' : 'collapsed' }}">
                 <i class="fa-solid fa-briefcase"></i>
                 <span>Interviews</span>
             </a>
             <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/interviews*') || Request::is('admin/interviews*') || Request::is('admin/questions*') ? 'show' : '' }}"
-                id="applicants-menu" data-parent="#left-sidebar">
+                id="interviews-menu" data-parent="#left-sidebar">
                 @can('assessment-list')
                     <li class="{{ Request::is('admin/interviews*') ? 'active' : '' }}">
                         <x-nav-link :href="route('interviews.index')" :active="Request::is('admin/interviews*')">
@@ -147,13 +142,13 @@
                         </x-nav-link>
                     </li>
                 @endcan
-                @can('question-list')
+                {{-- @can('question-list')
                     <li class="{{ Request::is('admin/questions*') ? 'active' : '' }}">
                         <x-nav-link :href="route('questions.index')" :active="Request::is('admin/questions*')">
                             {{ __('Manage Questions') }}
                         </x-nav-link>
                     </li>
-                @endcan
+                @endcan --}}
             </ul>
         </li>
 

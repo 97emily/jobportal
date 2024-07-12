@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\JobListing;
+use App\Models\PracticalTest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -19,9 +20,9 @@ class JobApiController extends Controller
             // ->where('status', 'open')
             ->latest()
             ->paginate(config('constants.posts_per_page'));
-        $response = $jobs->map(function($job) {
+        $response = $jobs->map(function ($job) {
 
-// return [$job->location ? $job->location->name : $job];
+            // return [$job->location ? $job->location->name : $job];
             return [
                 'id' => $job->id,
                 'title' => $job->title,
@@ -128,17 +129,17 @@ class JobApiController extends Controller
         ];
 
         $response = Http::get($url, $data);
-
+        $job = JobListing::with(['category', 'tag', 'location', 'salaryRange', 'assessment'])->find($job_id);
         $shorListedApplicants = json_decode($response->body(), true);
-
+        $practicalTests = PracticalTest::orderBy('title','asc')->get();
         $shorListedApplicants = $shorListedApplicants['data'];
 
-        return view('admin.jobs.shortlisted', compact('shorListedApplicants'));
+        return view('admin.jobs.shortlisted', compact('shorListedApplicants', 'job', 'practicalTests'));
     }
 
     public function shortlistedapplicantdetails($user_id): View
     {
-        $url = env('API_ENDPOINT_BASE_URL') . '/applicants/'. $user_id;
+        $url = env('API_ENDPOINT_BASE_URL') . '/applicants/' . $user_id;
 
         $response = Http::get($url);
         $shortListedApplicantDetails = json_decode($response->body(), true);
@@ -152,11 +153,11 @@ class JobApiController extends Controller
         return view('admin.jobs.applicantdetails', compact('shortListedApplicantDetails'));
     }
 
-     public function updateApplicant(Request $request)
+    public function updateApplicant(Request $request)
     {
         $request->validate([
             'id' => 'required|integer',
-            'score' => 'required|integer',
+            'score' => 'required|numeric',
             'status' => 'required|string',
         ]);
 
@@ -169,5 +170,4 @@ class JobApiController extends Controller
         ]);
         return response()->json($response->json());
     }
-
 }

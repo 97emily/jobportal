@@ -21,3 +21,4 @@ class PracticalTest extends Model
         return $this->belongsTo(Category::class);
     }
 }
+

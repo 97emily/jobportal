@@ -115,4 +115,19 @@ class JobController extends Controller
 
         return response()->json(['success' => true, 'message' => __('Job deleted successfully.')]);
     }
+
+    public function applicants(): View
+    {
+        $jobs = JobListing::latest()->paginate(config('constants.posts_per_page'));
+
+        $categories = Category::all();
+        $tags = Tag::all();
+        $locations = Location::all(); // Load all locations
+        $salaryRanges = SalaryRange::all(); // Load all salary ranges
+        $assessments = Assessment::all(); // Load all assessments
+
+        dd($jobs)->body();
+        return view('admin.jobs.applicants', compact('jobs', 'tags', 'locations', 'salaryRanges',))
+            ->with('i', (request()->input('page', 1) - 1) * config('constants.posts_per_page'));
+    }
 }
