@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Mail;
+
 use App\Models\Interview;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -17,7 +19,7 @@ class InterviewScheduled extends Mailable
      *
      * @return void
      */
-    public function __construct(Interview $interview, array $applicant)
+    public function __construct(Interview $interview, $applicant)
     {
         $this->interview = $interview;
         $this->applicant = $applicant;

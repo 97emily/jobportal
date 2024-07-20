@@ -76,6 +76,7 @@
                                                 },
                                                 theme: 'snow'
                                             });
+                                            document.getElementById('instructions').value = instructions_editor.root.innerHTML;
                                             instructions_editor.on('text-change', function(delta, source) {
                                                 document.getElementById('instructions').value = instructions_editor.root.innerHTML;
                                             });
@@ -87,6 +88,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             {{-- <div class="card">
                                 <div class="card-body">
                                     <h4>Passmark</h4>
@@ -103,6 +105,7 @@
                                     </div>
                                 </div>
                             </div> --}}
+
                             <div class="col-lg-4">
                                 <div class="card">
                                     <div class="card-body">

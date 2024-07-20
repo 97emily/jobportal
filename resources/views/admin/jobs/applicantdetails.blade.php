@@ -4,7 +4,6 @@
     <div class="card p-5">
         <div class="card-body">
             <h2 class="text-center mb-4">Applicant Details</h2>
-
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-4">
@@ -27,6 +26,7 @@
                         </dl>
                     </div>
                 </div>
+
                 <div class="col-md-6">
                     <div class="mb-4">
                         <h4>Highest Education Level</h4>

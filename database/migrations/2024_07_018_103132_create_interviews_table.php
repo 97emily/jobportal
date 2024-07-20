@@ -6,11 +6,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInterviewTable extends Migration
+class CreateInterviewsTable extends Migration
 {
     public function up()
     {
-        Schema::create('interview', function (Blueprint $table) {
+        Schema::create('interviews', function (Blueprint $table) {
             $table->id();
             $table->date('interview_date');
             $table->time('interview_time');
@@ -29,6 +29,6 @@ class CreateInterviewTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('interview');
+        Schema::dropIfExists('interviews');
     }
 }

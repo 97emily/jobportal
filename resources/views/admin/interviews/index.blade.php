@@ -3,12 +3,12 @@
     <x-admin.page-header />
     <x-admin.index-toolbar>
         <x-slot:mainactions>
-            @can('job-create')
+            {{-- @can('job-create')
                 <a class="btn btn-highlight waves-effect" href="{{ route('interviews.create') }}" style="background-color: #00AAD0">
                     <i class="fa fa-plus-circle"></i>
                     <span class="d-none d-md-inline">{{ _('Schedule New Interview') }}</span>
                 </a>
-            @endcan
+            @endcan --}}
         </x-slot>
     </x-admin.index-toolbar>
 

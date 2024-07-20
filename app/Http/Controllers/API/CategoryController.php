@@ -1,16 +1,14 @@
 <?php
+
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Admin\Concerns\BaseControllerConcerns;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Category; // Assuming you have a Category model
+use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
-    use BaseControllerConcerns;
-
     private static function resourceClassName()
     {
         return 'Category';
@@ -106,5 +104,25 @@ class CategoryController extends Controller
         $category->delete();
 
         return response()->json(['message' => 'Category deleted'], 200);
+    }
+
+    public function getJobsByCategoryId(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'required|integer|exists:categories,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $category_id = $request->input('category_id');
+        $category = Category::with('jobListings')->find($category_id);
+
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
+        return response()->json(['jobs' => $category->jobListings], 200);
     }
 }

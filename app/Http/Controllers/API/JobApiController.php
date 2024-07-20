@@ -8,6 +8,7 @@ use App\Models\PracticalTest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -29,6 +30,7 @@ class JobApiController extends Controller
                 'description' => $job->job_description,
                 'status' => $job->status,
                 'closing_date' => $job->closing_date,
+                'category_id' => $job->category_id,
                 'category' => $job->category ? $job->category->name : 'Not specified',
                 'tag' => $job->tag ? $job->tag->name : 'Not specified',
                 'location' => $job->location ? $job->location->name : 'Not specified',
@@ -77,6 +79,7 @@ class JobApiController extends Controller
             'description' => $job->job_description,
             'status' => $job->status,
             'closing_date' => $job->closing_date,
+            'category_id' => $job->category_id,
             'category' => $job->category ? $job->category->name : 'Not specified',
             'tag' => $job->tag ? $job->tag->name : 'Not specified',
             'location' => $job->location ? $job->location->name : 'Not specified',
@@ -121,21 +124,46 @@ class JobApiController extends Controller
     }
 
     public function shortlisted($job_id): View
-    {
-        $url = env('API_ENDPOINT_BASE_URL') . '/user/applicants-by-job';
+{
+    $url = env('API_ENDPOINT_BASE_URL') . '/user/applicants-by-job';
+    $data = ['job_id' => $job_id];
+    $response = Http::get($url, $data);
+    $job = JobListing::with(['category', 'tag', 'location', 'salaryRange', 'assessment'])->find($job_id);
+    $shorListedApplicants = json_decode($response->body(), true);
+    $practicalTests = PracticalTest::orderBy('title','asc')->get();
+    $shorListedApplicants = $shorListedApplicants['data'];
 
-        $data = [
-            'job_id' => $job_id,
-        ];
+    // Compute the total allocated marks and pass mark
+    $totalAllocatedMarks = $job->assessment->questions->sum('allocated_marks');
+    $computedPassMarkInMarks = $totalAllocatedMarks ? ($job->assessment->pass_mark / 100) * $totalAllocatedMarks : 0;
 
-        $response = Http::get($url, $data);
-        $job = JobListing::with(['category', 'tag', 'location', 'salaryRange', 'assessment'])->find($job_id);
-        $shorListedApplicants = json_decode($response->body(), true);
-        $practicalTests = PracticalTest::orderBy('title','asc')->get();
-        $shorListedApplicants = $shorListedApplicants['data'];
-
-        return view('admin.jobs.shortlisted', compact('shorListedApplicants', 'job', 'practicalTests'));
+    // Update applicant status based on score
+    foreach ($shorListedApplicants as &$applicant) {
+        $score = $applicant['applicant']['assessment_score'];
+        $applicant['applicant']['state'] = $score >= $computedPassMarkInMarks ? 'Shortlisted' : 'Not Shortlisted';
     }
+
+    // Log::info("job data",['job'=>$job]);
+    return view('admin.jobs.shortlisted', compact('shorListedApplicants', 'job', 'practicalTests'));
+}
+
+
+    // public function shortlisted($job_id): View
+    // {
+    //     $url = env('API_ENDPOINT_BASE_URL') . '/user/specific-job-applicants';
+
+    //     $data = [
+    //         'job_id' => $job_id,
+    //     ];
+
+    //     $response = Http::get($url, $data);
+    //     $job = JobListing::with(['category', 'tag', 'location', 'salaryRange', 'assessment'])->find($job_id);
+    //     $shorListedApplicants = json_decode($response->body(), true);
+    //     $practicalTests = PracticalTest::orderBy('title','asc')->get();
+    //     $shorListedApplicants = $shorListedApplicants['data'];
+
+    //     return view('admin.jobs.shortlisted', compact('shorListedApplicants', 'job', 'practicalTests'));
+    // }
 
     public function shortlistedapplicantdetails($user_id): View
     {
@@ -153,21 +181,41 @@ class JobApiController extends Controller
         return view('admin.jobs.applicantdetails', compact('shortListedApplicantDetails'));
     }
 
+
     public function updateApplicant(Request $request)
     {
         $request->validate([
             'id' => 'required|integer',
-            'score' => 'required|numeric',
+            'assessment_score' => 'required|numeric',
+            'practical_score' => 'required|numeric',
+            'interview_score' => 'nullable|numeric',
             'status' => 'required|string',
         ]);
 
+        // Log the received data
+        \Log::info('Received data:', $request->all());
+
         $url = env('API_ENDPOINT_BASE_URL') . '/user/updateShortlistedApplicant'; // Replace with your API endpoint
 
-        $response = Http::put($url, [
-            'id' => $request->id,
-            'score' => $request->score,
-            'status' => ucfirst($request->status),
-        ]);
-        return response()->json($response->json());
+        try {
+            $response = Http::put($url, [
+                'id' => $request->id,
+                'assessment_score' => $request->assessment_score,
+                'practical_score' => $request->practical_score,
+                'interview_score' => $request->interview_score,
+                'status' => ucfirst($request->status),
+            ]);
+
+            // Log the API response
+            \Log::info('API response:', $response->json());
+
+            return response()->json($response->json());
+        } catch (\Exception $e) {
+            // Log any errors
+            \Log::error('Error updating applicant:', ['message' => $e->getMessage()]);
+
+            return response()->json(['success' => false, 'message' => 'Failed to update applicant details.'], 500);
+        }
     }
+
 }

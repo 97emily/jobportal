@@ -88,6 +88,7 @@ class PracticalTestController extends Controller
         // Validate request
         $request->validate([
             'practical_tests_id' => 'required|exists:practical_tests,id',
+            'selected_applicants' => 'nullable|string', // Add validation for selected_applicants
         ]);
 
         // Fetch practical test
@@ -96,45 +97,57 @@ class PracticalTestController extends Controller
         // Fetch practical questions associated with the test
         $practicalQuestions = $practicalTest->questions;
 
-        // dd($practicalQuestions);
-
         // Generate PDF
         $pdf = PDF::loadView('pdf.practical_test', compact('practicalTest', 'practicalQuestions'));
 
-        // Render PDF to browser
-        // return $pdf->stream('PracticalTest.pdf');
+        // Determine applicants to send the practical test
+        $selectedApplicants = explode(',', $request->input('selected_applicants'));
 
-        // Fetch shortlisted applicants from API
-        $url = env('API_ENDPOINT_BASE_URL') . '/user/applicants-by-job';
-        $response = Http::get($url, ['job_id' => $jobId]);
+        if (empty($selectedApplicants) || $selectedApplicants[0] == "") {
+            // Fetch all applicants from the API endpoint
+            $url = env('API_ENDPOINT_BASE_URL') . '/user/applicants-by-job';
+            $response = Http::get($url, ['job_id' => $jobId]);
 
-        if ($response->successful()) {
-            $responseData = $response->json();
+            if ($response->successful()) {
+                $responseData = $response->json();
 
-            if (isset($responseData['data']) && is_array($responseData['data'])) {
-                $applicants = $responseData['data'];
-
-                // Send email to each applicant
-                foreach ($applicants as $applicantData) {
-                    if (isset($applicantData['applicant']['email'])) {
-                        $applicantEmail = $applicantData['applicant']['email'];
-                        $applicantName = $applicantData['applicant']['name'];
-                        $practicalTestTitle = $practicalTest->title;
-
-                        Mail::send('emails.practical_tests', compact('applicantName', 'practicalTestTitle'), function($message) use ($applicantEmail, $pdf, $practicalTest) {
-                            $message->to($applicantEmail)
-                                    ->subject('Eclectics Practical Test: ' . $practicalTest->title)
-                                    ->attachData($pdf->output(), 'PracticalTest.pdf');
-                        });
-                    }
+                if (isset($responseData['data']) && is_array($responseData['data'])) {
+                    $applicants = $responseData['data'];
+                    $selectedApplicants = array_column($applicants, 'applicant.user_id');
+                } else {
+                    return back()->with('error', 'No applicants found.');
                 }
-
-                return back()->with('success', 'Practical test sent to shortlisted applicants.');
             } else {
-                return back()->with('error', 'No applicants found.');
+                return back()->with('error', 'Failed to fetch applicants.');
             }
-        } else {
-            return back()->with('error', 'Failed to fetch shortlisted applicants.');
         }
+
+        // Send email to each selected applicant
+        foreach ($selectedApplicants as $user_id) {
+            // Fetch applicant data from API
+            $url = env('API_ENDPOINT_BASE_URL') . '/applicants/' . $user_id;
+            $response = Http::get($url);
+
+            if ($response->successful()) {
+                $applicantData = $response->json()['data'];
+
+                if (isset($applicantData['email'])) {
+                    $applicantEmail = $applicantData['email'];
+                    $applicantName = $applicantData['name'];
+                    $practicalTestTitle = $practicalTest->title;
+
+                    Mail::send('emails.practical_tests', compact('applicantName', 'practicalTestTitle'), function($message) use ($applicantEmail, $pdf, $practicalTest) {
+                        $message->to($applicantEmail)
+                                ->subject('Eclectics Practical Test: ' . $practicalTest->title)
+                                ->attachData($pdf->output(), 'PracticalTest.pdf');
+                    });
+                }
+            } else {
+                return back()->with('error', 'Failed to fetch applicant details.');
+            }
+        }
+
+        return back()->with('success', 'Practical test sent to selected applicants.');
     }
+
 }

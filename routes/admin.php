@@ -50,6 +50,15 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::post('jobs/{job}/sendPracticalTest', [PracticalTestController::class, 'sendPracticalTest'])->name('jobs.sendPracticalTest');
     Route::post('/schedule-interview', [InterviewController::class, 'schedule'])->name('scheduleInterview');
     Route::get('/get-form-details', [InterviewController::class, 'getFormDetails'])->name('getFormDetails');
+    Route::get('/interviews/applicant/{applicant_id}', [InterviewController::class, 'getInterviewByApplicantId']);
+    Route::post('/interviews/shortlist', [InterviewController::class, 'shortlist'])->name('interviews.shortlist');
+    // Route::get('/admin/jobs', [InterviewController::class, 'listJobs'])->name('jobs.index');
+    Route::get('/admin/jobs/{job}', [InterviewController::class, 'showJobInterviews'])->name('interviews.show2');
+
+    Route::get('/interviews', [App\Http\Controllers\Admin\InterviewController::class, 'index'])->name('admin.interviews.index');
+    Route::get('/interviews/job/{job_id}', [App\Http\Controllers\Admin\InterviewController::class, 'showJobInterviews'])->name('admin.interviews.showJobInterviews');
+    Route::get('/interviews/job/{job_id}/shortlisted', [App\Http\Controllers\Admin\InterviewController::class, 'showShortlistedApplicants'])->name('admin.interviews.showShortlistedApplicants');
+
 
     // Route::resource('products', ProductController::class);
     Route::resource('tags', TagController::class);

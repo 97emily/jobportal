@@ -20,10 +20,25 @@
 <body class="font-sans text-gray-900 antialiased">
     <div class="container">
         <div class="row justify-content-center align-items-center vh-100">
-            <div class="col-5 px-4">
-                <div class="text-center mb-4">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5 px-4">
+                <div class="flex justify-center mb-10">
+                    <style>
+                         #banner_image {
+                                max-width: 50%;
+                                padding-bottom: 10px;
+                                margin-left: 26%;
+                            }
+                        @media (max-width: 576px) {
+                            #banner_image {
+                                max-width: 33%;
+                                padding-bottom: 10px;
+                                margin-left: 33%;
+                            }
+                        }
+                    </style>
                     <a href="/">
-                        <x-application-logo class="img-fluid"/>
+                        <img id="banner_image" src="{{ URL::asset('img/logo.png') }}" alt="Job Portal"
+                            class="w-5 h-5" />
                     </a>
                 </div>
                 <div class="card shadow-sm rounded-0">

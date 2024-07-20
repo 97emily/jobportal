@@ -1,4 +1,3 @@
-
 <div class="row">
     <div class="container">
         <div class="row">
@@ -12,20 +11,19 @@
                                     <input placeholder="Title" class="form-control" required name="title" type="text" id="title" value="{{ $job->title ?? '' }}">
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="job_description">Job Description <span
-                                            class="text-danger">*</span></label>
+                                    <label for="job_description">Job Description <span class="text-danger">*</span></label>
                                     <div class="quill-editor-wrapper">
-                                        <div id="job_description-quill-editor" style="height: 300px;"
-                                            class="ql-container ql-snow">
+                                        <div id="job_description-quill-editor" style="height: 300px;" class="ql-container ql-snow">
                                             <div class="ql-editor" data-gramm="false" contenteditable="true">
                                                 {!! $job->job_description ?? '' !!}
                                             </div>
                                             <div class="ql-clipboard" contenteditable="true" tabindex="-1"></div>
-                                            <div class="ql-tooltip ql-hidden"><a class="ql-preview"
-                                                    rel="noopener noreferrer" target="_blank"
-                                                    href="about:blank"></a><input type="text" data-formula="e=mc^2"
-                                                    data-link="https://quilljs.com" data-video="Embed URL"><a
-                                                    class="ql-action"></a><a class="ql-remove"></a></div>
+                                            <div class="ql-tooltip ql-hidden">
+                                                <a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a>
+                                                <input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL">
+                                                <a class="ql-action"></a>
+                                                <a class="ql-remove"></a>
+                                            </div>
                                         </div>
                                         <input name="job_description" type="hidden" id="job_description">
                                     </div>
@@ -35,20 +33,15 @@
                                             var job_description_editor = new Quill('#job_description-quill-editor', {
                                                 modules: {
                                                     toolbar: [
-                                                        [{
-                                                            'header': [1, 2, false]
-                                                        }],
+                                                        [{'header': [1, 2, false]}],
                                                         ['bold', 'italic', 'underline'],
                                                         ['link', 'blockquote', 'code-block', 'image'],
-                                                        [{
-                                                            'list': 'ordered'
-                                                        }, {
-                                                            'list': 'bullet'
-                                                        }]
+                                                        [{'list': 'ordered'}, {'list': 'bullet'}]
                                                     ]
                                                 },
                                                 theme: 'snow'
                                             });
+                                            document.getElementById('job_description').value = job_description_editor.root.innerHTML;
                                             job_description_editor.on('text-change', function(delta, source) {
                                                 document.getElementById('job_description').value = job_description_editor.root.innerHTML;
                                             });
@@ -66,36 +59,41 @@
                     <div class="card-body">
                         <h4>Salary and Location</h4>
                         <div class="row border-bottom mb-3">
-                            <div class="form-group mb-3">
+                            <div class="form-group">
                                 <label for="location_id">Location</label>
-                                <select class="form-control" id="location_id" name="location_id">
-                                    <option value="">Select Location</option>
+                                <select class="form-control select2" id="location_id" name="location_id">
+                                    <option value="Select">Select Location</option>
                                     @foreach ($locations as $location)
-                                        <option value="{{ $location->id }}">{{ $location->name }}</option>
+                                        <option value="{{ $location->id }}" {{ (isset($job->location_id) && $job->location_id == $location->id) ? 'selected' : '' }}>
+                                            {{ $location->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            <div class="form-group mb-3">
+                            <div class="form-group">
                                 <label for="salary_range_id">Salary Range</label>
-                                <select class="form-control" id="salary_range_id" name="salary_range_id">
-                                    <option value="">Select Salary Range</option>
+                                <select class="form-control select2" id="salary_range_id" name="salary_range_id">
+                                    <option value="Select">Select Salary Range</option>
                                     @foreach ($salaryRanges as $salaryRange)
-                                        <option value="{{ $salaryRange->id }}">{{ $salaryRange->minimum }} - {{ $salaryRange->maximum }} </option>
+                                        <option value="{{ $salaryRange->id }}" {{ (isset($job->salary_range_id) && $job->salary_range_id == $salaryRange->id) ? 'selected' : '' }}>
+                                            {{ $salaryRange->minimum }} - {{ $salaryRange->maximum }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            <div class="form-group mb-3">
+                            <div class="form-group">
                                 <label for="assessment_id">Assessment</label>
-                                <select class="form-control" id="assessment_id" name="assessment_id">
-                                    <option value="">Select Assessment</option>
+                                <select class="form-control select2" id="assessment_id" name="assessment_id">
+                                    <option value="Select">Select Assessment</option>
                                     @foreach ($assessments as $assessment)
-                                        <option value="{{ $assessment->id }}">{{ $assessment->title }}</option>
+                                        <option value="{{ $assessment->id }}" {{ (isset($job->assessment_id) && $job->assessment_id == $assessment->id) ? 'selected' : '' }}>
+                                            {{ $assessment->title }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
-
                             <!-- end col -->
                         </div>
                         <!-- end row -->
@@ -109,26 +107,30 @@
                         <div class="form-group">
                             <label for="status">Status</label>
                             <select class="form-control select2" id="status" name="status">
-                                <option value="open" {{ $job->status ?? '' == 'open' ? 'selected' : '' }}>Open</option>
-                                <option value="preview" {{ $job->status ?? '' == 'preview' ? 'selected' : '' }}>Preview</option>
-                                <option value="closed" {{ $job->status ?? '' == 'closed' ? 'selected' : '' }}>Closed</option>
+                                <option value="Select">Select Job Status</option>
+                                <option value="open" {{ (isset($job->status) && $job->status == 'open') ? 'selected' : '' }}>Open</option>
+                                <option value="preview" {{ (isset($job->status) && $job->status == 'preview') ? 'selected' : '' }}>Preview</option>
+                                <option value="closed" {{ (isset($job->status) && $job->status == 'closed') ? 'selected' : '' }}>Closed</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="category_id">Category</label>
                             <select class="form-control select2" id="category_id" name="category_id">
+                                <option value="Select">Select Job Category</option>
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ $job->category_id ?? '' == $category->id ? 'selected' : '' }}>
+                                    <option value="{{ $category->id }}" {{ (isset($job->category_id) && $job->category_id == $category->id) ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
+
                         <div class="form-group">
                             <label for="tag_id">Tag</label>
                             <select class="form-control select2" id="tag_id" name="tag_id">
+                                <option value="Select">Select Job Tag</option>
                                 @foreach ($tags as $tag)
-                                    <option value="{{ $tag->id }}" {{ $job->tag_id ?? '' == $tag->id ? 'selected' : '' }}>
+                                    <option value="{{ $tag->id }}" {{ (isset($job->tag_id) && $job->tag_id == $tag->id) ? 'selected' : '' }}>
                                         {{ $tag->name }}
                                     </option>
                                 @endforeach
@@ -163,4 +165,3 @@
         </div>
     </div>
 </div>
-

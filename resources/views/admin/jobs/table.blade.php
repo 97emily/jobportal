@@ -11,7 +11,7 @@
                 </label>
             </th> --}}
             <th>View</th>
-            <th>Shortlisted</th>
+            <th>Applicants</th>
             <th class="no-sort">Closing</th>
             <th>Title</th>
             <th>Category</th>
@@ -37,7 +37,7 @@
                             data-bs-toggle="tooltip"></i></a>
                 </td>
                 <td>
-                    <a href="{{ route('jobs.shortlisted', ['id'=>$job->id]) }}"><i style="color: #00AAD0" class="fa fa-users" data-bs-original-title="Shortlisted Applicants"
+                    <a href="{{ route('jobs.shortlisted', ['id'=>$job->id]) }}"><i style="color: #00AAD0" class="fa fa-users" data-bs-original-title="All Applicants"
                             data-bs-toggle="tooltip"></i></a>
                 </td>
                 <td>

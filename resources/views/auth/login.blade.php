@@ -1,4 +1,9 @@
 <x-guest-layout>
+    {{-- <div class="flex justify-center mb-8">
+        <a href="/">
+            <img src="{{ URL::asset('img/logo.png') }}" alt="Job Portal" class="w-auto h-16" />
+        </a>
+    </div> --}}
     <div class="m-auto text-center">
         <h3 class="text-dark-50 font-weight-bold mt-0 text-center">Sign In</h3>
         <p class="text-muted mb-4">Enter your email address and password to access admin panel.</p>
@@ -49,3 +54,4 @@
         </div>
     </form>
 </x-guest-layout>
+

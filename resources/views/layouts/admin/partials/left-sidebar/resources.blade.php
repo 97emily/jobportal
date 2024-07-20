@@ -109,9 +109,8 @@
                 aria-expanded="{{ Request::is('admin/jobs*')  ? 'true' : 'false' }}"
                 class="dropdown-toggle {{ Request::is('admin/jobs*')  ? '' : 'collapsed' }}">
                 <i class="fa-solid fa-users"></i>
-                <span>Shortlisted Applicants</span>
+                <span>Job Applicants</span>
             </a>
-
             <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/jobs*')  ? 'show' : '' }}"
                 id="applicants-menu" data-parent="#left-sidebar">
 
@@ -128,17 +127,17 @@
         <!-- Interviews -->
         <li class="sidebar-item">
             <a href="#interviews-menu" data-bs-toggle="collapse"
-                aria-expanded="{{ Request::is('admin/interviews*') || Request::is('admin/interviews*') || Request::is('admin/questions*') ? 'true' : 'false' }}"
-                class="dropdown-toggle {{ Request::is('admin/interviews*') || Request::is('admin/interviews*') || Request::is('admin/questions*') ? '' : 'collapsed' }}">
+                aria-expanded="{{ Request::is('admin/interview*') || Request::is('admin/interview*') || Request::is('admin/questions*') ? 'true' : 'false' }}"
+                class="dropdown-toggle {{ Request::is('admin/interview*') || Request::is('admin/interview*') || Request::is('admin/questions*') ? '' : 'collapsed' }}">
                 <i class="fa-solid fa-briefcase"></i>
                 <span>Interviews</span>
             </a>
-            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/interviews*') || Request::is('admin/interviews*') || Request::is('admin/questions*') ? 'show' : '' }}"
+            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/interview*') || Request::is('admin/interview*') || Request::is('admin/questions*') ? 'show' : '' }}"
                 id="interviews-menu" data-parent="#left-sidebar">
                 @can('assessment-list')
-                    <li class="{{ Request::is('admin/interviews*') ? 'active' : '' }}">
-                        <x-nav-link :href="route('interviews.index')" :active="Request::is('admin/interviews*')">
-                            {{ __('Schedule Interviews') }}
+                    <li class="{{ Request::is('admin/interview*') ? 'active' : '' }}">
+                        <x-nav-link :href="route('interviews.index')" :active="Request::is('admin/interview*')">
+                            {{ __('Interviews & Shortlist') }}
                         </x-nav-link>
                     </li>
                 @endcan
