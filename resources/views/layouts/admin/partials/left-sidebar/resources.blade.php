@@ -106,17 +106,17 @@
         <!-- Shortlisted Applicants -->
         <li class="sidebar-item">
             <a href="#applicants-menu" data-bs-toggle="collapse"
-                aria-expanded="{{ Request::is('admin/jobs*')  ? 'true' : 'false' }}"
-                class="dropdown-toggle {{ Request::is('admin/jobs*')  ? '' : 'collapsed' }}">
+                aria-expanded="{{ Request::is('admin/applicants*')  ? 'true' : 'false' }}"
+                class="dropdown-toggle {{ Request::is('admin/applicants*')  ? '' : 'collapsed' }}">
                 <i class="fa-solid fa-users"></i>
                 <span>Job Applicants</span>
             </a>
-            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/jobs*')  ? 'show' : '' }}"
+            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/applicants*')  ? 'show' : '' }}"
                 id="applicants-menu" data-parent="#left-sidebar">
 
                 @can('job-list')
-                    <li class="{{ Request::is('admin/jobs*') ? 'active' : '' }}">
-                        <x-nav-link :href="route('jobs.index')" :active="Request::is('admin/jobs*')">
+                    <li class="{{ Request::is('admin/applicants*') ? 'active' : '' }}">
+                        <x-nav-link :href="route('applicants.index')" :active="Request::is('admin/applicants*')">
                             {{ __('Manage applicants') }}
                         </x-nav-link>
                     </li>

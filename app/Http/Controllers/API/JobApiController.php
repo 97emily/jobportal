@@ -123,67 +123,129 @@ class JobApiController extends Controller
         return response()->json(['success' => true, 'message' => 'Job deleted successfully.']);
     }
 
-    public function shortlisted($job_id): View
-{
-    $url = env('API_ENDPOINT_BASE_URL') . '/user/applicants-by-job';
-    $data = ['job_id' => $job_id];
-    $response = Http::get($url, $data);
-    $job = JobListing::with(['category', 'tag', 'location', 'salaryRange', 'assessment'])->find($job_id);
-    $shorListedApplicants = json_decode($response->body(), true);
-    $practicalTests = PracticalTest::orderBy('title','asc')->get();
-    $shorListedApplicants = $shorListedApplicants['data'];
-
-    // Compute the total allocated marks and pass mark
-    $totalAllocatedMarks = $job->assessment->questions->sum('allocated_marks');
-    $computedPassMarkInMarks = $totalAllocatedMarks ? ($job->assessment->pass_mark / 100) * $totalAllocatedMarks : 0;
-
-    // Update applicant status based on score
-    foreach ($shorListedApplicants as &$applicant) {
-        $score = $applicant['applicant']['assessment_score'];
-        $applicant['applicant']['state'] = $score >= $computedPassMarkInMarks ? 'Shortlisted' : 'Not Shortlisted';
-    }
-
-    // Log::info("job data",['job'=>$job]);
-    return view('admin.jobs.shortlisted', compact('shorListedApplicants', 'job', 'practicalTests'));
-}
-
-
     // public function shortlisted($job_id): View
     // {
     //     $url = env('API_ENDPOINT_BASE_URL') . '/user/specific-job-applicants';
-
-    //     $data = [
-    //         'job_id' => $job_id,
-    //     ];
-
+    //     $data = ['job_id' => $job_id];
     //     $response = Http::get($url, $data);
     //     $job = JobListing::with(['category', 'tag', 'location', 'salaryRange', 'assessment'])->find($job_id);
     //     $shorListedApplicants = json_decode($response->body(), true);
-    //     $practicalTests = PracticalTest::orderBy('title','asc')->get();
+    //     // $practicalTests = PracticalTest::where('category_id', $job->category_id)orderBy('title','asc')->get();
+    //     $practicalTests = PracticalTest::orderBy('title', 'asc')->get();
     //     $shorListedApplicants = $shorListedApplicants['data'];
 
+    //     // Compute the total allocated marks and pass mark
+    //     $totalAllocatedMarks = $job->assessment->questions->sum('allocated_marks');
+    //     $computedPassMarkInMarks = $totalAllocatedMarks ? ($job->assessment->pass_mark / 100) * $totalAllocatedMarks : 0;
+
+    //     // Update applicant status based on score
+    //     foreach ($shorListedApplicants as &$applicant) {
+    //         $score = $applicant['applicant']['assessment_score'];
+    //         $applicant['applicant']['state'] = $score >= $computedPassMarkInMarks ? 'Shortlisted' : 'Not Shortlisted';
+    //     }
+
+    //     // Log::info("job data",['job'=>$job]);
     //     return view('admin.jobs.shortlisted', compact('shorListedApplicants', 'job', 'practicalTests'));
     // }
 
-    public function shortlistedapplicantdetails($user_id): View
+
+    public function shortlisted($job_id): View
     {
-        $url = env('API_ENDPOINT_BASE_URL') . '/applicants/' . $user_id;
+        $url = env('API_ENDPOINT_BASE_URL') . '/user/specific-job-applicants';
+        $data = ['job_id' => $job_id];
+        $response = Http::get($url, $data);
 
-        $response = Http::get($url);
-        $shortListedApplicantDetails = json_decode($response->body(), true);
+        // Fetch the job and its related category
+        $job = JobListing::with(['category', 'tag', 'location', 'salaryRange', 'assessment'])->find($job_id);
 
-        if (isset($shortListedApplicantDetails['data'])) {
-            $shortListedApplicantDetails = $shortListedApplicantDetails['data'];
-        } else {
-            abort(404, 'Applicant details not found');
+        if (!$job) {
+            return back()->with('error', 'Job listing not found.');
         }
 
-        return view('admin.jobs.applicantdetails', compact('shortListedApplicantDetails'));
+        // Decode the response and get the applicants
+        $shorListedApplicants = json_decode($response->body(), true);
+        $shorListedApplicants = $shorListedApplicants['data'] ?? [];
+
+        // Fetch only the practical tests related to the job's category
+        $practicalTests = PracticalTest::where('category_id', $job->category_id)
+                                       ->orderBy('title', 'asc')
+                                       ->get();
+
+         if ($practicalTests->isEmpty()) {
+        $practicalTests = collect();
+     }
+        // Compute the total allocated marks and pass mark
+        $totalAllocatedMarks = $job->assessment->questions->sum('allocated_marks');
+        $computedPassMarkInMarks = $totalAllocatedMarks ? ($job->assessment->pass_mark / 100) * $totalAllocatedMarks : 0;
+
+        // Update applicant status based on score
+        foreach ($shorListedApplicants as &$applicant) {
+            $score = $applicant['applicant']['assessment_score'];
+            $applicant['applicant']['state'] = $score >= $computedPassMarkInMarks ? 'Shortlisted' : 'Not Shortlisted';
+        }
+
+        // Log job data for debugging
+        // Log::info("Job data", ['job' => $job]);
+
+        return view('admin.jobs.shortlisted', compact('shorListedApplicants', 'job', 'practicalTests'));
     }
+
+
+    // public function shortlistedapplicantdetails($user_id): View
+    // {
+    //     $url = env('API_ENDPOINT_BASE_URL') . '/applicants/' . $user_id;
+
+    //     $response = Http::get($url);
+    //     $shortListedApplicantDetails = json_decode($response->body(), true);
+
+    //     if (isset($shortListedApplicantDetails['data'])) {
+    //         $shortListedApplicantDetails = $shortListedApplicantDetails['data'];
+    //     } else {
+    //         abort(404, 'Applicant details not found');
+    //     }
+
+    //     return view('admin.jobs.applicantdetails', compact('shortListedApplicantDetails'));
+    // }
+
+    public function shortlistedapplicantdetails($user_id): View
+{
+    $url = env('API_ENDPOINT_BASE_URL') . '/applicants/' . $user_id;
+    $response = Http::get($url);
+    $shortListedApplicantDetails = json_decode($response->body(), true);
+
+    if (isset($shortListedApplicantDetails['data'])) {
+        $shortListedApplicantDetails = $shortListedApplicantDetails['data'];
+
+        // Prepend ngrok URL to certificate paths
+        $ngrokUrl = 'https://d675-102-219-208-126.ngrok-free.app/storage/';
+
+        if (isset($shortListedApplicantDetails['highest_education_level']['certificate'])) {
+            $shortListedApplicantDetails['highest_education_level']['certificate'] = $ngrokUrl . $shortListedApplicantDetails['highest_education_level']['certificate'];
+        }
+
+        if (isset($shortListedApplicantDetails['secondary_education']['kcseCertificate'])) {
+            $shortListedApplicantDetails['secondary_education']['kcseCertificate'] = $ngrokUrl . $shortListedApplicantDetails['secondary_education']['kcseCertificate'];
+        }
+
+        if (isset($shortListedApplicantDetails['professional_qualifications'])) {
+            foreach ($shortListedApplicantDetails['professional_qualifications'] as &$qualification) {
+                if (isset($qualification['professionalCertificate'])) {
+                    $qualification['professionalCertificate'] = $ngrokUrl . $qualification['professionalCertificate'];
+                }
+            }
+        }
+    } else {
+        abort(404, 'Applicant details not found');
+    }
+
+    return view('admin.jobs.applicantdetails', compact('shortListedApplicantDetails'));
+}
 
 
     public function updateApplicant(Request $request)
     {
+        // \Log::info('UpdateApplicant:', $request->id);
+
         $request->validate([
             'id' => 'required|integer',
             'assessment_score' => 'required|numeric',
@@ -195,7 +257,7 @@ class JobApiController extends Controller
         // Log the received data
         \Log::info('Received data:', $request->all());
 
-        $url = env('API_ENDPOINT_BASE_URL') . '/user/updateShortlistedApplicant'; // Replace with your API endpoint
+        $url = env('API_ENDPOINT_BASE_URL') . '/user/updateAssessmentAttempt'; // Replace with your API endpoint
 
         try {
             $response = Http::put($url, [
@@ -211,11 +273,11 @@ class JobApiController extends Controller
 
             return response()->json($response->json());
         } catch (\Exception $e) {
+
             // Log any errors
             \Log::error('Error updating applicant:', ['message' => $e->getMessage()]);
 
             return response()->json(['success' => false, 'message' => 'Failed to update applicant details.'], 500);
         }
     }
-
 }

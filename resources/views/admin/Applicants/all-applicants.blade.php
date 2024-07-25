@@ -73,47 +73,24 @@
                             </p>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-    <!-- Error and Success Messages -->
-    {{-- @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif --}}
-
-    @if (Session::has('success'))
-        <div class="alert alert-success">
-            {{ Session::get('message') }}
-        </div>
-    @endif
-
-
-    @if (Session::has('error'))
-    <div class="alert alert-danger">
-        {{ Session::get('error') }}
-    </div>
-@endif
-
 
     <div class="card p-5">
         <div class="col-lg-12 col-md-12">
             <div class="row">
-                {{-- <div class="row border-bottom mb-3"> --}}
+                <div class="row border-bottom mb-3"></div>
                 <div class="col-12">
                     <div class="form-group mb-3">
-                        Note:
                         <label for="practical_tests_id">Send Practical Test</label>
                         @if ($practicalTests->isNotEmpty())
                             <select name="practical_tests_id" id="practical_tests_id_select" class="form-control"
                                 required>
                                 <option value="">Select Practical Test</option>
                                 @foreach ($practicalTests as $practicalTest)
-                                    <option value="{{ $practicalTest->id }}">{{ $practicalTest->title }}
-                                    </option>
+                                    <option value="{{ $practicalTest->id }}">{{ $practicalTest->title }}</option>
                                 @endforeach
                             </select>
                         @else
@@ -143,12 +120,15 @@
                     @endif
                 </div>
             </div>
-            <hr>
 
+
+
+            <hr>
             <!-- Applicant Table -->
+
             <div class="col-lg-12 col-md-12">
                 <div class="table-responsive">
-                    <table id="job-datatable" class="table-middle table-hover table-responsive table table-striped">
+                    <table id="job-datatable" class="table-middle table-hover table-responsive table">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -179,15 +159,9 @@
                                     </td>
                                     <td>{{ $applicant['applicant']['name'] }}</td>
                                     <td>{{ $applicant['applicant']['email'] }}</td>
-                                    {{-- <td>{{ $applicant['applicant']['assessment_score'] }}</td> --}}
-                                    <td><span
-                                            class="badge bg-black">{{ $applicant['applicant']['assessment_score'] }}</span>
-                                    </td>
+                                    <td>{{ $applicant['applicant']['assessment_score'] }}</td>
                                     <td>{{ $applicant['applicant']['status'] }}</td>
-                                    {{-- <td>{{ $applicant['applicant']['practical_score'] }}</td> --}}
-                                    <td><span
-                                            class="badge bg-info">{{ $applicant['applicant']['practical_score'] }}</span>
-                                    </td>
+                                    <td>{{ $applicant['applicant']['practical_score'] }}</td>
                                     <td><span class="badge bg-success">{{ $applicant['applicant']['state'] }}</span>
                                     </td>
                                     <td>{{ $applicant['applicant']['application_date'] }}</td>
@@ -204,7 +178,6 @@
                                             </a>
                                             <a href="javascript:void(0)" class="interview-button"
                                                 data-applicant-id="{{ $applicant['applicant']['id'] }}"
-                                                data-applicant-user_id="{{ $applicant['applicant']['user_id'] }}"
                                                 data-applicant-name="{{ $applicant['applicant']['name'] }}"
                                                 data-job-id="{{ $job->id }}">
                                                 <i class="fa fa-calendar" style="color: #00d01f"
@@ -222,127 +195,111 @@
         </div>
     </div>
 
-    {{-- <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmationModalLabel">Confirm Reschedule</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to reschedule this interview?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" id="confirm-reschedule" class="btn btn-primary">Confirm</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
+            <script>
+                document.getElementById('practical_tests_id_select').addEventListener('change', function() {
+                    var selectedTestId = this.value;
+                    document.getElementById('practical_tests_id_hidden').value = selectedTestId;
+                    document.getElementById('preview_practical_tests_id').value = selectedTestId;
+                });
+
+                document.getElementById('send-practical-test').addEventListener('click', function() {
+                    var selectedTestId = document.getElementById('practical_tests_id_select').value;
+                    var selectedApplicants = Array.from(document.querySelectorAll('input[name="applicants[]"]:checked'))
+                        .map(checkbox => checkbox.value);
+
+                    // Log values for debugging
+                    console.log('Selected Test ID:', selectedTestId);
+                    console.log('Selected Applicants:', selectedApplicants);
+
+                    // Set values to hidden fields
+                    document.getElementById('selected_applicants').value = selectedApplicants.join(',');
+                    document.getElementById('practical_tests_id_hidden').value = selectedTestId;
+
+                    // Ensure practical test is selected
+                    if (!selectedTestId) {
+                        alert('Please select a practical test.');
+                    } else {
+                        document.getElementById('practical-test-form').submit();
+                    }
+                });
+
+                document.getElementById('preview-practical-test').addEventListener('click', function() {
+                    var selectedTestId = document.getElementById('practical_tests_id_select').value;
+                    if (!selectedTestId) {
+                        alert('Please select a practical test.');
+                    } else {
+                        document.getElementById('preview-practical-test-form').submit();
+                    }
+                });
+
+                document.getElementById('select-all').addEventListener('change', function() {
+                    var checkboxes = document.querySelectorAll('input[name="applicants[]"]');
+                    for (var checkbox of checkboxes) {
+                        checkbox.checked = this.checked;
+                    }
+                });
+            </script>
 
 
-    <script>
-        document.getElementById('practical_tests_id_select').addEventListener('change', function() {
-            var selectedTestId = this.value;
-            document.getElementById('practical_tests_id_hidden').value = selectedTestId;
-            document.getElementById('preview_practical_tests_id').value = selectedTestId;
-        });
 
-        document.getElementById('send-practical-test').addEventListener('click', function() {
-            var selectedTestId = document.getElementById('practical_tests_id_select').value;
-            var selectedApplicants = Array.from(document.querySelectorAll('input[name="applicants[]"]:checked'))
-                .map(checkbox => checkbox.value);
-
-            // Log values for debugging
-            console.log('Selected Test ID:', selectedTestId);
-            console.log('Selected Applicants:', selectedApplicants);
-
-            // Set values to hidden fields
-            document.getElementById('selected_applicants').value = selectedApplicants.join(',');
-            document.getElementById('practical_tests_id_hidden').value = selectedTestId;
-
-            // Ensure practical test is selected
-            if (!selectedTestId) {
-                alert('Please select a practical test.');
-            } else {
-                document.getElementById('practical-test-form').submit();
-            }
-        });
-
-        document.getElementById('preview-practical-test').addEventListener('click', function() {
-            var selectedTestId = document.getElementById('practical_tests_id_select').value;
-            if (!selectedTestId) {
-                alert('Please select a practical test.');
-            } else {
-                document.getElementById('preview-practical-test-form').submit();
-            }
-        });
-
-        document.getElementById('select-all').addEventListener('change', function() {
-            var checkboxes = document.querySelectorAll('input[name="applicants[]"]');
-            for (var checkbox of checkboxes) {
-                checkbox.checked = this.checked;
-            }
-        });
-    </script>
-
-
-    <!-- Modal -->
-    <div>
-        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form id="updateForm" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Update Applicant Details</h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <input type="hidden" name="id" id="applicant_id">
-                            <div class="form-group">
-                                <label for="applicant_name">Name</label>
-                                <input type="text" class="form-control" id="applicant_name" name="applicant_name"
-                                    readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="assessment_score">Assessment Score</label>
-                                <input type="number" class="form-control" id="assessment_score"
-                                    name="assessment_score" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="practical_score">Practical Score</label>
-                                <input type="number" class="form-control" id="practical_score"
-                                    name="practical_score" required>
-                            </div>
-                            {{-- <div class="form-group">
+            <!-- Modal -->
+            <div>
+                <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+                    aria-labelledby="editModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form id="updateForm" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel">Update Applicant Details</h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="id" id="applicant_id">
+                                    <div class="form-group">
+                                        <label for="applicant_name">Name</label>
+                                        <input type="text" class="form-control" id="applicant_name"
+                                            name="applicant_name" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="assessment_score">Assessment Score</label>
+                                        <input type="number" class="form-control" id="assessment_score"
+                                            name="assessment_score" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="practical_score">Practical Score</label>
+                                        <input type="number" class="form-control" id="practical_score"
+                                            name="practical_score" required>
+                                    </div>
+                                    {{-- <div class="form-group">
                                 <label for="interview_score">Interview Score</label>
                                 <input type="number" class="form-control" id="interview_score" name="interview_score"
                                     required>
                             </div> --}}
-                            <div class="form-group">
-                                <label for="status">Status</label>
-                                <select class="form-control" id="status" name="status" required>
-                                    <option value="In Review">In Review</option>
-                                    <option value="Approved">Approved</option>
-                                    <option value="Rejected">Rejected</option>
-                                    <option value="Hired">Hired</option>
-                                </select>
-                            </div>
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="form-control" id="status" name="status" required>
+                                            <option value="In Review">In Review</option>
+                                            <option value="Approved">Approved</option>
+                                            <option value="Rejected">Rejected</option>
+                                            <option value="Hired">Hired</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
 </x-admin.app-layout>
 
@@ -426,7 +383,6 @@
             <div class="modal-body">
                 <form id="scheduleInterviewForm" method="POST" action="{{ route('scheduleInterview') }}">
                     @csrf
-                    <input type="hidden" id="interview_applicant_user_id" name="applicant_user_id">
                     <input type="hidden" id="interview_applicant_id" name="applicant_id">
                     <input type="hidden" id="interview_job_id" name="job_listings_id">
                     <input type="hidden" id="is_reschedule" name="is_reschedule" value="false">
@@ -458,35 +414,12 @@
                             <option value="">Select Location</option>
                         </select>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
+                    <button type="submit" class="btn btn-primary">Save Interview</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Confirmation Modal -->
-{{-- <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmationModalLabel">Confirm Reschedule</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to reschedule the interview?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="confirmReschedule">Yes, Reschedule</button>
-            </div>
-        </div>
-    </div>
-</div> --}}
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -502,12 +435,10 @@
                 // document.getElementById('interview_applicant_name').value = applicantName;
                 // document.getElementById('interview_job_id').value = jobId; // Set the job ID
                 var applicantId = this.getAttribute('data-applicant-id');
-                var applicantUserId = this.getAttribute('data-applicant-user_id');
                 var applicantName = this.getAttribute('data-applicant-name');
                 var jobId = this.getAttribute('data-job-id'); // Get Job ID
 
                 document.getElementById('interview_applicant_id').value = applicantId;
-                document.getElementById('interview_applicant_user_id').value = applicantUserId;
                 document.getElementById('interview_applicant_name').value = applicantName;
                 document.getElementById('interview_job_id').value = jobId;
 
@@ -548,14 +479,11 @@
             });
         });
 
-
-
         // Handle form submission
         document.getElementById('scheduleForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
             const applicantId = document.getElementById('interview_applicant_id').value;
-            const applicantUserId = document.getElementById('interview_applicant_user_id').value;
             const jobId = document.getElementById('interview_job_id').value;
             const locationId = document.getElementById('interview_location_id').value;
             const interviewDate = document.getElementById('interview_date').value;
@@ -571,7 +499,6 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     body: JSON.stringify({
-                        user_id: applicantUserId,
                         applicant_id: applicantId,
                         job_listings_id: jobId, // Pass the job ID
                         location_id: locationId,
@@ -598,147 +525,4 @@
                 });
         });
     });
-
-    // document.addEventListener('DOMContentLoaded', function() {
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     let isReschedule = false;
-
-    //     // Handle interview button click
-    //     document.querySelectorAll('.interview-button').forEach(button => {
-    //         button.addEventListener('click', function() {
-    //             var applicantId = this.getAttribute('data-applicant-id');
-    //             var applicantUserId = this.getAttribute('data-applicant-user_id');
-    //             var applicantName = this.getAttribute('data-applicant-name');
-    //             var jobId = this.getAttribute('data-job-id');
-
-    //             document.getElementById('interview_applicant_id').value = applicantId;
-    //             document.getElementById('interview_applicant_user_id').value = applicantUserId;
-    //             document.getElementById('interview_applicant_name').value = applicantName;
-    //             document.getElementById('interview_job_id').value = jobId;
-
-    //             // Check if it's a reschedule
-    //             fetch(`{{ url('/AllApplicants/check-interview') }}/${jobId}/${applicantId}`)
-    //                 .then(response => {
-    //                     console.log('Response status:', response
-    //                     .status); // Log response status
-    //                     return response.json();
-    //                 })
-    //                 .then(data => {
-    //                     console.log('Response data:', data); // Log response data
-    //                     if (data.exists) {
-    //                         isReschedule = true;
-    //                     } else {
-    //                         isReschedule = false;
-    //                     }
-    //                     document.getElementById('is_reschedule').value = isReschedule ?
-    //                         'true' : 'false';
-    //                 })
-    //                 .catch(error => {
-    //                     console.error('Error checking interview:', error);
-    //                     alert(error);
-    //                     alert('An error occurred while checking the interview status.');
-    //                 });
-
-
-    //             // Fetch locations
-    //             fetch('{{ route('getFormDetails') }}')
-    //                 .then(response => response.json())
-    //                 .then(data => {
-    //                     const locations = data.locations;
-    //                     const locationDropdown = document.getElementById(
-    //                         'interview_location_id');
-
-    //                     locationDropdown.innerHTML =
-    //                         '<option value="">Select Location</option>';
-    //                     locations.forEach(location => {
-    //                         locationDropdown.innerHTML +=
-    //                             `<option value="${location.id}">${location.name}</option>`;
-    //                     });
-    //                 })
-    //                 .catch(error => {
-    //                     console.error('Error fetching form details:', error);
-    //                     alert('An error occurred while fetching form details.');
-    //                 });
-
-    //             // Show modal
-    //             var interviewModal = new bootstrap.Modal(document.getElementById(
-    //                 'interviewModal'));
-    //             interviewModal.show();
-    //         });
-    //     });
-
-    //     // Handle form submission
-    //     document.getElementById('scheduleInterviewForm').addEventListener('submit', function(event) {
-    //         event.preventDefault();
-
-    //         const applicantId = document.getElementById('interview_applicant_id').value;
-    //         const applicantUserId = document.getElementById('interview_applicant_user_id').value;
-    //         const jobId = document.getElementById('interview_job_id').value;
-    //         const locationId = document.getElementById('interview_location_id').value;
-    //         const interviewDate = document.getElementById('interview_date').value;
-    //         const interviewTime = document.getElementById('interview_time').value;
-    //         const title = document.getElementById('interview_title').value;
-    //         const requirements = document.getElementById('interview_requirements').value;
-    //         const url = "{{ route('scheduleInterview') }}";
-
-    //         if (isReschedule) {
-    //             // Show confirmation modal
-    //             var confirmationModal = new bootstrap.Modal(document.getElementById(
-    //                 'confirmationModal'));
-    //             confirmationModal.show();
-
-    //             document.getElementById('confirmReschedule').addEventListener('click', function() {
-    //                 // Proceed with rescheduling
-    //                 confirmationModal.hide();
-
-    //                 submitForm(url, {
-    //                     applicant_id: applicantId,
-    //                     applicant_user_id: applicantUserId,
-    //                     job_listings_id: jobId,
-    //                     location_id: locationId,
-    //                     interview_date: interviewDate,
-    //                     interview_time: interviewTime,
-    //                     title: title,
-    //                     requirements: requirements
-    //                 });
-    //             });
-    //         } else {
-    //             // Directly schedule the interview
-    //             submitForm(url, {
-    //                 applicant_id: applicantId,
-    //                 applicant_user_id: applicantUserId,
-    //                 job_listings_id: jobId,
-    //                 location_id: locationId,
-    //                 interview_date: interviewDate,
-    //                 interview_time: interviewTime,
-    //                 title: title,
-    //                 requirements: requirements
-    //             });
-    //         }
-    //     });
-
-    //     function submitForm(url, data) {
-    //         fetch(url, {
-    //                 method: 'POST',
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
-    //                 },
-    //                 body: JSON.stringify(data)
-    //             })
-    //             .then(response => response.json())
-    //             .then(data => {
-    //                 if (data.success) {
-    //                     location.reload(); // Reload the page to reflect changes
-    //                 } else {
-    //                     console.error('Failed to schedule interview:', data.message);
-    //                     alert('Failed to schedule interview.');
-    //                 }
-    //             })
-    //             .catch(error => {
-    //                 console.error('Error:', error);
-    //                 alert('An error occurred while scheduling the interview.');
-    //             });
-    //     }
-    // });
 </script>

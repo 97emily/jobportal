@@ -20,13 +20,15 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <div class="container">
-                            <h2>Job Listings</h2>
+                            {{-- <h2>Job Listings</h2> --}}
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>Job ID</th>
                                         <th>Job Title</th>
-                                        <th>Actions</th>
+                                        <th>Job Category</th>
+                                        <th>View Interviews</th>
+                                        <th>Final Shortlist</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -36,8 +38,17 @@
                                                 <td>{{ $job->id }}</td>
                                                 <td>{{ $job->title }}</td>
                                                 <td>
-                                                    <a href="{{ route('admin.interviews.showJobInterviews', $job->id) }}" class="btn btn-info">View Interviews</a>
-                                                    <a href="{{ route('admin.interviews.showShortlistedApplicants', $job->id) }}" class="btn btn-warning">View Shortlisted Applicants</a>
+                                                    <span class="badge bg-info">{{ $job->category->name }}</span>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('admin.interviews.showJobInterviews', $job->id) }}" title="View Interviews">
+                                                        <i class="fa fa-briefcase" style="color: #17a2b8;"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('admin.interviews.showShortlistedApplicants', $job->id) }}" title="View Shortlisted Applicants">
+                                                        <i class="fa fa-street-view" style="color: #070807;"></i>
+                                                    </a>
                                                 </td>
                                             </tr>
                                         @endif

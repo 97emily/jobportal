@@ -219,6 +219,32 @@
                 </div>
             </div> <!-- end card-->
         </div> <!-- end col -->
+        {{-- <div class="col-md-6 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="text-muted text-truncate mb-1">Practical Tests</p>
+                        </div>
+                        <div class="col-6">
+                            <div class="icon-sm bg-success float-end rounded">
+                                <i class="fa-solid fa-tags"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="fw-300 my-1">{{App\Models\PracticalTest::count()}}</h2>
+                    <div class="mt-3">
+                        <h6>Target <span class="float-end">76%</span></h6>
+                        <div class="progress progress-sm m-0">
+                            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="76" aria-valuemin="0"
+                                aria-valuemax="100" style="width: 76%">
+                                <span class="sr-only">76% Complete</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end card-->
+        </div> <!-- end col --> --}}
     </div>
     <div class="row">
         <div class="col-12">

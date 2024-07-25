@@ -14,7 +14,8 @@ class CreateInterviewsTable extends Migration
             $table->id();
             $table->date('interview_date');
             $table->time('interview_time');
-            $table->unsignedBigInteger('job_listings_id');
+            // $table->unsignedBigInteger('job_listings_id');
+            $table->foreignId('job_listings_id')->constrained('job_listings')->cascadeOnDelete(); //;
             $table->unsignedBigInteger('applicant_id');
             $table->unsignedBigInteger('location_id');
             $table->string('title');
@@ -22,7 +23,7 @@ class CreateInterviewsTable extends Migration
             $table->timestamps();
 
             // Add foreign key constraints if needed
-            $table->foreign('job_listings_id')->references('id')->on('job_listings')->onDelete('cascade');
+            // $table->foreign('job_listings_id')->references('id')->on('job_listings')->onDelete('cascade');
             $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');
         });
     }

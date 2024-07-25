@@ -10,6 +10,8 @@
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+use App\Http\Controllers\Admin\ApplicantsController;
 use App\Http\Controllers\Admin\AttachmentController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -29,7 +31,9 @@ use App\Http\Controllers\Admin\PracticalQuestionController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\SalaryRangeController;
 use App\Http\Controllers\Admin\InterviewController;
+use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\API\JobApiController;
+use App\Models\PracticalTest;
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -43,7 +47,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::resource('questions', QuestionController::class);
     Route::resource('jobs', JobController::class);
     Route::get('jobs/applicants', [JobController::class,'applicants'])->name('jobs.applicants');
-    Route::get('jobs/{id}/shortlisted', [JobApiController::class, 'shortlisted'])->name('jobs.shortlisted');
+    Route::get('jobs/{id}/AllApplicants', [JobApiController::class, 'shortlisted'])->name('jobs.shortlisted');
     Route::get('jobs/{user_id}/shortlistedapplicantdetails', [JobApiController::class, 'shortlistedapplicantdetails'])->name('jobs.shortlisted.applicant');
     Route::put('/updateshortlistedapplicantdetails', [JobApiController::class, 'updateApplicant'])->name('updateshortlistedapplicantdetails');
     // Route::post('/send-tests/{job_id}', [PracticalTestController::class, 'sendTests'])->name('send.tests');
@@ -58,7 +62,20 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/interviews', [App\Http\Controllers\Admin\InterviewController::class, 'index'])->name('admin.interviews.index');
     Route::get('/interviews/job/{job_id}', [App\Http\Controllers\Admin\InterviewController::class, 'showJobInterviews'])->name('admin.interviews.showJobInterviews');
     Route::get('/interviews/job/{job_id}/shortlisted', [App\Http\Controllers\Admin\InterviewController::class, 'showShortlistedApplicants'])->name('admin.interviews.showShortlistedApplicants');
+    Route::get('/admin/search', [SearchController::class, 'search'])->name('admin.search');
+    Route::get('/job/{jobId}/practical-test/preview', [PracticalTestController::class, 'previewPracticalTest'])->name('practical-test.preview');
 
+
+    Route::post('/applicant', [ApplicantsController::class, 'shortlist'])->name('applicants.shortlist');
+    Route::get('/applicants', [ApplicantsController::class, 'index'])->name('applicants.index');
+    Route::get('/applicants/{job_id}/all', [ApplicantsController::class, 'allApplicants'])->name('applicants.all');
+    Route::get('/applicants/{job_id}/shortlisted', [ApplicantsController::class, 'shortlistedApplicants'])->name('applicants.shortlisted');
+    Route::get('/applicants/{job_id}/not-shortlisted', [ApplicantsController::class, 'notShortlistedApplicants'])->name('applicants.not-shortlisted');
+    Route::get('/applicants/{job_id}/interviews', [ApplicantsController::class, 'applicantInterviews'])->name('applicants.interviews');
+    Route::get('/applicants/{job_id}/final-shortlist', [ApplicantsController::class, 'finalShortlist'])->name('applicants.final-shortlist');
+    Route::get('rejections/{job_id}', [ApplicantsController::class, 'rejections'])->name('applicants.rejections');
+    Route::post('send-rejection-email', [ApplicantsController::class, 'sendRejectionEmail'])->name('admin.sendRejectionEmail');
+    Route::get('/AllApplicants/check-interview/{jobId}/{applicantId}', [InterviewController::class, 'checkInterview']);
 
     // Route::resource('products', ProductController::class);
     Route::resource('tags', TagController::class);

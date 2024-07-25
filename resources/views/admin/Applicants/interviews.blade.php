@@ -108,14 +108,12 @@
     {{-- <h3 class="badge bg-black"> Interviews for the Role: {{ $job->title }}</h3> --}}
     <div class="row">
         <div class="col-12">
-
             <div class="card">
                 <div class="card-body">
-                    {{-- <div class="col-12">nnnn</div> --}}
                     <div class="table-responsive">
                         <div>
-                            <h4 class="product-title" style="color:#00AAD0">Scheduled Interviews for the Role:
-                                {{ $job->title }}</h4>
+
+                            <h4 style="color: #00AAD0">Scheduled Interviews for the Role: {{ $job->title }}</h4>
                             <table id="interview-datatable"
                                 class="resources-datatable table-middle table-hover table-responsive table">
                                 <thead>
@@ -123,7 +121,7 @@
                                         <th>No</th>
                                         <th>View</th>
                                         <th>Applicant</th>
-                                        <th>Interview Date</th>
+                                        <th>Date</th>
                                         <th>Assessment Score</th>
                                         <th>Interview Score</th>
                                         <th>Practical Score</th>
@@ -142,17 +140,10 @@
                                                         data-bs-original-title="View" data-bs-toggle="tooltip"></i>
                                                 </a>
                                             </td>
-                                            {{-- <td>
-                                                <a
-                                                    href="{{ route('jobs.shortlisted.applicant', ['user_id' => $interview->applicant_id['applicant']['user_id']]) }}">
-                                                    <i style="color: #00AAD0" class="fa fa-eye" data-bs-original-title="View"
-                                                        data-bs-toggle="tooltip"></i>
-                                                </a>
-                                            </td> --}}
                                             <td>{{ $interview->applicant_name }}</td>
                                             <td>{{ \Carbon\Carbon::parse($interview->interview_date)->format('d-m-Y') }}
                                             </td>
-                                            <td>{{ $interview->assessment_score }}</td>
+                                            <td > <span>{{ $interview->assessment_score }}</span></td>
                                             <td>{{ $interview->interview_score }}</td>
                                             <td>{{ $interview->practical_score }}</td>
                                             <td>
@@ -241,7 +232,7 @@
                                                 <div class="form-group">
                                                     <label for="practical_score">Practical Score</label>
                                                     <input type="number" class="form-control" id="practical_score"
-                                                        name="practical_score" required>
+                                                        name="practical_score" readonly>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="interview_score">Interview Score</label>
@@ -343,7 +334,7 @@
                                     button.addEventListener('click', function() {
                                         const interviewId = this.getAttribute('data-id');
 
-                                        fetch('{{ route('interviews.shortlist') }}', {
+                                        fetch('{{ route('applicants.shortlist') }}', {
                                                 method: 'POST',
                                                 headers: {
                                                     'Content-Type': 'application/json',

@@ -117,12 +117,33 @@ class CategoryController extends Controller
         }
 
         $category_id = $request->input('category_id');
-        $category = Category::with('jobListings')->find($category_id);
+        $category = Category::with(['jobListings.tag', 'jobListings.category', 'jobListings.salaryRange', 'jobListings.location', 'jobListings.assessment'])->find($category_id);
 
         if (!$category) {
             return response()->json(['message' => 'Category not found'], 404);
         }
 
-        return response()->json(['jobs' => $category->jobListings], 200);
+        $jobs = $category->jobListings->map(function ($job) {
+            return [
+                'id' => $job->id,
+                'title' => $job->title,
+                'job_description' => $job->job_description,
+                'status' => $job->status,
+                'closing_date' => $job->closing_date,
+                'tag' => $job->tag ? $job->tag->name : null,
+                'category_id' => $job->category_id,
+                'category' => $job->category ? $job->category->name : null,
+                // 'salary_range' => $job->salaryRange ? $job->salaryRange->name : null,
+                'salary_range' => $job->salaryRange ? $job->salaryRange->minimum . '-' . $job->salaryRange->maximum : 'Not specified',
+                'location' => $job->location ? $job->location->name : null,
+                'assessment' => $job->assessment ? $job->assessment->title : null,
+                // 'deleted_at' => $job->deleted_at,
+                // 'created_at' => $job->created_at,
+                // 'updated_at' => $job->updated_at,
+            ];
+        });
+
+        return response()->json(['jobs' => $jobs], 200);
     }
+
 }

@@ -17,6 +17,7 @@ class Interview extends Model
         'job_listings_id',
         'location_id',
         'applicant_id',
+        'applicant_user_id',
         'title',
         'requirements',
     ];

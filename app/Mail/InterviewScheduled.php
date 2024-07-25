@@ -13,16 +13,18 @@ class InterviewScheduled extends Mailable
 
     public $interview;
     public $applicant;
+    public $isReschedule;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Interview $interview, $applicant)
+    public function __construct(Interview $interview, $applicant, $isReschedule)
     {
         $this->interview = $interview;
         $this->applicant = $applicant;
+        $this->isReschedule =$isReschedule;
     }
 
     /**
@@ -30,12 +32,20 @@ class InterviewScheduled extends Mailable
      *
      * @return $this
      */
+    // public function build()
+    // {
+    //     return $this->view('emails.interview_scheduled')
+    //                 ->with([
+    //                     'interview' => $this->interview,
+    //                     'applicant' => $this->applicant,
+    //                 ]);
+    // }
+
     public function build()
     {
-        return $this->view('emails.interview_scheduled')
-                    ->with([
-                        'interview' => $this->interview,
-                        'applicant' => $this->applicant,
-                    ]);
+        $subject = $this->isReschedule ? 'Interview Rescheduled' : 'Interview Scheduled';
+        return $this->subject($subject)
+                    ->view('emails.interview_scheduled')
+                    ->with(['applicant' => $this->applicant, 'subject' => $subject,'interview' => $this->interview]);
     }
 }

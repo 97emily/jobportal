@@ -1,4 +1,5 @@
 <x-admin.app-layout>
+
     {{-- <x-admin.page-header /> --}}
     <x-admin.index-toolbar>
         <x-slot:mainactions>
@@ -7,6 +8,7 @@
     </x-admin.index-toolbar>
 
     <x-flash-message />
+
 
     <div class="card p-5">
         <div class="card-body">
@@ -105,17 +107,14 @@
             </div>
         </div>
     </div>
-    {{-- <h3 class="badge bg-black"> Interviews for the Role: {{ $job->title }}</h3> --}}
+
     <div class="row">
         <div class="col-12">
-
             <div class="card">
                 <div class="card-body">
-                    {{-- <div class="col-12">nnnn</div> --}}
                     <div class="table-responsive">
                         <div>
-                            <h4 class="product-title" style="color:#00AAD0">Scheduled Interviews for the Role:
-                                {{ $job->title }}</h4>
+                            <h4 style="color: #00AAD0" >Final Shortlist for the Role: {{ $job->title }}</h4>
                             <table id="interview-datatable"
                                 class="resources-datatable table-middle table-hover table-responsive table">
                                 <thead>
@@ -123,7 +122,7 @@
                                         <th>No</th>
                                         <th>View</th>
                                         <th>Applicant</th>
-                                        <th>Interview Date</th>
+                                        <th>Date</th>
                                         <th>Assessment Score</th>
                                         <th>Interview Score</th>
                                         <th>Practical Score</th>
@@ -142,13 +141,6 @@
                                                         data-bs-original-title="View" data-bs-toggle="tooltip"></i>
                                                 </a>
                                             </td>
-                                            {{-- <td>
-                                                <a
-                                                    href="{{ route('jobs.shortlisted.applicant', ['user_id' => $interview->applicant_id['applicant']['user_id']]) }}">
-                                                    <i style="color: #00AAD0" class="fa fa-eye" data-bs-original-title="View"
-                                                        data-bs-toggle="tooltip"></i>
-                                                </a>
-                                            </td> --}}
                                             <td>{{ $interview->applicant_name }}</td>
                                             <td>{{ \Carbon\Carbon::parse($interview->interview_date)->format('d-m-Y') }}
                                             </td>
