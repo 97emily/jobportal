@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\SalaryRangeController;
 use App\Http\Controllers\Admin\InterviewController;
 use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\API\JobApiController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Models\PracticalTest;
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
@@ -75,7 +76,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/applicants/{job_id}/final-shortlist', [ApplicantsController::class, 'finalShortlist'])->name('applicants.final-shortlist');
     Route::get('rejections/{job_id}', [ApplicantsController::class, 'rejections'])->name('applicants.rejections');
     Route::post('send-rejection-email', [ApplicantsController::class, 'sendRejectionEmail'])->name('admin.sendRejectionEmail');
-    Route::get('/AllApplicants/check-interview/{jobId}/{applicantId}', [InterviewController::class, 'checkInterview']);
+    // Route::get('/AllApplicants/check-interview/{jobId}/{applicantId}', [InterviewController::class, 'checkInterview']);
 
     // Route::resource('products', ProductController::class);
     Route::resource('tags', TagController::class);
@@ -85,7 +86,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::resource('practical_tests', PracticalTestController::class);
     Route::resource('practical_questions', PracticalQuestionController::class);
     Route::resource('interviews', InterviewController::class);
-
+    // Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
     require __DIR__.'/admin_generator.php';
 });

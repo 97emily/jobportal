@@ -13,7 +13,6 @@ class CategoryController extends Controller
     {
         return 'Category';
     }
-
     private static function createRules()
     {
         return [

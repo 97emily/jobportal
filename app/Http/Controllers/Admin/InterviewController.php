@@ -8,6 +8,7 @@ use App\Models\Interview;
 use App\Models\JobListing;
 use App\Models\Location;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
 use Exception;
@@ -66,7 +67,7 @@ class InterviewController extends Controller
                     }
                 }
                 if (!$applicant) {
-                    return response()->json(['success' => false, 'message' => 'Applicant not found'], 404);
+                    return redirect()->back()->with(['success' => false, 'message' => 'Applicant not found'], 404);
                 }
 
                 // Send an email to the applicant
@@ -104,7 +105,7 @@ class InterviewController extends Controller
         }
     }
 
-    // InterviewController.php
+
     public function checkInterview($jobId, $applicantId)
     {
         // Log the incoming request data
@@ -130,6 +131,65 @@ class InterviewController extends Controller
         return response()->json(['exists' => $exists]);
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/api/interview",
+     *     summary="Get interviews by applicant ID",
+     *     tags={"Interviews"},
+     *     @OA\Parameter(
+     *         name="applicant_user_id",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the applicant"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="success",
+     *                 type="boolean",
+     *                 example=true
+     *             ),
+     *             @OA\Property(
+     *                 property="interviews",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/Interview")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Applicant ID is required")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="No interviews found for the given applicant_id")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="An error occurred while fetching the interview data. Please try again later.")
+     *         )
+     *     )
+     * )
+     */
 
     //endpoint to fetch interviews by user id
     public function getInterviewByApplicantId(Request $request)

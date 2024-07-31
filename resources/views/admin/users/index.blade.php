@@ -12,7 +12,20 @@
          </x-slot>
     </x-admin.index-toolbar>
 
-    <x-flash-message/>
+    {{-- <x-flash-message/> --}}
+
+    @if (Session::has('success'))
+        <div class="alert alert-success">
+            {{ Session::get('message') }}
+        </div>
+    @endif
+
+
+    @if (Session::has('error'))
+    <div class="alert alert-danger">
+        {{ Session::get('error') }}
+    </div>
+@endif
 
     <div class="row">
         <div class="col-12">

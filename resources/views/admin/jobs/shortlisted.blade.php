@@ -105,7 +105,6 @@
                 {{-- <div class="row border-bottom mb-3"> --}}
                 <div class="col-12">
                     <div class="form-group mb-3">
-                        Note:
                         <label for="practical_tests_id">Send Practical Test</label>
                         @if ($practicalTests->isNotEmpty())
                             <select name="practical_tests_id" id="practical_tests_id_select" class="form-control"
@@ -413,7 +412,6 @@
     });
 </script>
 
-<!-- Interview Modal -->
 <!-- Interview Modal -->
 <div class="modal fade" id="interviewModal" tabindex="-1" aria-labelledby="interviewModalLabel"
     aria-hidden="true">

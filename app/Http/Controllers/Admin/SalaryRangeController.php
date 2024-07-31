@@ -32,6 +32,7 @@ class SalaryRangeController extends Controller
         ];
     }
 
+    // Input validation to avoid overlapping values
     protected function prepareForValidation(Request $request)
     {
         $request->merge([

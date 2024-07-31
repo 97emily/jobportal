@@ -12,9 +12,9 @@ class PracticalQuestionController extends Controller
     public function index()
     {
 
-        $questions = PracticalQuestion::latest()->paginate(config('constants.posts_per_page'));
+        $questions = PracticalQuestion::latest()->paginate(5);
         return view('admin.practical_questions.index', compact('questions'))
-        ->with('i', (request()->input('page', 1) - 1) * config('constants.posts_per_page'));
+        ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function create()

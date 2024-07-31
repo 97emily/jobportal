@@ -22,8 +22,11 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
+
     public function store(LoginRequest $request): RedirectResponse
     {
+        \Log::info('Login request data', $request->only('email', 'password'));
+
         $request->authenticate();
 
         $request->session()->regenerate();

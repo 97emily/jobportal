@@ -58,15 +58,16 @@
                 @include('layouts.admin.partials.left-sidebar.generator')
             </ul>
         </li>
+
         <!-- Assessment Tests Menu -->
         <li class="sidebar-item">
             <a href="#assessment-menu" data-bs-toggle="collapse"
-                aria-expanded="{{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') ? 'true' : 'false' }}"
-                class="dropdown-toggle {{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') ? '' : 'collapsed' }}">
+                aria-expanded="{{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') || Request::is('admin/practical_tests*')|| Request::is('admin/practical_questions*') ? 'true' : 'false' }}"
+                class="dropdown-toggle {{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') || Request::is('admin/practical_tests*')|| Request::is('admin/practical_questions*') ? '' : 'collapsed' }}">
                 <i class="fa-solid fa-book"></i>
                 <span>Assessment Tests</span>
             </a>
-            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') ? 'show' : '' }}"
+            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/assessments*') || Request::is('admin/assessments*') || Request::is('admin/questions*') || Request::is('admin/practical_tests*')|| Request::is('admin/practical_questions*') ? 'show' : '' }}"
                 id="assessment-menu" data-parent="#left-sidebar">
 
                 @can('assessment-list')
@@ -127,12 +128,12 @@
         <!-- Interviews -->
         <li class="sidebar-item">
             <a href="#interviews-menu" data-bs-toggle="collapse"
-                aria-expanded="{{ Request::is('admin/interview*') || Request::is('admin/interview*') || Request::is('admin/questions*') ? 'true' : 'false' }}"
-                class="dropdown-toggle {{ Request::is('admin/interview*') || Request::is('admin/interview*') || Request::is('admin/questions*') ? '' : 'collapsed' }}">
+                aria-expanded="{{ Request::is('admin/interview*') || Request::is('admin/interview*') || Request::is('admin/interview*') ? 'true' : 'false' }}"
+                class="dropdown-toggle {{ Request::is('admin/interview*') || Request::is('admin/interview*') || Request::is('admin/interview*') ? '' : 'collapsed' }}">
                 <i class="fa-solid fa-briefcase"></i>
                 <span>Interviews</span>
             </a>
-            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/interview*') || Request::is('admin/interview*') || Request::is('admin/questions*') ? 'show' : '' }}"
+            <ul class="sidebar-second-level collapse list-unstyled {{ Request::is('admin/interview*') || Request::is('admin/interview*') || Request::is('admin/interview*') ? 'show' : '' }}"
                 id="interviews-menu" data-parent="#left-sidebar">
                 @can('assessment-list')
                     <li class="{{ Request::is('admin/interview*') ? 'active' : '' }}">

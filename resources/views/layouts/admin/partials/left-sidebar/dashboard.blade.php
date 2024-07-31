@@ -10,7 +10,7 @@
     <li class="sidebar-item {{ Request::is('admin/profile') ? 'active' : '' }}">
         <x-nav-link :href="route('profile.edit')" :active="Request::is('profile')">
           <i class="fa-regular fa-address-card"></i>
-          <span>{{ __('Profile') }}</span>
+          <span>{{ __('My Profile') }}</span>
         </x-nav-link>
       </li><!-- start sidebar-block -->
   </ul>

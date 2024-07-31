@@ -1,0 +1,492 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swagger API Documentation",
+        "description": "L5 Swagger API description",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/api": {},
+        "/api/assessment": {
+            "get": {
+                "tags": [
+                    "Assessments"
+                ],
+                "summary": "Get assessment details by ID",
+                "operationId": "8df5e300edeb10bf461718be6e1d49f6",
+                "parameters": [
+                    {
+                        "name": "assessment_id",
+                        "in": "query",
+                        "description": "ID of the assessment",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Assessment"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Assessment not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/categories/jobs": {
+            "get": {
+                "tags": [
+                    "Jobs"
+                ],
+                "summary": "Get jobs by category ID",
+                "operationId": "aa676cd888f31f10c062e4d04414aed2",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "description": "ID of the category",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "jobs": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/JobListing"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    }
+                }
+            }
+        },
+        "/api/jobs": {
+            "get": {
+                "tags": [
+                    "Jobs"
+                ],
+                "summary": "Get list of job listings",
+                "operationId": "1818241cdfaf9941e7970abbc86859a1",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/JobListing"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/jobs/{id}": {
+            "get": {
+                "tags": [
+                    "Jobs"
+                ],
+                "summary": "Get job listing details",
+                "operationId": "4b297c0c07c21c1ac1e5a7e4d6c84f0a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobListing"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Job not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/interview": {
+            "get": {
+                "tags": [
+                    "Interviews"
+                ],
+                "summary": "Get interviews by applicant ID",
+                "operationId": "159709a47a1972b73c4cfcddc9384018",
+                "parameters": [
+                    {
+                        "name": "applicant_user_id",
+                        "in": "query",
+                        "description": "ID of the applicant",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "interviews": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Interview"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Applicant ID is required"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No interviews found for the given applicant_id"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An error occurred while fetching the interview data. Please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "JobListing": {
+                "title": "Job Listing",
+                "required": [
+                    "title",
+                    "job_description",
+                    "status",
+                    "closing_date",
+                    "category_id",
+                    "tag_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "job_description": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "open",
+                            "preview",
+                            "closed"
+                        ]
+                    },
+                    "closing_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "category_id": {
+                        "type": "integer"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "tag": {
+                        "type": "string"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "salary_range": {
+                        "type": "string"
+                    },
+                    "assessment_id": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Assessment": {
+                "title": "Assessment",
+                "required": [
+                    "title",
+                    "description",
+                    "pass_mark",
+                    "questions"
+                ],
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "pass_mark": {
+                        "description": "The pass mark percentage",
+                        "type": "string"
+                    },
+                    "total_allocated_marks": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "total_time_required_in_minutes": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "computed_pass_mark_in_marks": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "questions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Question"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "Question": {
+                "title": "Question",
+                "required": [
+                    "question",
+                    "allocated_marks"
+                ],
+                "properties": {
+                    "question": {
+                        "type": "string"
+                    },
+                    "allocated_marks": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "multiple_choices": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "correct_answer": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Interview": {
+                "title": "Interview",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "requirements": {
+                        "type": "string",
+                        "example": "Bring your resume"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Technical Interview"
+                    },
+                    "interview_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-08-01"
+                    },
+                    "interview_time": {
+                        "type": "string",
+                        "format": "time",
+                        "example": "14:00"
+                    },
+                    "job_title": {
+                        "type": "string",
+                        "example": "Software Developer"
+                    },
+                    "location_name": {
+                        "type": "string",
+                        "example": "New York Office"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-07-01T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-07-15T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Assessments",
+            "description": "Assessments"
+        },
+        {
+            "name": "Jobs",
+            "description": "Jobs"
+        },
+        {
+            "name": "Interviews",
+            "description": "Interviews"
+        }
+    ]
+}

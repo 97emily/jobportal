@@ -28,6 +28,8 @@ class PracticalTestController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * config('constants.posts_per_page'));
     }
 
+
+
     public function create()
     {
         $categories = Category::all();
@@ -102,7 +104,7 @@ class PracticalTestController extends Controller
         }
 
         Log::info('Practical Test ID', ['id' => $request->practical_tests_id]);
-    
+
         // Fetch practical test
         $practicalTest = PracticalTest::findOrFail($request->practical_tests_id);
         Log::info('Extracted Practical Test', ['practicalTest' => $practicalTest]);

@@ -55,6 +55,7 @@ class JobListing extends Model
     {
         return $this->belongsTo(Location::class);
     }
+    
     public function salaryRange(): BelongsTo
     {
         return $this->belongsTo(SalaryRange::class);

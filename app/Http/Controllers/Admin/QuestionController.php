@@ -24,10 +24,10 @@ class QuestionController extends Controller
 
     public function index(): View
     {
-        $questions = Question::latest()->paginate(config('constants.posts_per_page'));
+        $questions = Question::latest()->paginate(5);
 
         return view('admin.questions.index', compact('questions'))
-            ->with('i', (request()->input('page', 1) - 1) * config('constants.posts_per_page'));
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function create(): View

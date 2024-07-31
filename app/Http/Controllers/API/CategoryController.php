@@ -106,6 +106,46 @@ class CategoryController extends Controller
         return response()->json(['message' => 'Category deleted'], 200);
     }
 
+    //Endpoint to fetch jobs by category ID.
+
+    /**
+     * @OA\Get(
+     *     path="/api/categories/jobs",
+     *     summary="Get jobs by category ID",
+     *     tags={"Jobs"},
+     *     @OA\Parameter(
+     *         name="category_id",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the category"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="jobs",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/JobListing")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Category not found"
+     *     )
+     * )
+     */
     public function getJobsByCategoryId(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -145,5 +185,4 @@ class CategoryController extends Controller
 
         return response()->json(['jobs' => $jobs], 200);
     }
-
 }

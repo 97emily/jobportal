@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PostMail extends Mailable
+class WelcomeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -33,7 +33,7 @@ class PostMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Email From Eclectics',
+            subject: 'Welcome Email From Eclectics',
         );
     }
     /**
@@ -44,7 +44,7 @@ class PostMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.post',
+            view: 'emails.welcome',
             with: ['details' => $this->details],
         );
     }

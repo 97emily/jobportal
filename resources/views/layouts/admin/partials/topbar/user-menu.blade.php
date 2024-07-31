@@ -2,7 +2,7 @@
     <a class="nav-link dropdown-toggle nav-profile" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
     <img src="{{ Vite::asset('resources/images/avatar.png') }}" alt="user-image" class="rounded-circle">
     <span class="ms-1 d-none d-lg-inline">
-    <span class="user-name">Hi, {{ Auth::user()->name }}</span>
+    <span class="user-name">Hello, {{ Auth::user()->name }}</span>
     </span>
     </a>
     <div class="dropdown-menu dropdown-menu-right profile-dropdown dropdown-animate">
@@ -17,6 +17,5 @@
       <i class="fa fa-sign-out me-1"></i>
       <span>{{ __('Log Out') }}</span>
       </a>
-
     </div>
   </li>

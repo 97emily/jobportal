@@ -16,6 +16,7 @@ use Illuminate\View\View;
 
 class JobController extends Controller
 {
+    
     public function __construct()
     {
         $this->middleware('permission:job-list|job-create|job-edit|job-delete', ['only' => ['index', 'show']]);

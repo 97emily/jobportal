@@ -33,9 +33,9 @@ class AssessmentController extends Controller
      */
     public function index(): View
     {
-        $assessments = Assessment::latest()->paginate(config('constants.posts_per_page'));
+        $assessments = Assessment::latest()->paginate(5);
         return view('admin.assessments.index', compact('assessments'))
-            ->with('i', (request()->input('page', 1) - 1) * config('constants.posts_per_page'));
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     // Ensure to use the necessary middleware for permissions if needed

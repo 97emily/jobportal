@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Mail\PostMail;
+use App\Mail\WelcomeMail;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +52,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request):RedirectResponse
     {
 
         $password = Str::random(8);
@@ -86,16 +88,18 @@ class UserController extends Controller
 
         try {
             // Send email
-            Mail::to($input['email'])->send(new PostMail($details));
+            Mail::to($input['email'])->send(new WelcomeMail($details));
         } catch (\Exception $e) {
             // Handle the error
             Log::error('Email sending failed: ' . $e->getMessage());
             // You might also want to notify the user about the error
-            return response()->json(['message' => 'Email sending failed. Please try again later.'], 500);
+            return redirect()->back()->with(['message' => 'Email sending failed. Please try again later.'], 500);
         }
 
-        return response()->json(['success' => true, 'message' => 'User is created successfully.']);
+        return redirect()->back()->with(['success' => true, 'message' => 'User is created successfully.']);
     }
+
+    // return redirect()->back()->with(['success' => true, 'message' => $message]);
 
     /**
      * Display the specified resource.

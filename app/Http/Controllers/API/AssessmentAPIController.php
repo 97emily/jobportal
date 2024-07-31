@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
@@ -13,6 +14,42 @@ class AssessmentAPIController extends Controller
         $assessments = Assessment::latest()->paginate(config('constants.posts_per_page'));
         return response()->json($assessments);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/assessment",
+     *     summary="Get assessment details by ID",
+     *     tags={"Assessments"},
+     *     @OA\Parameter(
+     *         name="assessment_id",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the assessment"
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#/components/schemas/Assessment")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Assessment not found"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated"
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden"
+     *     ),
+     *     security={
+     *         {"bearerAuth": {}}
+     *     }
+     * )
+     */
 
     public function show(Request $request): JsonResponse
     {
@@ -43,17 +80,16 @@ class AssessmentAPIController extends Controller
             'total_time_required_in_minutes' => $totalTimeRequired,
             'computed_pass_mark_in_marks' => round($computedPassMarkInMarks, 2), // Pass mark in marks form
             'category' => $assessment->category ? $assessment->category->name : 'Not specified',
-            'questions' => $assessment->questions->map(function($question) {
-                    return [
-                        // 'id' => $question->id,
-                        'question' => strip_tags($question->question),
-                        'allocated_marks' => $question->allocated_marks,
-                        // 'allocated_time' => $question->allocated_time,
-                        'multiple_choices' => assessments_choices($question->id),
-                        'correct_answer' => assessments_answers($question->id),
-                    ];
-                }),
-
+            'questions' => $assessment->questions->map(function ($question) {
+                return [
+                    // 'id' => $question->id,
+                    'question' => strip_tags($question->question),
+                    'allocated_marks' => $question->allocated_marks,
+                    // 'allocated_time' => $question->allocated_time,
+                    'multiple_choices' => assessments_choices($question->id),
+                    'correct_answer' => assessments_answers($question->id),
+                ];
+            }),
         ];
 
         return response()->json($response);

@@ -7,12 +7,12 @@
           </div>
           <div class="p-3">
             <div id="quick-search-results">
-              
+
             </div>
           </div>
         </div>
       </div>
-      <!-- end modal-content -->
+
     </div>
-    <!-- end modal-dialog -->
+
 </div>
