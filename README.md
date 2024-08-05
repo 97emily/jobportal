@@ -34,7 +34,7 @@ Node.js & npm: Latest versions.
 
 Database: PostgreSQL, MYSQL.
 
-## Browser Support.
+## Browser Support 
 
 Apple Safari
 
@@ -45,9 +45,8 @@ Microsoft Edge
 Mozilla Firefox
 
 ## Project Installation.
-
 ### Step 1:
-In the project’s root directory, copy the .env.example into .env file.
+In the project’s root directory, copy the .env.example into .env and configure your database credentials
 ### Step 2: Install Project Dependencies.
 Download the project’s dependencies
 ```composer install```
@@ -64,6 +63,7 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 ### Step 5: Running the Migration
+Running migrations will create your application’s database tables.
 ``` php artisan migrate ```
 ### Step 6: Running the seeders
 You may execute the db:seed Artisan command to seed your database.
@@ -76,4 +76,5 @@ Install the node Packages.
 
 After installing node packages success. Run
 ```npm run dev```
+
 
