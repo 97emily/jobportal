@@ -63,6 +63,7 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 ### Step 5: Running the Migration
+Running migrations will create your application’s database tables.
 ``` php artisan migrate ```
 ### Step 6: Running the seeders
 You may execute the db:seed Artisan command to seed your database.
