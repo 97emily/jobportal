@@ -40,7 +40,11 @@ class SalaryRange extends Model implements HasMedia, Searchable
     {
         return $this->belongsToMany(Product::class);
     }
-
+    
+    public function jobs()
+    {
+        return $this->hasMany(JobListing::class);
+    }
     // For quick search
     public function getSearchResult(): SearchResult
     {

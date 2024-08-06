@@ -62,7 +62,7 @@
             @endforeach
             </ul>
     @else
-        <p>No questions available for this practical test.</p>
+        <p> No questions available for this practical test. </p>
     @endif
 </body>
 </html>

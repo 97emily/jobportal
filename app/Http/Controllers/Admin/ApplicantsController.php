@@ -12,7 +12,6 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
-
 class ApplicantsController extends Controller
 {
     public function index()
@@ -215,7 +214,6 @@ class ApplicantsController extends Controller
 
         return view('admin.applicants.not-shortlisted', compact('notShortlistedApplicants', 'job'));
     }
-
 
     public function shortlist(Request $request)
     {

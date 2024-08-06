@@ -1,6 +1,3 @@
-
-
-
 <x-admin.app-layout>
     <x-admin.page-header />
 

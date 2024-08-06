@@ -29,4 +29,9 @@ class Tag extends Model
     {
         return $this->morphedByMany(Product::class, 'taggable');
     }
+
+    public function jobs()
+    {
+        return $this->hasMany(JobListing::class);
+    }
 }

@@ -8,6 +8,7 @@
                     <span></span>
                 </label>
             </th> --}}
+            <th>{{ _('View') }}</th>
             <th>{{ _('Name') }}</th>
             <th class="no-sort text-center">{{ __('Action') }}</th>
         </tr>
@@ -22,6 +23,8 @@
                         <span></span>
                     </label>
                 </td> --}}
+                <td><a href="{{ route('tags.show', $tag->id) }}"><i style="color: #00AAD0" class="fa fa-eye" data-bs-original-title="View"
+                    data-bs-toggle="tooltip"></i></a></td>
                 <td>{{ $tag->name }}</td>
                 <td>
                     <ul class="list-unstyled table-actions">

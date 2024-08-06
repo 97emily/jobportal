@@ -44,8 +44,8 @@ if ($actionName == 'Create') {
 <div>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb fs-base ps-0">
-            <li class="breadcrumb-item"><a href="#">{{ config('app.name', 'FlexAdmin') }}</a></li>
-            <li class="breadcrumb-item"><span><a href="{{ route($resourceNames[0] . '.index') }}">
+            <li class="breadcrumb-item"><a href="#" style="color: #00AAD0">{{ config('app.name', 'FlexAdmin') }}</a></li>
+            <li class="breadcrumb-item"><span><a href=" {{ route($resourceNames[0] . '.index') }}" style="color: #00AAD0">
                         {{ __(str_replace('_', ' ', str_plural($resourceName))) }}</a></span>
             </li>
             @if ($actionName != null)
@@ -57,7 +57,7 @@ if ($actionName == 'Create') {
         <div class="row header justify-content-between mb-4">
             <div class="col-12">
                 <h1 class="header-title h3">
-                    <i class="fa fa-star text-highlight" color="blue"></i>
+                    <i class="fa fa-star text-highlight" style="color: #00AAD0"></i>
                     {{ $title }}
                 </h1>
             </div>

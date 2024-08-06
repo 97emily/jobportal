@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Concerns\BaseControllerConcerns;
 use App\Http\Controllers\Controller;
+use App\Models\Tag;
+use Illuminate\View\View;
 
 class TagController extends Controller
 {
@@ -33,5 +35,11 @@ class TagController extends Controller
         return [
             'name.required' => 'Name is required',
         ];
+    }
+    public function show($id): View
+    {
+        $tag = Tag::with(['jobs'])->findOrFail($id);
+
+        return view('admin.tags.show', compact('tag'));
     }
 }

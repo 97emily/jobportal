@@ -40,12 +40,20 @@ class Category extends Model implements HasMedia, Searchable
         return $this->belongsToMany(Product::class);
     }
 
+    public function jobs()
+    {
+        return $this->hasMany(JobListing::class);
+    }
 
-    public function jobListings()
-        {
-            return $this->hasMany(JobListing::class);
-        }
+    public function assessments()
+    {
+        return $this->hasMany(Assessment::class);
+    }
 
+    public function practicaltests()
+    {
+        return $this->hasMany(PracticalTest::class);
+    }
 
     // For quick search
     public function getSearchResult(): SearchResult

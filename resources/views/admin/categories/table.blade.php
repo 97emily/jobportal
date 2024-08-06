@@ -10,6 +10,7 @@
             </th>
             <th>{{ _('ID') }}</th>
             <th>{{ _('Image') }}</th> --}}
+            <th>{{ _('View') }}</th>
             <th>{{ _('Name') }}</th>
             <th class="no-sort text-center">{{ _('Action') }}</th>
         </tr>
@@ -29,6 +30,9 @@
                     <img class="img-thumbnail" alt="{{ $category->name }}" src="{{ resource_image_url($category) }}"
                         width="48">
                 </td> --}}
+                <td><a href="{{ route('categories.show', $category->id) }}"><i style="color: #00AAD0" class="fa fa-eye" data-bs-original-title="View"
+                    data-bs-toggle="tooltip"></i></a></td>
+
                 <td>{{ $category->name }}</td>
                 <td>
                     <ul class="list-unstyled table-actions">

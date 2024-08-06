@@ -24,6 +24,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
+                                        {{-- <th>Nummber</th> --}}
                                         <th>Job ID</th>
                                         <th>Job Title</th>
                                         <th>Job Category</th>
@@ -32,9 +33,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($jobs as $job)
+                                    @foreach($jobs as $key => $job)
                                         @if(in_array($job->id, $interviewJobIds))
                                             <tr>
+                                                {{-- <td>{{ ++$key }}</td> --}}
                                                 <td>{{ $job->id }}</td>
                                                 <td>{{ $job->title }}</td>
                                                 <td>

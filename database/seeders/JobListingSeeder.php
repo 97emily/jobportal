@@ -18,6 +18,6 @@ class JobListingSeeder extends Seeder
 
     public function run()
     {
-        JobListing::factory()->count(5)->create();
+        JobListing::factory()->count(10)->create();
     }
 }

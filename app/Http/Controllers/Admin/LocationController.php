@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Concerns\BaseControllerConcerns;
 use App\Http\Controllers\Controller;
+use App\Models\Location;
+use Illuminate\View\View;
 
 class LocationController extends Controller
 {
@@ -26,5 +28,12 @@ class LocationController extends Controller
         return [
             'name' => 'required',
         ];
+    }
+
+    public function show($id): View
+    {
+        $location = Location::with(['jobs', 'interviews'])->findOrFail($id);
+
+        return view('admin.locations.show', compact('location'));
     }
 }

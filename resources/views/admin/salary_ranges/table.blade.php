@@ -10,6 +10,7 @@
             </th>
             <th>{{ _('ID') }}</th>
             <th>{{ _('Image') }}</th> --}}
+            <th>{{ _('View') }}</th>
             <th>{{ _('Minimum Salary') }}</th>
             <th>{{ _('Maximum Salary') }}</th>
             <th class="no-sort text-center">{{ _('Action') }}</th>
@@ -30,6 +31,8 @@
                     <img class="img-thumbnail" alt="{{ $salaryRange->name }}" src="{{ resource_image_url($salaryRange) }}"
                         width="48">
                 </td> --}}
+                <td><a href="{{ route('salary_ranges.show', $salaryRange->id) }}"><i style="color: #00AAD0" class="fa fa-eye" data-bs-original-title="View"
+                    data-bs-toggle="tooltip"></i></a></td>
                 <td>{{ $salaryRange->minimum }}</td>
                 <td>{{ $salaryRange->maximum }}</td>
                 <td>

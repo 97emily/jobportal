@@ -17,10 +17,10 @@ trait BaseControllerConcerns
 
     public function index(): View
     {
-        $collection = $this->model()::latest()->paginate(config('constants.posts_per_page'));
+        $collection = $this->model()::latest()->paginate(10);
 
         return view('admin.'.self::snakePlural().'.index', compact('collection'))
-            ->with('i', (request()->input('page', 1) - 1) * config('constants.posts_per_page'));
+            ->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     public function create(): View

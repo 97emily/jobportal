@@ -16,7 +16,6 @@ use Illuminate\View\View;
 
 class JobController extends Controller
 {
-    
     public function __construct()
     {
         $this->middleware('permission:job-list|job-create|job-edit|job-delete', ['only' => ['index', 'show']]);
@@ -31,9 +30,9 @@ class JobController extends Controller
 
         $categories = Category::all();
         $tags = Tag::all();
-        $locations = Location::all(); // Load all locations
-        $salaryRanges = SalaryRange::all(); // Load all salary ranges
-        $assessments = Assessment::all(); // Load all assessments
+        $locations = Location::all();
+        $salaryRanges = SalaryRange::all();
+        $assessments = Assessment::all();
         return view('admin.jobs.index', compact('jobs', 'tags', 'locations', 'salaryRanges',))
             ->with('i', (request()->input('page', 1) - 1) * config('constants.posts_per_page'));
     }
@@ -42,9 +41,9 @@ class JobController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        $locations = Location::all(); // Load all locations
-        $salaryRanges = SalaryRange::all(); // Load all salary ranges
-        $assessments = Assessment::all(); // Load all assessments
+        $locations = Location::all();
+        $salaryRanges = SalaryRange::all();
+        $assessments = Assessment::all();
 
         return view('admin.jobs.create', compact('categories', 'tags', 'locations', 'salaryRanges', 'assessments'));
     }
@@ -65,9 +64,9 @@ class JobController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        $locations = Location::all(); // Load all locations
-        $salaryRanges = SalaryRange::all(); // Load all salary ranges
-        $assessments = Assessment::all(); // Load all assessments
+        $locations = Location::all();
+        $salaryRanges = SalaryRange::all();
+        $assessments = Assessment::all();
 
         return view('admin.jobs.edit', compact('job', 'categories', 'tags', 'locations', 'salaryRanges', 'assessments'));
     }
@@ -123,9 +122,9 @@ class JobController extends Controller
 
         $categories = Category::all();
         $tags = Tag::all();
-        $locations = Location::all(); // Load all locations
-        $salaryRanges = SalaryRange::all(); // Load all salary ranges
-        $assessments = Assessment::all(); // Load all assessments
+        $locations = Location::all();
+        $salaryRanges = SalaryRange::all();
+        $assessments = Assessment::all();
 
         dd($jobs)->body();
         return view('admin.jobs.applicants', compact('jobs', 'tags', 'locations', 'salaryRanges',))

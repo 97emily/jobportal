@@ -17,7 +17,7 @@ use Illuminate\Validation\ValidationException;
 
 class InterviewController extends Controller
 {
-
+// Function to shedule and reschedule the interviews
     public function schedule(Request $request)
     {
         try {
@@ -89,9 +89,7 @@ class InterviewController extends Controller
         }
     }
 
-
-    // return redirect()->back()->with('error', 'Failed to fetch applicant details from API');
-
+// Fetch the form details to allow the user to sellect the interview location from the existing locations.
     public function getFormDetails()
     {
         try {
@@ -105,7 +103,7 @@ class InterviewController extends Controller
         }
     }
 
-
+// Checks if an interview has been scheduled for a particular user or not.
     public function checkInterview($jobId, $applicantId)
     {
         // Log the incoming request data
@@ -130,7 +128,6 @@ class InterviewController extends Controller
         // Return JSON response
         return response()->json(['exists' => $exists]);
     }
-
 
     /**
      * @OA\Get(
@@ -191,7 +188,7 @@ class InterviewController extends Controller
      * )
      */
 
-    //endpoint to fetch interviews by user id
+    //Endpoint to fetch interviews by user id
     public function getInterviewByApplicantId(Request $request)
     {
         try {
@@ -233,7 +230,7 @@ class InterviewController extends Controller
         }
     }
 
-
+// Function to shortlist an applicant after an interview
     public function shortlist(Request $request)
     {
         // Validate the request data
@@ -251,36 +248,6 @@ class InterviewController extends Controller
         // Return a response (redirect back with a success message or return JSON)
         return response()->json(['success' => true, 'message' => 'Applicant shortlisting status updated successfully']);
     }
-
-
-    /**
-     *
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\View\View
-     */
-
-    // public function show($id)
-    // {
-    //     try {
-    //         $interview = Interview::findOrFail($id);
-    //         $applicant = $this->fetchApplicantDetails($interview->applicant_id, $interview->job_listings_id);
-    //         if ($applicant) {
-    //             $interview->applicant_name = $applicant['name'];
-    //             $interview->assessment_score = $applicant['assessment_score'];
-    //             $interview->practical_score = $applicant['practical_score'];
-    //             $interview->interview_score = $applicant['interview_score'];
-    //             $interview->status = $applicant['status'];
-    //             // Add more fields as needed
-    //         }
-    //         return view('admin.interviews.show', compact('interview'));
-    //     } catch (Exception $e) {
-    //         \Log::error('Error fetching interview details: ' . $e->getMessage());
-    //         return redirect()->back()->with('error', 'An error occurred while fetching interview details. Please try again later.');
-    //     }
-    // }
-
 
 
     /**
@@ -305,7 +272,8 @@ class InterviewController extends Controller
 
     /**
      * Helper function to fetch applicant details.
-     *
+     * Fetches the applicants under a specific job listing from the applicants database using the job ID.
+     * Thereafter if the applicants ids fetched match the applicant id from the interviews table then return the applicants' scores and status.
      * @param int $applicant_id
      * @param int $job_listings_id
      * @return array|null
@@ -341,7 +309,7 @@ class InterviewController extends Controller
         }
     }
 
-
+// Fetches the Job listings with scheduled Interviews
     public function index()
     {
         try {
@@ -362,7 +330,7 @@ class InterviewController extends Controller
         }
     }
 
-
+// Fetches all the interviews under a specific job
     public function showJobInterviews($job_id)
     {
         try {
@@ -384,7 +352,7 @@ class InterviewController extends Controller
             return redirect()->back()->with('error', 'An error occurred while fetching interviews. Please try again later.');
         }
     }
-
+// Fetches all the shortlisted interviews using the job id and applicant id.
     public function showShortlistedApplicants($job_id)
     {
         try {
@@ -409,7 +377,7 @@ class InterviewController extends Controller
         }
     }
 
-    //helper function to fetch all applicant details
+// Helper function to fetch all applicant details i.e personal details, highest_education_level, secondary_education and professional_qualifications.
     private function InterviewApplicantDetails($applicantUserId)
     {
         $url = env('API_ENDPOINT_BASE_URL') . '/applicants/' . $applicantUserId;
@@ -442,7 +410,7 @@ class InterviewController extends Controller
 
         return null;
     }
-
+// Displays all the applicant information.
     public function show($id)
     {
         try {
@@ -454,12 +422,6 @@ class InterviewController extends Controller
 
             // Check if the applicant details are found
             if ($applicantDetails) {
-                // Merge interview details with applicant details
-                // $interview->applicant_name = $applicantDetails['name'];
-                // $interview->assessment_score = $applicantDetails['assessment_score'];
-                // $interview->practical_score = $applicantDetails['practical_score'];
-                // $interview->interview_score = $applicantDetails['interview_score'];
-                // $interview->status = $applicantDetails['status'];
                 $interview->personal_details = $applicantDetails['personal_details'];
                 $interview->highest_education_level = $applicantDetails['highest_education_level'];
                 $interview->secondary_education = $applicantDetails['secondary_education'];

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Concerns\BaseControllerConcerns;
 use App\Http\Controllers\Controller;
+use App\Models\SalaryRange;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Illuminate\Contracts\Validation\Rule;
 
 class SalaryRangeController extends Controller
@@ -39,6 +41,12 @@ class SalaryRangeController extends Controller
             'minimum' => floatval($request->input('minimum')),
             'maximum' => floatval($request->input('maximum')),
         ]);
+    }
+    public function show($id): View
+    {
+        $salaryRange = SalaryRange::with(['jobs'])->findOrFail($id);
+
+        return view('admin.salary_ranges.show', compact('salaryRange'));
     }
 }
 

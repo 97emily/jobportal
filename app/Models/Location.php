@@ -39,6 +39,15 @@ class Location extends Model implements HasMedia, Searchable
         return $this->belongsToMany(Product::class);
     }
 
+    public function jobs()
+    {
+        return $this->hasMany(JobListing::class);
+    }
+
+    public function interviews()
+    {
+        return $this->hasMany(Interview::class);
+    }
     // For quick search
     public function getSearchResult(): SearchResult
     {
