@@ -48,7 +48,6 @@ class JobController extends Controller
         return view('admin.jobs.create', compact('categories', 'tags', 'locations', 'salaryRanges', 'assessments'));
     }
 
-
     public function show(JobListing $job): View
     {
         $categories = Category::all();

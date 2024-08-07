@@ -69,7 +69,7 @@
             "@php artisan migrate --graceful --ansi"
         ]
     },
-    
+
     "extra": {
         "laravel": {
             "dont-discover": []
@@ -87,5 +87,4 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true
-
 }

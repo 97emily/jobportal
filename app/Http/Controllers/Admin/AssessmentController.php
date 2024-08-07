@@ -60,7 +60,6 @@ class AssessmentController extends Controller
         return redirect()->route('assessments.index')->with('success', 'Assessment listing created successfully.');
     }
 
-
     /**
      * Display the specified resource.
      *

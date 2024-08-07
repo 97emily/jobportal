@@ -637,7 +637,6 @@
     //                     alert('An error occurred while checking the interview status.');
     //                 });
 
-
     //             // Fetch locations
     //             fetch('{{ route('getFormDetails') }}')
     //                 .then(response => response.json())

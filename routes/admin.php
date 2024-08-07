@@ -10,7 +10,6 @@
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 use App\Http\Controllers\Admin\ApplicantsController;
 use App\Http\Controllers\Admin\AttachmentController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -66,7 +65,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::get('/admin/search', [SearchController::class, 'search'])->name('admin.search');
     Route::get('/job/{jobId}/practical-test/preview', [PracticalTestController::class, 'previewPracticalTest'])->name('practical-test.preview');
 
-
     Route::post('/applicant', [ApplicantsController::class, 'shortlist'])->name('applicants.shortlist');
     Route::get('/applicants', [ApplicantsController::class, 'index'])->name('applicants.index');
     Route::get('/applicants/{job_id}/all', [ApplicantsController::class, 'allApplicants'])->name('applicants.all');
@@ -86,7 +84,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin'], function () {
     Route::resource('practical_tests', PracticalTestController::class);
     Route::resource('practical_questions', PracticalQuestionController::class);
     Route::resource('interviews', InterviewController::class);
-    // Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
 
     require __DIR__.'/admin_generator.php';
 });

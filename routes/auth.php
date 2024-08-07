@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+// These routes are accessible only to unauthenticated users, protected by the guest middleware.
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');
@@ -35,6 +36,7 @@ Route::middleware('guest')->group(function () {
                 ->name('password.store');
 });
 
+// These routes are accessible only to authenticated users, protected by the auth middleware.
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');

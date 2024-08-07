@@ -11,13 +11,14 @@
                                 <div class="col-12">
                                     <div class="form-group mb-3">
                                         <label for="title">Title <span class="text-danger">*</span></label>
-                                        <input placeholder="Title" class="form-control" required name="title" type="text" id="title">
+                                        <input placeholder="Title" class="form-control" required name="title" type="text" id="title" value="{{ $practicalTest->title ?? '' }}">
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="description">Test Description <span class="text-danger">*</span></label>
                                         <div class="quill-editor-wrapper">
                                             <div id="description-quill-editor" style="height: 300px;" class="ql-container ql-snow">
                                                 <div class="ql-editor" data-gramm="false" contenteditable="true">
+                                                    {!! $practicalTest->description ?? '' !!}
                                                 </div>
                                                 <div class="ql-clipboard" contenteditable="true" tabindex="-1"></div>
                                                 <div class="ql-tooltip ql-hidden">
@@ -52,6 +53,7 @@
                                         <div class="quill-editor-wrapper">
                                             <div id="instructions-quill-editor" style="height: 300px;" class="ql-container ql-snow">
                                                 <div class="ql-editor" data-gramm="false" contenteditable="true">
+                                                    {!! $practicalTest->instructions ?? '' !!}
                                                 </div>
                                                 <div class="ql-clipboard" contenteditable="true" tabindex="-1"></div>
                                                 <div class="ql-tooltip ql-hidden">
@@ -83,12 +85,11 @@
                                         });
                                     </script>
                                     <div class="form-group mb-3">
-                                        <label for="deadline">Deadline <span class="text-danger">*</span></label>
-                                        <input type="datetime-local" class="form-control" id="deadline" name="deadline" required>
+                                        <label for="deadline"> Deadline <span class="text-danger">*</span></label>
+                                        <input type="datetime-local" class="form-control" id="deadline" name="deadline" value="{!! $practicalTest->deadline ?? '' !!}"required>
                                     </div>
                                 </div>
                             </div>
-
                             {{-- <div class="card">
                                 <div class="card-body">
                                     <h4>Passmark</h4>
@@ -105,20 +106,23 @@
                                     </div>
                                 </div>
                             </div> --}}
-
                             <div class="col-lg-4">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="form-group">
                                             <label for="category_id">Category</label>
                                             <select class="form-control select2" id="category_id" name="category_id">
+                                                <option value="Select">Select Test Category</option>
                                                 @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                    <option value="{{ $category->id }}" {{ (isset($practicalTest->category_id) && $practicalTest->category_id == $category->id) ? 'selected' : '' }}>
+                                                        {{ $category->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="card">
                                     <div class="card-body d-flex justify-content-between">
                                         <button class="btn btn-highlight waves-effect" type="submit" style="background-color: #00AAD0">

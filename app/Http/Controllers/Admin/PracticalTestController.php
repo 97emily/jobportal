@@ -28,8 +28,6 @@ class PracticalTestController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * config('constants.posts_per_page'));
     }
 
-
-
     public function create()
     {
         $categories = Category::all();
@@ -84,8 +82,6 @@ class PracticalTestController extends Controller
 
         return redirect()->route('practical_tests.index');
     }
-
-
 
     public function sendPracticalTest(Request $request, $jobId)
     {

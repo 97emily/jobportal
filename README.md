@@ -46,7 +46,7 @@ Mozilla Firefox
 
 ## Project Installation.
 ### Step 1:
-In the project’s root directory, copy the .env.example into .env and configure your database credentials
+In the project’s root directory, copy the .env.example into .env to configure your database credentials
 ### Step 2: Install Project Dependencies.
 Download the project’s dependencies
 ```composer install```
@@ -66,7 +66,7 @@ DB_PASSWORD=
 Running migrations will create your application’s database tables.
 ``` php artisan migrate ```
 ### Step 6: Running the seeders
-You may execute the db:seed Artisan command to seed your database.
+You may execute the db:seed Artisan command to seed your database with sample data.
 ```php artisan db:seed```
 ### Step 7: Start the local server by executing
 ```php artisan serve```
@@ -76,5 +76,4 @@ Install the node Packages.
 
 After installing node packages success. Run
 ```npm run dev```
-
 

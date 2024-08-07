@@ -12,29 +12,34 @@
                         <div class="product-desc mt-2">
                             <p>{!! $assessment->description !!}</p>
                         </div>
-                        <div class="product-price mb-2">
-                            <!-- Display pass mark if available -->
-                            @if ($assessment->pass_mark)
-                                <span class="price text-highlight fs-lg fw-500">Pass Mark:
-                                    <span>{{ number_format($assessment->pass_mark, 0) }}%</span>
-                                <br>
-                                <span class="price text-highlight fs-lg fw-500">Questions:
-                                    {{ number_format(count($questions->where('assessment_id', $assessment->id)), 0) . ' questions' }}</span>
-                                <br>
-                                <span class="price text-highlight fs-lg fw-500">Total Time:
-                                    {{ number_format($questions->where('assessment_id', $assessment->id)->sum('allocated_time'), 0) . ' minutes' }}</span>
-                                <br>
-                                <span class="price text-highlight fs-lg fw-500">Total Marks:
-                                    {{ number_format($questions->where('assessment_id', $assessment->id)->sum('allocated_marks'), 0) . ' marks'}}</span>
-                                <br>
-                            @else
-                                <span class="price text-highlight fs-lg fw-500">Pass Mark: Not specified</span>
-                            @endif
+                        <div class="col-md-12">
+                            <dl class="row">
+                                @if ($assessment->pass_mark)
+                                    <dt class="col-sm-3">Assessment Pass Mark:</dt>
+                                    <dd class="col-sm-9">{{ number_format($assessment->pass_mark, 0) }}%</dd>
+
+                                    <dt class="col-sm-3">Assessment Questions:</dt>
+                                    <dd class="col-sm-9">
+                                        {{ number_format(count($questions->where('assessment_id', $assessment->id)), 0) . ' questions' }}
+                                    </dd>
+
+                                    <dt class="col-sm-3">Assessment Allocated Time:</dt>
+                                    <dd class="col-sm-9">
+                                        {{ number_format($questions->where('assessment_id', $assessment->id)->sum('allocated_time'), 0) . ' minutes' }}
+                                    </dd>
+                                    <dt class="col-sm-3">Assessment Total Marks :</dt>
+                                    <dd class="col-sm-9">
+                                        {{ number_format($questions->where('assessment_id', $assessment->id)->sum('allocated_marks'), 0) . ' marks' }}
+                                    </dd>
+                                @else
+                                    <dt class="col-sm-3">Pass Mark: Not specified</dt>
+                                @endif
+                            </dl>
                         </div>
                     </div>
                     <!-- end product-detail -->
                     <hr>
-                    <ul class="product-meta list-unstyled fw-500">
+                    <ul class="product-meta list-unstyled fw-400">
                         <li> <strong> Assessment Category: </strong>
                             <span class="badge bg-success">{{ $assessment->category->name }}</span>
                         </li>
@@ -63,7 +68,6 @@
                                         </ul>
                                     </div>
                                 </div>
-
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Marking Scheme:</strong>
@@ -76,17 +80,16 @@
                                         </ul>
                                     </div>
                                 </div>
-
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Allocated Marks:</strong>
-                                        {{ $question->allocated_marks . ' Marks'}}
+                                        {{ $question->allocated_marks . ' Marks' }}
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Allocated Time:</strong>
-                                        {{ $question->allocated_time  . ' Minutes'}}
+                                        {{ $question->allocated_time . ' Minutes' }}
                                     </div>
                                 </div>
                                 <!-- Edit Button for Each Question -->
