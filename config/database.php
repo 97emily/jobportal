@@ -73,6 +73,7 @@ return [
             'engine' => null,
             'options' => [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA', ''),
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
             ],
         ],
         'mariadb' => [
