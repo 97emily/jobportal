@@ -148,7 +148,6 @@ class ApplicantsController extends Controller
         }
     }
 
-
     /**
      * Helper function to fetch applicant details.
      *
@@ -187,7 +186,6 @@ class ApplicantsController extends Controller
             return null;
         }
     }
-
 
     public function notShortlistedApplicants($job_id): View
     {

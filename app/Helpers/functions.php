@@ -26,7 +26,6 @@ if (!function_exists('product_status')) {
         } else {
             $class = 'primary';
         }
-
         return <<<HTML
     <span class="badge bg-{$class} rounded">
       {$product->statusName()}

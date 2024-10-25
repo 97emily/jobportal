@@ -81,7 +81,7 @@
     <div class="card p-5">
         <div class="col-lg-12 col-md-12">
             <div class="row">
-                <div class="row border-bottom mb-3"></div>
+                <div class="row border-bottom mb-3" style="color:red">Note: If you don't select applicants, the system will automatically send the  Practical Test to all the shortlisted applicants</div>
                 <div class="col-12">
                     <div class="form-group mb-3">
                         <label for="practical_tests_id">Send Practical Test</label>
@@ -120,9 +120,6 @@
                     @endif
                 </div>
             </div>
-
-
-
             <hr>
             <!-- Applicant Table -->
 

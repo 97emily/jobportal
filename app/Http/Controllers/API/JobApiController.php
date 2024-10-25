@@ -62,7 +62,7 @@ class JobApiController extends Controller
      *     }
      * )
      */
-
+// Endpoint to show all the open jobs
     public function index(): JsonResponse
     {
         $jobs = JobListing::with(['category', 'tag', 'location', 'salaryRange', 'assessment'])

@@ -55,12 +55,12 @@ Download the project’s dependencies
 ### Step 4:  Configure your database
 Now that you have set up your project, you probably want to store some data in a database.
 ```
-DB_CONNECTION=mysql
+DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=flexadmin_db
-DB_USERNAME=root
-DB_PASSWORD=
+DB_PORT=5432
+DB_DATABASE=dbname
+DB_USERNAME=dbuser
+DB_PASSWORD=dbpassword
 ```
 ### Step 5: Running the Migration
 Running migrations will create your application’s database tables.
